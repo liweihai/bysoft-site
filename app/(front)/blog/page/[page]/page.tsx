@@ -1,6 +1,7 @@
 import { notFound } from 'next/navigation'
-import List from '/components/blog/List'
-import {findBlogs} from "/lib/data"
+
+import List from '@/components/blog/List'
+import {findBlogs} from "@/lib/data"
 
 const POSTS_PER_PAGE = 20
 

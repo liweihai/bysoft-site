@@ -7,8 +7,9 @@ import {
 } from '@heroicons/react/24/outline';
 import { ArrowRightIcon } from '@heroicons/react/20/solid';
 import { useActionState } from 'react';
-import { authenticate } from '/lib/actions';
 import { useSearchParams } from 'next/navigation';
+
+import { authenticate } from '@/lib/actions';
  
 export default function LoginForm() {
   const searchParams = useSearchParams();

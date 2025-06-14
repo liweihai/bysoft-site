@@ -2,11 +2,11 @@ import '/css/tailwind.css'
 
 import { Space_Grotesk } from 'next/font/google'
 import { ThemeProvider } from 'next-themes'
-
-import Header from '/components/Header'
-import Footer from '/components/Footer'
-import siteMetadata from '/data/siteMetadata'
 import { Metadata } from 'next'
+
+import Header from '@/components/Header'
+import Footer from '@/components/Footer'
+import siteMetadata from '@/data/siteMetadata'
 
 const space_grotesk = Space_Grotesk({
   subsets: ['latin'],

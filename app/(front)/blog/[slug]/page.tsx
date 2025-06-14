@@ -1,10 +1,10 @@
-import '/css/prism.css'
+import '@/css/prism.css'
 
 import { Metadata } from 'next'
 import { notFound } from 'next/navigation'
-import siteMetadata from '/data/siteMetadata'
-import {findBlogs, getBlog} from "/lib/data"
-import { formatDate } from '/utils/datetime'
+import siteMetadata from '@/data/siteMetadata'
+import {findBlogs, getBlog} from "@/lib/data"
+import { formatDate } from '@/utils/datetime'
 
 export async function generateMetadata(props: {
   params: Promise<{ slug: string }>
@@ -20,10 +20,10 @@ export async function generateMetadata(props: {
 
     return {
         title: post.title,
-        description: post.subtitle,
+        description: post.remark,
         openGraph: {
             title: post.title,
-            description: post.subtitle,
+            description: post.remark,
             siteName: siteMetadata.title,
             locale: 'zh_CN',
             type: 'article',
@@ -35,7 +35,7 @@ export async function generateMetadata(props: {
         twitter: {
             card: 'summary_large_image',
             title: post.title,
-            description: post.subtitle,
+            description: post.remark,
             images: imageList,
         },
     }

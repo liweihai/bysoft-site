@@ -2,11 +2,12 @@
 
 import { useState } from 'react'
 import { usePathname } from 'next/navigation'
-import { formatDate } from '/utils/datetime'
-import Link from '/components/Link'
-import Tag from '/components/Tag'
-import {Blog} from '/lib/definitions'
-import siteMetadata from '/data/siteMetadata'
+
+import { formatDate } from '@/utils/datetime'
+import Link from '@/components/Link'
+import Tag from '@/components/Tag'
+import {Blog} from '@/lib/definitions'
+import siteMetadata from '@/data/siteMetadata'
 
 interface PaginationProps {
   totalPages: number

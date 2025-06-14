@@ -1,6 +1,6 @@
-import { genPageMetadata } from '/app/seo'
-import {findBlogs} from "/lib/data"
-import List from '/components/blog/List'
+import { genPageMetadata } from '@/app/seo'
+import {findBlogs} from "@/lib/data"
+import List from '@/components/blog/List'
 
 const POSTS_PER_PAGE = 20
 

@@ -1,10 +1,10 @@
 import Image from "next/image";
 
-import Link from '/components/Link'
-import Tag from '/components/Tag'
-import {findBlogs} from "/lib/data"
-import siteMetadata from '/data/siteMetadata'
-import { formatDate } from '/utils/datetime'
+import Link from '@/components/Link'
+import Tag from '@/components/Tag'
+import {findBlogs} from "@/lib/data"
+import siteMetadata from '@/data/siteMetadata'
+import { formatDate } from '@/utils/datetime'
 
 const MAX_DISPLAY = 5
 

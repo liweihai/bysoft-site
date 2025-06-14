@@ -1,7 +1,7 @@
 import type { NextAuthConfig } from 'next-auth';
 import { getCloudflareContext } from "@opennextjs/cloudflare";
 
-const { env } = getCloudflareContext();
+const { env } = await getCloudflareContext({async: true});
 
 export const authConfig = {
     pages: {
