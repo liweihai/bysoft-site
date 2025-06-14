@@ -1,5 +1,5 @@
 import SideNav from '/components/dashboard/SideNav';
-import { signOut } from '@/auth';
+import { signOut } from '/auth';
 import { PowerIcon } from '@heroicons/react/24/outline';
 
 export default function Layout({ children }: { children: React.ReactNode }) {
