@@ -8,6 +8,15 @@
     "directory": ".open-next/assets",
     "binding": "ASSETS"
   },
+  "services": [
+    {
+      "binding": "WORKER_SELF_REFERENCE",
+      "service": "bysoft-site"
+    }
+  ],
+  "vars": {
+    "API_HOST": "https://www.bysoft.net.cn"
+  },
   "observability": {
     "enabled": true
   },
