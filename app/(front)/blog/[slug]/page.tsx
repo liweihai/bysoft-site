@@ -3,7 +3,8 @@ import '@/css/prism.css'
 import { Metadata } from 'next'
 import { notFound } from 'next/navigation'
 import siteMetadata from '@/data/siteMetadata'
-import {findBlogs, getBlog} from "@/lib/data"
+import {getModel} from "@/lib/data"
+import {Blog} from "@/lib/definitions"
 import { formatDate } from '@/utils/datetime'
 
 export async function generateMetadata(props: {
@@ -11,7 +12,7 @@ export async function generateMetadata(props: {
     }): Promise<Metadata | undefined> {
     const params = await props.params
     const slug = params.slug
-    const post = await getBlog(slug)
+    const post = await getModel<Blog>("Article", slug)
 
     const publishedAt = new Date(post.create_time).toISOString()
     const modifiedAt = new Date(post.update_time).toISOString()
@@ -45,7 +46,7 @@ export default async function Page(props: { params: Promise<{ slug: string }> })
     const params = await props.params
     const slug = params.slug
 
-    const post = await getBlog(slug)
+    const post = await getModel<Blog>("Article", slug)
 
     return (
         <section className="mx-auto max-w-3xl px-4 sm:px-6 xl:max-w-5xl xl:px-0">

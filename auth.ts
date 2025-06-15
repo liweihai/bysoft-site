@@ -1,12 +1,27 @@
 import NextAuth from 'next-auth';
-import { authConfig } from './auth.config';
 import Credentials from 'next-auth/providers/credentials';
 import { z } from 'zod';
 
 import {login} from "@/lib/data"
 
 export const { auth, signIn, signOut } = NextAuth({
-    ...authConfig,
+    pages: {
+        signIn: '/login',
+    },
+    callbacks: {
+        authorized({ auth, request: { nextUrl } }) {
+            const isLoggedIn = !!auth?.user;
+            const isOnDashboard = nextUrl.pathname.startsWith('/dashboard');
+            if (isOnDashboard) {
+                if (isLoggedIn) return true;
+                return false; // Redirect unauthenticated users to login page
+            } else if (isLoggedIn) {
+                return Response.redirect(new URL('/dashboard', nextUrl));
+            }
+            return true;
+        },
+    },
+    trustHost: true,
     providers: [
         Credentials({
             async authorize(credentials) {

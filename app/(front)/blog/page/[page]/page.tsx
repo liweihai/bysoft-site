@@ -1,13 +1,14 @@
 import { notFound } from 'next/navigation'
 
 import List from '@/components/blog/List'
-import {findBlogs} from "@/lib/data"
+import {findModels} from "@/lib/data"
+import {Blog} from "@/lib/definitions"
 
 const POSTS_PER_PAGE = 20
 
 export default async function Page(props: { params: Promise<{ page: string }> }) {
   const params = await props.params
-  const posts  = await findBlogs(1000)
+  const posts  = await findModels<Blog>("Blog", 1000)
   const pageNumber = parseInt(params.page as string)
   const totalPages = Math.ceil(posts.length / POSTS_PER_PAGE)
 

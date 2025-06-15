@@ -2,14 +2,15 @@ import Image from "next/image";
 
 import Link from '@/components/Link'
 import Tag from '@/components/Tag'
-import {findBlogs} from "@/lib/data"
+import {findModels} from "@/lib/data"
+import {Blog} from "@/lib/definitions"
 import siteMetadata from '@/data/siteMetadata'
 import { formatDate } from '@/utils/datetime'
 
 const MAX_DISPLAY = 5
 
 export default async function Home() {
-  const blogs = await findBlogs(5)
+  const blogs = await findModels<Blog>("Article", 5)
 
   return (
       <>
