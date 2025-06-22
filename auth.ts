@@ -1,5 +1,6 @@
 import NextAuth from 'next-auth';
 import Credentials from 'next-auth/providers/credentials';
+import { User } from '@auth/core/types';
 import { z } from 'zod';
 
 import {login} from "@/lib/data"
@@ -26,13 +27,19 @@ export const { auth, signIn, signOut } = NextAuth({
         Credentials({
             async authorize(credentials) {
                 const parsedCredentials = z
-                .object({ email: z.string().min(6), password: z.string().min(6) })
+                .object({ username: z.string().min(6), password: z.string().min(6) })
                 .safeParse(credentials);
 
                 if (parsedCredentials.success) {
-                    const { email, password } = parsedCredentials.data;
-                    const account = await login(email, password);
-                    if (!account) return null;
+                    const { username, password } = parsedCredentials.data;
+                    const account = await login(username, password);
+
+                    const user = {
+                        name: account.username,
+                        id: account.token,
+                        customer_id: account.customer_id
+                    }
+                    return user;
                 }
         
                 return null;
