@@ -14,9 +14,9 @@ export async function authenticate(
         if (error instanceof AuthError) {
             switch (error.type) {
                 case 'CredentialsSignin':
-                    return 'Invalid credentials.';
+                    return '用户名或密码不正确';
                 default:
-                    return 'Something went wrong.';
+                    return '未知错误，请稍后再试';
             }
         }
         throw error;
