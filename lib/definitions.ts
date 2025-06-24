@@ -17,3 +17,8 @@ export type Account = {
     token: string;
 };
 
+export type ServerError = {
+    code: number;
+    message: string;
+};
+

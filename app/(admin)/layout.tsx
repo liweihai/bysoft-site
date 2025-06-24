@@ -73,7 +73,7 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
 
       <body className="bg-white pl-[calc(100vw-100%)] text-black antialiased dark:bg-gray-950 dark:text-white">
         <ThemeProvider attribute="class" defaultTheme={siteMetadata.theme} enableSystem>
-          <section className="mx-auto max-w-3xl px-4 sm:px-6 xl:max-w-5xl xl:px-0">
+          <section className="mx-auto px-4 sm:px-6 xl:px-0">
               <main className="mb-auto">{children}</main>
           </section>
         </ThemeProvider>
