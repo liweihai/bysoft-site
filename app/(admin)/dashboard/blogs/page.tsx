@@ -45,7 +45,7 @@ export default async function Page(props: { params: Promise<{ page: number }> })
                 {blogs.map((blog) => {
                   const { id, create_time, title, remark, keywords } = blog
                   return (
-                  <tr>
+                  <tr key={id}>
                       <td className="px-6 py-4 whitespace-no-wrap border-b border-gray-500">
                           <div className="text-sm leading-5 text-blue-900">{ title }</div>
                       </td>
