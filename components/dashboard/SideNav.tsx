@@ -3,6 +3,7 @@
 import {
   HomeIcon,
   DocumentDuplicateIcon,
+  VariableIcon
 } from '@heroicons/react/24/outline';
 import Link from 'next/link';
 import { usePathname } from 'next/navigation';
@@ -20,7 +21,12 @@ export default function SideNav() {
         {
             icon: DocumentDuplicateIcon,
             name: '文章',
-            href: '/dashboard/blogs'
+            href: '/dashboard/blog'
+        },
+        {
+            icon: VariableIcon,
+            name: '配置',
+            href: '/dashboard/config'
         },
     ]
 

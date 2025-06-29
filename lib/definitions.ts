@@ -11,6 +11,15 @@ export type Blog = {
     update_time: string;
 };
 
+export type Config = {
+    id: string;
+    name: string;
+    value: string;
+    create_time: string;
+    update_time: string;
+
+};
+
 export type Account = {
     username: string;
     customer_id: string;

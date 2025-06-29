@@ -67,10 +67,56 @@ export async function getModel<T>(modelName: String, id:String): Promise<T> {
     }});
 
     try {
+        const models: T[] =  await response.json();
+
+        return models[0]
+    } catch (err) {
+        console.error(err)
+
+        return null
+    }
+}
+
+export async function createModel<T>(modelName: String, model:T): Promise<T> {
+    const { env, cf, ctx } = await getCloudflareContext({async: true});
+
+    const url = env.API_HOST + "/test/create/" + modelName + "?_code=" + env.API_CODE;
+    const options = {
+        method: 'POST',
+        headers: { 
+            'Content-Type': 'application/json',
+            'User-Agent': 'Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/135.0.0.0 Safari/537.36 Edg/135.0.0.0'
+        },
+        body: JSON.stringify(model)
+    };
+
+    const response = await fetch(url, options);
+
+    try {
         const blogs: T[] =  await response.json();
 
         return blogs[0]
     } catch (err) {
         return null
     }
+}
+
+export async function updateModel<T>(modelName: String, id: String, model:T): Promise<T> {
+    const { env, cf, ctx } = await getCloudflareContext({async: true});
+
+    const url = env.API_HOST + "/test/update/" + modelName + "/" + id + "?_code=" + env.API_CODE;
+    const options = {
+        method: 'POST',
+        headers: { 
+            'Content-Type': 'application/json',
+            'User-Agent': 'Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/135.0.0.0 Safari/537.36 Edg/135.0.0.0'
+        },
+        body: JSON.stringify(model)
+    };
+
+    const response = await fetch(url, options);
+
+    const newModel: T =  await response.json();
+
+    return newModel
 }
