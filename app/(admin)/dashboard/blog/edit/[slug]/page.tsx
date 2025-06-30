@@ -15,7 +15,7 @@ async function EditPage(props: { params: Promise<{ slug: string }> }) {
     return (
         <div className="mx-auto p-4">
             <Suspense>
-                <EditForm id={blog.id} title={blog.title} remark={blog.remark} category={blog.category} keywords={blog.keywords.split(",")} content={blog.content} categories={categoryConfigs[0].value.split(",")} tags={tagConfigs[0].value.split(",")} />
+                <EditForm id={blog.id} title={blog.title} remark={blog.remark} category={blog.category} keywords={blog.keywords.split(",")} state={blog.state} content={blog.content} categories={categoryConfigs[0].value.split(",")} tags={tagConfigs[0].value.split(",")} />
             </Suspense>
         </div>
     )

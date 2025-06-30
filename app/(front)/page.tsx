@@ -10,7 +10,7 @@ import { formatDate } from '@/utils/datetime'
 const MAX_DISPLAY = 5
 
 export default async function Home() {
-  const blogs = await findModels<Blog>("Article", 5)
+  const blogs = await findModels<Blog>("Article", 5, 0, {state: 1})
 
   return (
       <>

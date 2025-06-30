@@ -10,7 +10,7 @@ async function CreatePage() {
     return (
         <div className="mx-auto p-4">
             <Suspense>
-                <EditForm id={null} title={""} remark={""} content={""} category={""} keywords={[]} categories={categoryConfigs[0].value.split(",")} tags={tagConfigs[0].value.split(",")} />
+                <EditForm id={null} title={""} remark={""} content={""} category={""} keywords={[]} state={0} categories={categoryConfigs[0].value.split(",")} tags={tagConfigs[0].value.split(",")} />
             </Suspense>
         </div>
     )

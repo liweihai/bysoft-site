@@ -54,12 +54,13 @@ export async function saveBlog(prevState, formData) {
     const category = formData.get('category');
     const keywords = formData.getAll('keywords') as string[];
     const publish = formData.get('publish');
+    const state = formData.get('state');
 
     try {
         if (id) {
-            await updateModel<Blog>("Article", id, {id: id, title: title, remark: remark, content: content, category: category, keywords: keywords.join(","), create_time: null, update_time: null, publish: publish, state: 0})
+            await updateModel<Blog>("Article", id, {id: id, title: title, remark: remark, content: content, category: category, keywords: keywords.join(","), create_time: null, update_time: null, publish: publish, state: state})
         } else {
-            await createModel<Blog>("Article", {id: null, title: title, remark: remark, content: content, category: category, keywords: keywords.join(","), create_time: null, update_time: null, publish: publish, state: 0})
+            await createModel<Blog>("Article", {id: null, title: title, remark: remark, content: content, category: category, keywords: keywords.join(","), create_time: null, update_time: null, publish: publish, state: state})
         }
 
         redirect('/dashboard/blog')
