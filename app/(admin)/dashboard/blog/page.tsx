@@ -6,7 +6,7 @@ export default async function Page(props: { params: Promise<{ page: number }> })
   const params = await props.params
   const page = params.page || 1
 
-  const total = await countModels("Article")
+  const total = await countModels("Article", {})
   const offset = (page - 1) * 20;
   const blogs = await findModels<Blog>("Article", 20, offset)
 
@@ -40,22 +40,25 @@ export default async function Page(props: { params: Promise<{ page: number }> })
                         <th className="px-6 py-3 border-b-2 border-gray-300 text-left text-sm leading-4 text-blue-500 tracking-wider">分类</th>
                         <th className="px-6 py-3 border-b-2 border-gray-300 text-left text-sm leading-4 text-blue-500 tracking-wider">标签</th>
                         <th className="px-6 py-3 border-b-2 border-gray-300 text-left text-sm leading-4 text-blue-500 tracking-wider">时间</th>
+                        <th className="px-6 py-3 border-b-2 border-gray-300 text-left text-sm leading-4 text-blue-500 tracking-wider">状态</th>
                         <th className="px-6 py-3 border-b-2 border-gray-300"></th>
                     </tr>
                 </thead>
                 <tbody className="bg-white">
                 {blogs.map((blog) => {
-                  const { id, create_time, title, remark, keywords } = blog
+                  const { id, create_time, title, remark, keywords, category, state } = blog
+                  const href = "/dashboard/blog/edit/" + id
                   return (
                   <tr key={id}>
                       <td className="px-6 py-4 whitespace-no-wrap border-b border-gray-500">
                           <div className="text-sm leading-5 text-blue-900">{ title }</div>
                       </td>
-                      <td className="px-6 py-4 whitespace-no-wrap border-b text-blue-900 border-gray-500 text-sm leading-5"> </td>
+                      <td className="px-6 py-4 whitespace-no-wrap border-b text-blue-900 border-gray-500 text-sm leading-5">{category}</td>
                       <td className="px-6 py-4 whitespace-no-wrap border-b text-blue-900 border-gray-500 text-sm leading-5">{keywords}</td>
                       <td className="px-6 py-4 whitespace-no-wrap border-b border-gray-500 text-blue-900 text-sm leading-5">{create_time}</td>
+                      <td className="px-6 py-4 whitespace-no-wrap border-b border-gray-500 text-blue-900 text-sm leading-5">{state == 0 ? '下线' : '上线'}</td>
                       <td className="px-6 py-4 whitespace-no-wrap text-right border-b border-gray-500 text-sm leading-5">
-                          <button className="px-5 py-2 border-blue-500 border text-blue-500 rounded transition duration-300 hover:bg-blue-700 hover:text-white focus:outline-none">View Details</button>
+                          <button className="px-5 py-2 border-blue-500 border text-blue-500 rounded transition duration-300 hover:bg-blue-700 hover:text-white focus:outline-none"><Link href={ href }>修改</Link></button>
                       </td>
                   </tr>
                   )

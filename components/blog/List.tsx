@@ -118,7 +118,7 @@ export default function List({
           </div>
           <ul>
             {!filteredBlogPosts.length && 'No posts found.'}
-            {displayPosts.map((post) => {
+            {posts.map((post) => {
               const { id, create_time, title, remark, keywords } = post
               return (
                 <li key={id} className="py-4">

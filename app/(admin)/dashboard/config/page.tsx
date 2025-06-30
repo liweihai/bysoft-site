@@ -6,7 +6,7 @@ export default async function Page(props: { params: Promise<{ page: number }> })
   const params = await props.params
   const page = params.page || 1
 
-  const total = await countModels("Config")
+  const total = await countModels("Config", {})
   const offset = (page - 1) * 20;
   const configs = await findModels<Config>("Config", 20, offset)
 

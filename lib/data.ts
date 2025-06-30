@@ -24,10 +24,12 @@ export async function login(username: String, password: String): Promise<Account
     throw new CredentialsSignin()
 }
 
-export async function findModels<T>(modelName: String, limit: Number = 20, offset: Number = 0): Promise<T[]> {
+export async function findModels<T>(modelName: String, limit: Number = 20, offset: Number = 0, conditions = {}): Promise<T[]> {
     const { env, cf, ctx } = await getCloudflareContext({async: true});
 
-    const url = env.API_HOST + "/test/select/" + modelName + "?_code=" + env.API_CODE + "&limit=" + limit + "&offset=" + offset;
+    const params = new URLSearchParams(conditions).toString()
+
+    const url = env.API_HOST + "/test/select/" + modelName + "?_code=" + env.API_CODE + "&limit=" + limit + "&offset=" + offset + "&" + params;
     const response = await fetch(url, {headers: {
         'User-Agent': 'Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/135.0.0.0 Safari/537.36 Edg/135.0.0.0'
     }});
@@ -41,10 +43,12 @@ export async function findModels<T>(modelName: String, limit: Number = 20, offse
     }
 }
 
-export async function countModels(modelName: String): Promise<number> {
+export async function countModels(modelName: String, conditions: {}): Promise<number> {
     const { env, cf, ctx } = await getCloudflareContext({async: true});
 
-    const url = env.API_HOST + "/test/count/" + modelName + "?_code=" + env.API_CODE;
+    const params = new URLSearchParams(conditions).toString()
+
+    const url = env.API_HOST + "/test/count/" + modelName + "?_code=" + env.API_CODE + "&" + params;
     const response = await fetch(url, {headers: {
         'User-Agent': 'Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/135.0.0.0 Safari/537.36 Edg/135.0.0.0'
     }});
