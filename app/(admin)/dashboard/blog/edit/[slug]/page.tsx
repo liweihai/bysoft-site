@@ -4,8 +4,8 @@ import EditForm from '@/components/blog/EditForm';
 import { Suspense } from 'react'
 
 async function EditPage(props: { params: Promise<{ slug: string }> }) {
-    const categoryConfigs = await findModels<Config>("Config", 1, 0, {name: 'categories'})
-    const tagConfigs = await findModels<Config>("Config", 1, 0, {name: 'tags'})
+    const categoryConfigs = await findModels<Config>("Config", {name: 'categories'}, {limit: 1, offset: 0})
+    const tagConfigs = await findModels<Config>("Config", {name: 'tags'}, {limit: 1, offset: 0})
     
     const params = await props.params
     const slug = params.slug

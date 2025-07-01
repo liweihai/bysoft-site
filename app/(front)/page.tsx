@@ -10,7 +10,7 @@ import { formatDate } from '@/utils/datetime'
 const MAX_DISPLAY = 5
 
 export default async function Home() {
-  const blogs = await findModels<Blog>("Article", 5, 0, {state: 1})
+  const blogs = await findModels<Blog>("Article", {state: 1}, {limit: 5, offset: 0})
 
   return (
       <>
@@ -32,7 +32,7 @@ export default async function Home() {
                   <article>
                     <div className="space-y-2 xl:grid xl:grid-cols-4 xl:items-baseline xl:space-y-0">
                       <dl>
-                        <dt className="sr-only">Published on</dt>
+                        <dt className="sr-only">发表时间</dt>
                         <dd className="text-base leading-6 font-medium text-gray-500 dark:text-gray-400">
                           <time dateTime={create_time}>{formatDate(create_time, siteMetadata.locale)}</time>
                         </dd>

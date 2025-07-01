@@ -4,8 +4,8 @@ import EditForm from '@/components/blog/EditForm';
 import { Suspense } from 'react'
 
 async function CreatePage() {
-    const categoryConfigs = await findModels<Config>("Config", 1, 0, {name: 'categories'})
-    const tagConfigs = await findModels<Config>("Config", 1, 0, {name: 'tags'})
+    const categoryConfigs = await findModels<Config>("Config", {name: 'categories'}, {limit: 1, offset: 0})
+    const tagConfigs = await findModels<Config>("Config", {name: 'tags'}, {limit: 1, offset: 0})
 
     return (
         <div className="mx-auto p-4">

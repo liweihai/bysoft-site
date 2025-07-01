@@ -8,7 +8,7 @@ export default async function Page(props: { params: Promise<{ page: number }> })
 
   const total = await countModels("Article", {})
   const offset = (page - 1) * 20;
-  const blogs = await findModels<Blog>("Article", 20, offset)
+  const blogs = await findModels<Blog>("Article", {}, {limit: 20, offset: offset})
 
   const totalPages = Math.ceil(total / 20)
 

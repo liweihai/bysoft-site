@@ -2,15 +2,31 @@ import Image from "next/image";
 import Link from './Link'
 
 import siteMetadata from '@/data/siteMetadata'
-import headerNavLinks from '@/data/headerNavLinks'
 import MobileNav from './MobileNav'
 import ThemeSwitch from './ThemeSwitch'
 
-const Header = () => {
+import {countModels, findModels} from "@/lib/data"
+import {Config} from "@/lib/definitions"
+
+export default async function Header(){
   let headerClass = 'flex items-center w-full bg-white dark:bg-gray-950 justify-between py-10'
   if (siteMetadata.stickyNav) {
     headerClass += ' sticky top-0 z-50'
   }
+
+  const categoryConfigs = await findModels<Config>("Config", {name: 'categories'}, {limit: 1, offset: 0})
+
+  const categories = categoryConfigs[0].value.split(",")
+  const headerNavLinks = [
+    { href: '/', title: '首页' },
+  ]
+  categories.forEach(category => {
+    headerNavLinks.push({
+      href: '/category/' + category + '/page/1',
+      title: category
+    })
+  });
+  headerNavLinks.push({ href: '/dashboard', title: '登录' })
 
   return (
     <header className={headerClass}>
@@ -45,5 +61,3 @@ const Header = () => {
     </header>
   )
 }
-
-export default Header

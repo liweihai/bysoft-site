@@ -6,12 +6,14 @@ import {Blog} from "@/lib/definitions"
 
 const POSTS_PER_PAGE = 20
 
-export default async function Page(props: { params: Promise<{ page: string }> }) {
+export default async function Page(props: { params: Promise<{ slug: string, page: string }> }) {
   const params = await props.params
   const pageNumber = parseInt(params.page as string)
 
-  const blogs = await findModels<Blog>("Article", {state: 1}, {limit: POSTS_PER_PAGE, offset: (pageNumber - 1) * POSTS_PER_PAGE})
-  const totalBlogs = await countModels("Article", {state: 1})
+  const category = decodeURIComponent(params.slug)
+
+  const blogs = await findModels<Blog>("Article", {state: 1, category: category}, {limit: POSTS_PER_PAGE, offset: (pageNumber - 1) * POSTS_PER_PAGE})
+  const totalBlogs = await countModels("Article", {state: 1, keywords: category})
 
   const totalPages = Math.ceil(totalBlogs / POSTS_PER_PAGE)
 
@@ -29,7 +31,7 @@ export default async function Page(props: { params: Promise<{ page: string }> })
     <List
       posts={blogs}
       pagination={pagination}
-      title="所有博文"
+      title={category}
     />
   )
 }
