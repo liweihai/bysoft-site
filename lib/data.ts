@@ -61,6 +61,7 @@ export async function countModels(modelName: String, conditions: {}): Promise<nu
     const options = {
         method: 'POST',
         headers: { 
+            'Content-Type': 'application/json',
             'User-Agent': 'Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/135.0.0.0 Safari/537.36 Edg/135.0.0.0'
         },
         body: utf8Array
