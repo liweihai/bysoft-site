@@ -83,10 +83,20 @@ export async function callApi(path: string, data: {}): Promise<Response> {
             'Content-Type': 'application/json',
             'User-Agent': 'Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/135.0.0.0 Safari/537.36 Edg/135.0.0.0'
         },
-        body: utf8Array
+        body: utf8Array,
+        cache: <RequestCache><any>'no-cache'
     };
     
-    const url = env.API_HOST + "/test" + path + "?_code=" + env.API_CODE ;
+    const timestamp = Date.now();
+    const url = env.API_HOST + "/test" + path + "?_code=" + env.API_CODE + "&t=" + timestamp ;
     
-    return await fetch(url, options);
+    const response = await fetch(url, options);
+
+    if (!response.ok) {
+        const errorText = await response.text();
+        console.error('Error response:', errorText);
+        throw new Error(`服务器繁忙: ${response.status} ${response.statusText}`);
+    }
+
+    return response
 }

@@ -4,12 +4,16 @@ import { Dialog, DialogPanel, Transition, TransitionChild } from '@headlessui/re
 import { disableBodyScroll, enableBodyScroll, clearAllBodyScrollLocks } from 'body-scroll-lock'
 import { Fragment, useState, useEffect, useRef } from 'react'
 import Link from './Link'
-import headerNavLinks from '@/data/headerNavLinks'
 
 const MobileNav = () => {
   const [navShow, setNavShow] = useState(false)
   const navRef = useRef(null)
 
+  const headerNavLinks = [
+    { href: '/', title: '首页' },
+  ]
+  headerNavLinks.push({ href: '/dashboard', title: '登录' })
+  
   const onToggleNav = () => {
     setNavShow((status) => {
       if (status) {
