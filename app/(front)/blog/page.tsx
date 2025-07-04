@@ -1,29 +1,30 @@
-import { genPageMetadata } from '@/app/seo'
+import { notFound } from 'next/navigation'
+
+import List from '@/components/blog/List'
 import {findModels, countModels} from "@/lib/data"
 import {Blog} from "@/lib/definitions"
-import List from '@/components/blog/List'
 
 const POSTS_PER_PAGE = 20
 
-export const metadata = genPageMetadata({ title: '文章' })
+export default async function Page(props: { searchParams: Promise<{ page?: string }> }) {
+    const params = await props.searchParams
+    const page = Number(params?.page) || 1;
 
-export default async function BlogPage(props: { searchParams: Promise<{ page: string }> }) {
-  const blogs = await findModels<Blog>("Article", {state: 1}, {limit: POSTS_PER_PAGE, offset: 0})
-  const totalBlogs = await countModels("Article", {state: 1})
+    const blogs = await findModels<Blog>("Article", {state: 1}, {limit: POSTS_PER_PAGE, offset: (page - 1) * POSTS_PER_PAGE, order: 'create_time DESC'})
+    const totalBlogs = await countModels("Article", {state: 1})
 
-  const pageNumber = 1
-  const totalPages = Math.ceil(totalBlogs / POSTS_PER_PAGE)
+    const totalPages = Math.ceil(totalBlogs / POSTS_PER_PAGE)
 
-  const pagination = {
-    currentPage: pageNumber,
-    totalPages: totalPages,
-  }
+    const pagination = {
+      currentPage: page,
+      totalPages: totalPages,
+    }
 
-  return (
-    <List
-      posts={blogs}
-      pagination={pagination}
-      title="所有文章"
-    />
-  )
+    return (
+        <List
+          posts={blogs}
+          pagination={pagination}
+          title="所有博文"
+        />
+    )
 }

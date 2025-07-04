@@ -16,7 +16,7 @@ function TinyMCEEditor({ initialValue, onChange }) {
 
   return (
     <Editor
-      apiKey="0rwvnuibssk00joozve47k0fxaqwbl8fm62wnrw52kjq6evn" // Replace with your actual API key
+      apiKey="ui4wpfrlpb70k3x3u37r54r2ve5w2jn14hv2vcal53b8laag" // Replace with your actual API key
       onInit={(evt, editor) => (editorRef.current = editor)}
       initialValue={initialValue}
       onEditorChange={handleEditorChange}

@@ -10,7 +10,7 @@ import { formatDate } from '@/utils/datetime'
 const MAX_DISPLAY = 5
 
 export default async function Home() {
-  const blogs = await findModels<Blog>("Article", {state: 1}, {limit: 5, offset: 0})
+  const blogs = await findModels<Blog>("Article", {state: 1}, {limit: 5, offset: 0, order: 'create_time DESC'})
 
   return (
       <>
@@ -40,7 +40,7 @@ export default async function Home() {
                             <h2 className="text-2xl leading-8 font-bold tracking-tight">
                               <Link
                                 href={`/blog/${id}`}
-                                className="text-gray-900 dark:text-gray-100"
+                                className="text-gray-900 dark:text-gray-100 block text-xl"
                               >
                                 {title}
                               </Link>
