@@ -23,14 +23,14 @@ export default async function BlogPage(props: { searchParams?: Promise<{query?: 
     const totalPages = Math.ceil(total / 20)
 
     return (
-        <div className="-my-2 py-2 overflow-x-auto sm:-mx-6 sm:px-6 lg:-mx-8 pr-10 lg:px-8">
-            <div className="align-middle rounded-tl-lg rounded-tr-lg inline-block w-full py-4 overflow-hidden bg-white shadow-lg px-12">
+        <div className="rounded-2xl border border-gray-200 bg-white px-5 pb-5 pt-5 dark:border-gray-800 dark:bg-white/[0.03] sm:px-6 sm:pt-6">
+            <div className="align-middle rounded-tl-lg rounded-tr-lg inline-block w-full py-4 overflow-hidden bg-white px-12">
                 <div className="flex justify-between">
                     <Search placeholder="搜索文章..." />
                     <button className="mx-5 px-5 py-2 border-blue-500 border text-blue-500 rounded transition duration-300 hover:bg-blue-700 hover:text-white focus:outline-none"><Link href="/dashboard/blog/create">创建文章</Link></button>
                 </div>
             </div>
-            <div className="align-middle inline-block min-w-full shadow overflow-hidden bg-white shadow-dashboard p-8 pt-3 rounded-bl-lg rounded-br-lg">
+            <div className="align-middle inline-block min-w-full overflow-hidden bg-white p-8 pt-3 rounded-bl-lg rounded-br-lg">
                 <table className="min-w-full">
                     <thead>
                         <tr>

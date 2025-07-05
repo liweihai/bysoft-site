@@ -26,7 +26,7 @@ export default async function Header(){
         title: category
       })
     });
-    headerNavLinks.push({ href: '/dashboard', title: '登录' })
+    headerNavLinks.push({ href: '/dashboard', title: '控制台' })
 
     return (
         <header className="mx-auto max-w-xl py-20 text-center">
