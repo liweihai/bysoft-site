@@ -3,7 +3,7 @@
 import {
   HomeIcon,
   DocumentDuplicateIcon,
-  VariableIcon
+  Cog6ToothIcon
 } from '@heroicons/react/24/outline';
 import Link from 'next/link';
 import { usePathname } from 'next/navigation';
@@ -25,7 +25,7 @@ export default function SideNav() {
             href: '/dashboard/blog'
         },
         {
-            icon: VariableIcon,
+            icon: Cog6ToothIcon,
             name: '配置',
             href: '/dashboard/config'
         },

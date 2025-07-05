@@ -15,7 +15,7 @@ export default function Layout({ children }: { children: React.ReactNode }) {
                 <header className="sticky top-0 z-99999 flex w-full border-gray-200 bg-white lg:border-b dark:border-gray-800 dark:bg-gray-900">
                     <div className="flex w-full items-center justify-between gap-2 border-b border-gray-200 px-3 py-3 sm:gap-4 lg:justify-normal lg:border-b-0 lg:px-0 lg:py-4 dark:border-gray-800">
                     </div>
-                    <div className="shadow-theme-md w-full items-center justify-between gap-4 px-5 py-4 lg:flex lg:justify-end lg:px-0 lg:shadow-none hidden">
+                    <div className="shadow-theme-md w-full items-center justify-between gap-4 px-10 py-4 lg:flex lg:justify-end lg:px-0 lg:shadow-none hidden">
                         <span className="flex items-center text-gray-700 dark:text-gray-400">
                             <span className="mr-3 h-11 w-11 overflow-hidden rounded-full">
                                 <Image src="/logo.png" width="44" height="44" alt="avatar" />
