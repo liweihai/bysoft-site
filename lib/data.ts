@@ -4,7 +4,7 @@ import { Account, ServerError } from "./definitions";
 
 export async function login(username: String, password: String): Promise<Account> {
     const response = await callApi("/account/login", { username: username, password: password });
-    const account : Account | ServerError = await response.json();
+    const account : Account = await response.json();
 
     if ("token" in account) {
         return account

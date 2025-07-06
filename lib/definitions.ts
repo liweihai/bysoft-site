@@ -31,3 +31,38 @@ export type ServerError = {
     message: string;
 };
 
+export type Endpoint = {
+    provider: string,
+    site_url: string,
+    base_url: string,
+    model: string,
+    description: string,
+    rpm_threshold: number,
+    rpd_threshold: number,
+    tpm_threshold: number,
+    tpd_threshold: number,
+    free_tokens: number,
+    state: number
+};
+
+export type Quota = {
+    customer_id: string,
+    endpoint_id: string,
+    api_key: string,
+    tokens_used: number,
+    requests_used: number,
+    rpm: number,
+    rpd: number,
+    tpm: number,
+    tpd: number,
+}
+
+export type Customer = {
+    id: string,
+    name: string,
+    avatar: string,
+    mobile:string,
+    role: number,
+    state: number
+}
+

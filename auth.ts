@@ -4,6 +4,8 @@ import { User } from '@auth/core/types';
 import { z } from 'zod';
 
 import {login} from "@/lib/data"
+import {Customer} from "@/lib/definitions"
+import {getModel} from "@/lib/data"
 
 export const { auth, signIn, signOut } = NextAuth({
     pages: {
@@ -32,10 +34,12 @@ export const { auth, signIn, signOut } = NextAuth({
                     const { username, password } = parsedCredentials.data;
                     const account = await login(username, password);
 
+                    const customer = await getModel<Customer>("Customer", account.customer_id)
+
                     const user = {
-                        name: account.username,
-                        id: account.token,
-                        customer_id: account.customer_id
+                        name: customer.name,
+                        id: customer.id,
+                        image: customer.avatar,
                     }
                     return user;
                 }
