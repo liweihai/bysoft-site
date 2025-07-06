@@ -26,7 +26,7 @@ export async function GET(request: NextRequest) {
     }
 
     models.data.push({
-        id: "retry-on-error",
+        id: "retry-one-by-one-on-error",
         object: "model",
         created: 1686935002,
         owned_by: "bysoft.net.cn"
