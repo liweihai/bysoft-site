@@ -13,24 +13,13 @@ export async function GET(request: NextRequest) {
     
     const models = {
         object: "list",
-        data: []
-    }
-
-    for(var i = 0; i < llmEndpoints.length; i++) {
-        models.data.push({
-            id: llmEndpoints[i].model,
+        data: [{
+            id: "retry-one-by-one-on-error",
             object: "model",
             created: 1686935002,
             owned_by: "bysoft.net.cn"
-        })
+        }]
     }
-
-    models.data.push({
-        id: "retry-one-by-one-on-error",
-        object: "model",
-        created: 1686935002,
-        owned_by: "bysoft.net.cn"
-    })
 
     const utf8Array = new TextEncoder().encode(JSON.stringify(models))
 
