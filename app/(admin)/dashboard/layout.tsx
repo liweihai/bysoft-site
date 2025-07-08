@@ -24,11 +24,13 @@ export default async function Layout({ children }: { children: React.ReactNode }
                             <div>
                                 <MenuButton className="relative flex rounded-full bg-gray-800 text-sm focus:outline-hidden focus-visible:ring-2 focus-visible:ring-white focus-visible:ring-offset-2 focus-visible:ring-offset-gray-800">
                                 <span className="absolute -inset-1.5" />
-                                <span className="sr-only">Open user menu</span>
+                                <span className="sr-only">打开菜单</span>
                                 <Image
                                     alt=""
                                     src={session.user.image}
                                     className="size-8 rounded-full"
+                                    width="50"
+                                    height="50"
                                 />
                                 </MenuButton>
                             </div>

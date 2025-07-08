@@ -51,7 +51,7 @@ export default async function EndpointPage(props: { searchParams?: Promise<{quer
                     return (
                     <tr key={endpoint.id}>
                         <td className="px-6 py-4 whitespace-no-wrap border-b border-gray-500">
-                            <div className="text-sm leading-5 text-blue-900">{ endpoint.provider }</div>
+                            <Link target="_blank" href={endpoint.site_url} className="text-sm leading-5 text-blue-900">{ endpoint.provider }</Link>
                         </td>
                         <td className="px-6 py-4 whitespace-no-wrap border-b text-blue-900 border-gray-500 text-sm leading-5">{endpoint.model}</td>
                         <td className="px-6 py-4 whitespace-no-wrap border-b text-blue-900 border-gray-500 text-sm leading-5">
@@ -69,7 +69,7 @@ export default async function EndpointPage(props: { searchParams?: Promise<{quer
                         <td className="px-6 py-4 whitespace-no-wrap border-b text-blue-900 border-gray-500 text-sm leading-5">
                             { endpoint.free_tokens}
                         </td>
-                        <td className="px-6 py-4 whitespace-no-wrap border-b border-gray-500 text-blue-900 text-sm leading-5">{endpoint.state == 0 ? '下线' : '上线'}</td>
+                        <td className="px-6 py-4 whitespace-no-wrap border-b border-gray-500 text-blue-900 text-sm leading-5">{endpoint.state == 0 ? '不可用' : '可用'}</td>
                         <td className="px-6 py-4 whitespace-no-wrap text-right border-b border-gray-500 text-sm leading-5">
                             <button className="px-5 py-2 border-blue-500 border text-blue-500 rounded transition duration-300 hover:bg-blue-700 hover:text-white focus:outline-none"><Link href={ href }>修改</Link></button>
                         </td>
