@@ -3,7 +3,8 @@
 import {
   HomeIcon,
   DocumentDuplicateIcon,
-  Cog6ToothIcon
+  Cog6ToothIcon,
+  Battery50Icon
 } from '@heroicons/react/24/outline';
 import Link from 'next/link';
 import { usePathname } from 'next/navigation';
@@ -23,6 +24,11 @@ export default function SideNav() {
             icon: DocumentDuplicateIcon,
             name: '文章',
             href: '/dashboard/blog'
+        },
+        {
+            icon: Battery50Icon,
+            name: '大模型',
+            href: '/dashboard/endpoint'
         },
         {
             icon: Cog6ToothIcon,

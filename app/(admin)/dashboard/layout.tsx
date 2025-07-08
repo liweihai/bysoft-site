@@ -25,7 +25,7 @@ export default async function Layout({ children }: { children: React.ReactNode }
                                 <MenuButton className="relative flex rounded-full bg-gray-800 text-sm focus:outline-hidden focus-visible:ring-2 focus-visible:ring-white focus-visible:ring-offset-2 focus-visible:ring-offset-gray-800">
                                 <span className="absolute -inset-1.5" />
                                 <span className="sr-only">Open user menu</span>
-                                <img
+                                <Image
                                     alt=""
                                     src={session.user.image}
                                     className="size-8 rounded-full"

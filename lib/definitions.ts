@@ -32,6 +32,7 @@ export type ServerError = {
 };
 
 export type Endpoint = {
+    id: string,
     provider: string,
     site_url: string,
     base_url: string,
@@ -46,6 +47,7 @@ export type Endpoint = {
 };
 
 export type Quota = {
+    id: string,
     customer_id: string,
     endpoint_id: string,
     api_key: string,

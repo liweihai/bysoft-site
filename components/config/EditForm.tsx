@@ -8,22 +8,22 @@ import {
 
 import {saveConfig} from "@/lib/actions";
 
-export default function EditForm({id, name, value}) {
+export default function EditForm({obj}) {
     const [message, formAction, isPending] = useActionState(saveConfig, undefined);
 
     return (
       <div className="mx-auto p-4">
           <form action={formAction}>
-                <input type="hidden" name="id" value={id} />
+                <input type="hidden" name="id" value={obj.id} />
 
               <div className="mb-6">
                   <label htmlFor="name" className="block text-lg font-medium text-gray-800 mb-1">名称</label>
-                  <input type="text" defaultValue={name} id="name" name="name" className="w-full px-4 py-2 border border-gray-300 rounded-md focus:outline-none focus:border-indigo-500" required />
+                  <input type="text" defaultValue={obj.name} id="name" name="name" className="w-full px-4 py-2 border border-gray-300 rounded-md focus:outline-none focus:border-indigo-500" required />
               </div>
 
                 <div className="mb-6">
                   <label htmlFor="value" className="block text-lg font-medium text-gray-800 mb-1">值</label>
-                  <input type="text" defaultValue={value} id="value" name="value" className="w-full px-4 py-2 border border-gray-300 rounded-md focus:outline-none focus:border-indigo-500" required />
+                  <input type="text" defaultValue={obj.value} id="value" name="value" className="w-full px-4 py-2 border border-gray-300 rounded-md focus:outline-none focus:border-indigo-500" required />
               </div>
 
               <div className="flex justify-end">

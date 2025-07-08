@@ -6,7 +6,7 @@ import { AuthError } from 'next-auth';
 
 import { signIn } from '@/auth';
 import {updateModel, createModel} from "@/lib/data"
-import {Config, Blog} from "@/lib/definitions"
+import {Config, Blog, Endpoint} from "@/lib/definitions"
 
 export async function authenticate(
   prevState: string | undefined,
@@ -28,15 +28,13 @@ export async function authenticate(
 }
 
 export async function saveConfig(prevState, formData) {
-    const id = formData.get('id');
-    const name = formData.get('name');
-    const value = formData.get('value');
+    const obj = Object.fromEntries(formData.entries()) as Config;
 
     try {
-        if (id) {
-            await updateModel<Config>("Config", id, {id: id, name: name, value: value, create_time: null, update_time: null})
+        if (obj.id) {
+            await updateModel<Config>("Config", obj.id, obj)
         } else {
-            await createModel<Config>("Config", {id: null, name: name, value: value, create_time: null, update_time: null})
+            await createModel<Config>("Config", obj)
         }
         redirect('/dashboard/config')
 
@@ -47,23 +45,34 @@ export async function saveConfig(prevState, formData) {
 }
 
 export async function saveBlog(prevState, formData) {
-    const id = formData.get('id');
-    const title = formData.get('title');
-    const remark = formData.get('remark');
-    const content = formData.get('content');
-    const category = formData.get('category');
-    const keywords = formData.getAll('keywords') as string[];
-    const publish = formData.get('publish');
-    const state = formData.get('state');
+    const obj = Object.fromEntries(formData.entries()) as Blog;
+    obj.keywords = formData.getAll('keywords');
 
     try {
-        if (id) {
-            await updateModel<Blog>("Article", id, {id: id, title: title, remark: remark, content: content, category: category, keywords: keywords.join(","), create_time: null, update_time: null, publish: publish, state: state})
+        if (obj.id) {
+            await updateModel<Blog>("Article", obj.id, obj)
         } else {
-            await createModel<Blog>("Article", {id: null, title: title, remark: remark, content: content, category: category, keywords: keywords.join(","), create_time: null, update_time: null, publish: publish, state: state})
+            await createModel<Blog>("Article", obj)
         }
 
         redirect('/dashboard/blog')
+
+        return 1
+    } catch(error) {
+        throw error;
+    }
+}
+
+export async function saveEndpoint(prevState, formData) {
+    const obj = Object.fromEntries(formData.entries()) as Endpoint;
+
+    try {
+        if (obj.id) {
+            await updateModel<Endpoint>("Endpoint", obj.id, obj)
+        } else {
+            await createModel<Endpoint>("Endpoint", obj)
+        }
+        redirect('/dashboard/endpoint')
 
         return 1
     } catch(error) {

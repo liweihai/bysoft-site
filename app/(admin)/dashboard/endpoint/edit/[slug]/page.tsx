@@ -1,18 +1,18 @@
-import {Config} from "@/lib/definitions"
-import {getModel, updateModel} from "@/lib/data"
-import EditForm from '@/components/config/EditForm';
+import {getModel, findModels} from "@/lib/data"
+import {Endpoint} from "@/lib/definitions"
+import EditForm from '@/components/endpoint/EditForm';
 import { Suspense } from 'react'
 
 async function EditPage(props: { params: Promise<{ slug: string }> }) {
     const params = await props.params
-    const id = params.slug
+    const slug = params.slug
 
-    const config = await getModel<Config>("Config", id)
+    const endpoint = await getModel<Endpoint>("Endpoint", slug)
 
     return (
         <div className="mx-auto p-4">
             <Suspense>
-                <EditForm obj={config} />
+                <EditForm obj={endpoint} />
             </Suspense>
         </div>
     )
