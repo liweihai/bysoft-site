@@ -1,5 +1,9 @@
 'use client';
 
+import Link from 'next/link';
+import { usePathname } from 'next/navigation';
+import clsx from 'clsx';
+import siteMetadata from '@/data/siteMetadata'
 import {
   HomeIcon,
   DocumentDuplicateIcon,
@@ -7,12 +11,8 @@ import {
   Battery50Icon,
   RectangleGroupIcon
 } from '@heroicons/react/24/outline';
-import Link from 'next/link';
-import { usePathname } from 'next/navigation';
-import clsx from 'clsx';
-import siteMetadata from '@/data/siteMetadata'
 
-export default function SideNav() {
+export default function SideNav({role}) {
     const pathname = usePathname();
 
     const links = [
@@ -26,22 +26,24 @@ export default function SideNav() {
             name: '模型组',
             href: '/dashboard/quotagroup'
         },
-        {
+    ]
+    if (role == 1) {
+        links.push({
             icon: Battery50Icon,
             name: '大模型',
             href: '/dashboard/endpoint'
-        },
-        {
+        })
+        links.push({
             icon: DocumentDuplicateIcon,
             name: '文章',
             href: '/dashboard/blog'
-        },
-        {
+        })
+        links.push({
             icon: Cog6ToothIcon,
             name: '配置',
             href: '/dashboard/config'
-        },
-    ]
+        })
+    }
 
     return (
         <>

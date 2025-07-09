@@ -14,7 +14,7 @@ export default async function Page(props: { params: Promise<{ page: number }> })
 
   return (
     <div className="-my-2 py-2 overflow-x-auto sm:-mx-6 sm:px-6 lg:-mx-8 pr-10 lg:px-8">
-        <div className="align-middle inline-block min-w-full shadow overflow-hidden bg-white shadow-dashboard p-8 pt-3 rounded-bl-lg rounded-br-lg">
+        <div className="align-middle inline-block min-w-full overflow-hidden bg-white p-8 pt-3 rounded-bl-lg rounded-br-lg">
             <table className="min-w-full">
                 <thead>
                     <tr>

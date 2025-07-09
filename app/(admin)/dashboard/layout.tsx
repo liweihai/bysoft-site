@@ -3,17 +3,25 @@ import Image from 'next/image';
 import Link from 'next/link';
 import { Disclosure, DisclosureButton, DisclosurePanel, Menu, MenuButton, MenuItem, MenuItems } from '@headlessui/react'
 
+import { Suspense } from 'react'
+
 import { signOut, auth } from '@/auth';
 import SideNav from '@/components/dashboard/SideNav';
+import {getModel} from "@/lib/data"
+import {Customer} from "@/lib/definitions"
 
 export default async function Layout({ children }: { children: React.ReactNode }) {
     const session = await auth()
+
+    const customer = await getModel<Customer>("Customer", session.user.id)
 
     return (
         <div>
             <div className="flex h-screen flex-col md:flex-row md:overflow-hidden">
                 <div className="sidebar fixed top-0 left-0 z-9999 flex h-screen w-[290px] flex-col overflow-y-auto border-r border-gray-200 bg-white px-5 transition-all duration-300 lg:static lg:translate-x-0 dark:border-gray-800 dark:bg-black -translate-x-full">
-                    <SideNav />
+                    <Suspense>
+                        <SideNav role={customer.role} />
+                    </Suspense>
                 </div>
                 <div className="relative flex flex-1 flex-col overflow-x-hidden overflow-y-auto">
                     <header className="sticky top-0 z-99999 flex w-full border-gray-200 bg-white lg:border-b dark:border-gray-800 dark:bg-gray-900">
