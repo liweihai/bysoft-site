@@ -43,12 +43,21 @@ export type Endpoint = {
     tpm_threshold: number,
     tpd_threshold: number,
     free_tokens: number,
+    modals: string,
     state: number
+};
+
+export type QuotaGroup = {
+    id: string,
+    customer_id: string,
+    name: string,
+    algorithm: string
 };
 
 export type Quota = {
     id: string,
     customer_id: string,
+    quota_group_id: string,
     endpoint_id: string,
     api_key: string,
     tokens_used: number,
@@ -57,6 +66,7 @@ export type Quota = {
     rpd: number,
     tpm: number,
     tpd: number,
+    priority: number
 }
 
 export type Customer = {

@@ -1,5 +1,5 @@
 import {countModels, findModels} from "@/lib/data"
-import {Config, Endpoint} from "@/lib/definitions"
+import {Endpoint} from "@/lib/definitions"
 import EditForm from '@/components/endpoint/EditForm';
 import { Suspense } from 'react'
 

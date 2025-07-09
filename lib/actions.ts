@@ -6,7 +6,7 @@ import { AuthError } from 'next-auth';
 
 import { signIn } from '@/auth';
 import {updateModel, createModel} from "@/lib/data"
-import {Config, Blog, Endpoint} from "@/lib/definitions"
+import {Config, Blog, Endpoint, QuotaGroup, Quota} from "@/lib/definitions"
 
 export async function authenticate(
   prevState: string | undefined,
@@ -65,6 +65,7 @@ export async function saveBlog(prevState, formData) {
 
 export async function saveEndpoint(prevState, formData) {
     const obj = Object.fromEntries(formData.entries()) as Endpoint;
+    obj.modals = formData.getAll('modals');
 
     try {
         if (obj.id) {
@@ -73,6 +74,23 @@ export async function saveEndpoint(prevState, formData) {
             await createModel<Endpoint>("Endpoint", obj)
         }
         redirect('/dashboard/endpoint')
+
+        return 1
+    } catch(error) {
+        throw error;
+    }
+}
+
+export async function saveQuotaGroup(prevState, formData) {
+    const obj = Object.fromEntries(formData.entries()) as QuotaGroup;
+
+    try {
+        if (obj.id) {
+            await updateModel<QuotaGroup>("QuotaGroup", obj.id, obj)
+        } else {
+            await createModel<QuotaGroup>("QuotaGroup", obj)
+        }
+        redirect('/dashboard/quotagroup')
 
         return 1
     } catch(error) {
