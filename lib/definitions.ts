@@ -69,6 +69,12 @@ export type Quota = {
     priority: number
 }
 
+export type ApiKey = {
+    id: string,
+    customer_id: string,
+    api_key: string
+}
+
 export type Customer = {
     id: string,
     name: string,
