@@ -1,16 +1,19 @@
 import { NextRequest, NextResponse } from "next/server";
 import { getCloudflareContext } from "@opennextjs/cloudflare";
 
-import llmEndpoints from "@/data/llmEndpoints"
 import {handleOptions} from "@/lib/options"
 
 export async function GET(request: NextRequest) {
     const { env, cf, ctx } = await getCloudflareContext({async: true});
 
-    if (request.headers.get("Authorization") != ("Bearer " + env.API_CODE)) {
+    const authorizations = request.headers.get("Authorization").split(" ")
+
+    if (authorizations.length < 2) {
         return new Response("没有权限", {status: 400});
     }
-    
+        
+    const apiCode = authorizations[authorizations.length - 1]
+
     const models = {
         object: "list",
         data: [{

@@ -1,7 +1,6 @@
 import { NextRequest, NextResponse } from "next/server";
 import { getCloudflareContext } from "@opennextjs/cloudflare";
 
-import llmEndpoints from "@/data/llmEndpoints"
 import {handleOptions} from "@/lib/options"
 
 export async function POST(request: NextRequest) {
