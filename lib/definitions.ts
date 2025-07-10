@@ -72,7 +72,8 @@ export type Quota = {
 export type ApiKey = {
     id: string,
     customer_id: string,
-    api_key: string
+    api_key: string,
+    create_time: string
 }
 
 export type Customer = {

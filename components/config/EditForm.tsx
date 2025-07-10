@@ -14,7 +14,7 @@ export default function EditForm({obj}) {
     return (
       <div className="mx-auto p-4">
           <form action={formAction}>
-                <input type="hidden" name="id" value={obj.id} />
+              <input type="hidden" name="id" value={obj.id} />
 
               <div className="mb-6">
                   <label htmlFor="name" className="block text-lg font-medium text-gray-800 mb-1">名称</label>

@@ -73,6 +73,18 @@ export async function updateModel<T>(modelName: String, id: String, model:T): Pr
     return newModel
 }
 
+export async function deleteModel(modelName: String, id:string) {
+    const response = await callApi("/delete/" + modelName + "/" + id, {id: id});
+
+    try {
+        const obj =  await response.json();
+
+        return obj
+    } catch (err) {
+        return null
+    }
+}
+
 export async function callApi(path: string, data: {}): Promise<Response> {
     const { env, cf, ctx } = await getCloudflareContext({async: true});
 

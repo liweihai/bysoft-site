@@ -9,7 +9,8 @@ import {
   DocumentDuplicateIcon,
   Cog6ToothIcon,
   Battery50Icon,
-  RectangleGroupIcon
+  RectangleGroupIcon,
+  KeyIcon
 } from '@heroicons/react/24/outline';
 
 export default function SideNav({role}) {
@@ -25,6 +26,11 @@ export default function SideNav({role}) {
             icon: RectangleGroupIcon,
             name: '模型组',
             href: '/dashboard/quotagroup'
+        },
+        {
+            icon: KeyIcon,
+            name: 'Api Key',
+            href: '/dashboard/apikey'
         },
     ]
     if (role == 1) {

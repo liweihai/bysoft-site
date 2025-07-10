@@ -5,8 +5,8 @@ import { redirect } from 'next/navigation';
 import { AuthError } from 'next-auth';
 
 import { signIn } from '@/auth';
-import {updateModel, createModel} from "@/lib/data"
-import {Config, Blog, Endpoint, QuotaGroup, Quota} from "@/lib/definitions"
+import {updateModel, createModel, deleteModel} from "@/lib/data"
+import {Config, Blog, Endpoint, QuotaGroup, Quota, ApiKey} from "@/lib/definitions"
 
 export async function authenticate(
   prevState: string | undefined,
@@ -91,6 +91,34 @@ export async function saveQuotaGroup(prevState, formData) {
             await createModel<QuotaGroup>("QuotaGroup", obj)
         }
         redirect('/dashboard/quotagroup')
+
+        return 1
+    } catch(error) {
+        throw error;
+    }
+}
+
+export async function createApiKey(prevState, formData) {
+    const obj = Object.fromEntries(formData.entries()) as ApiKey;
+
+    try {
+        await createModel<ApiKey>("ApiKey", obj)
+
+        redirect('/dashboard/apikey')
+
+        return 1
+    } catch(error) {
+        throw error;
+    }
+}
+
+export async function deleteOne(prevState, formData) {
+    const obj = Object.fromEntries(formData.entries());
+
+    try {
+        await deleteModel(obj.model, obj.id)
+
+        redirect('/dashboard/' + obj.model.toLowerCase())
 
         return 1
     } catch(error) {
