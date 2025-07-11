@@ -3,7 +3,7 @@ import { getCloudflareContext } from "@opennextjs/cloudflare";
 
 import {handleOptions} from "@/lib/options"
 
-import {findModels} from "@/lib/data"
+import {findModels, getModel} from "@/lib/data"
 import {ApiKey, QuotaGroup} from "@/lib/definitions"
 
 export async function GET(request: NextRequest) {
@@ -17,12 +17,12 @@ export async function GET(request: NextRequest) {
         
     const apiKey = authorizations[authorizations.length - 1]
 
-    const keys = await findModels<ApiKey>("ApiKey", {api_key: apiKey}, {limit: 1})
-    if (keys.length == 0) {
+    const key = await getModel<ApiKey>("ApiKey", apiKey)
+    if (!key) {
         return new Response("请注册并创建Api Key", {status: 400});
     }
 
-    const quotaGroups = await findModels<QuotaGroup>("QuotaGroup", {customer_id: keys[0].customer_id})
+    const quotaGroups = await findModels<QuotaGroup>("QuotaGroup", {customer_id: key.customer_id})
 
     const models = {
         object: "list",

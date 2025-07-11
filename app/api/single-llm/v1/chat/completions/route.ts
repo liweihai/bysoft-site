@@ -3,7 +3,7 @@ import { getCloudflareContext } from "@opennextjs/cloudflare";
 
 import {handleOptions} from "@/lib/options"
 
-import {findModels, getModel} from "@/lib/data"
+import {findModels, getModel, updateModel} from "@/lib/data"
 import {ApiKey, QuotaGroup, Quota, Endpoint} from "@/lib/definitions"
 
 export async function POST(request: NextRequest) {
@@ -17,8 +17,8 @@ export async function POST(request: NextRequest) {
         
     const apiKey = authorizations[authorizations.length - 1]
 
-    const keys = await findModels<ApiKey>("ApiKey", {api_key: apiKey}, {limit: 1})
-    if (keys.length == 0) {
+    const key = await getModel<ApiKey>("ApiKey", apiKey)
+    if (!key) {
         return new Response("请注册并创建Api Key", {status: 400});
     }
 
@@ -26,7 +26,7 @@ export async function POST(request: NextRequest) {
     const newBody = await request.json();
 
     const groupName = newBody["model"]
-    const quotaGroups = await findModels<QuotaGroup>("QuotaGroup", {name: groupName}, {limit: 1})
+    const quotaGroups = await findModels<QuotaGroup>("QuotaGroup", {customer_id: key.customer_id, name: groupName}, {limit: 1})
 
     if (quotaGroups.length == 0) {
         return new Response("模型不存在", {status: 500});
@@ -72,11 +72,19 @@ export async function POST(request: NextRequest) {
         try {
             const response = await fetch(modifiedRequest);
 
-            const resopnseBody = await response.text()
+            const responseBody = await response.text()
 
             if (response.ok) {
-                const responseJson = JSON.parse(resopnseBody)
+                const responseJson = JSON.parse(responseBody)
                 responseJson.model = groupName
+
+                quota.rpm += 1
+                quota.rpd += 1
+                quota.tpm += responseJson.usage.total_tokens
+                quota.tpd += responseJson.usage.total_tokens
+                quota.requests_used += 1
+                quota.tokens_used += responseJson.usage.total_tokens
+                await updateModel<Quota>("Quota", quota.id, quota)
 
                 const utf8Array = new TextEncoder().encode(JSON.stringify(responseJson))
 
