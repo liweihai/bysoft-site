@@ -13,7 +13,7 @@ import {Customer} from "@/lib/definitions"
 export default async function Layout({ children }: { children: React.ReactNode }) {
     const session = await auth()
 
-    const customer = await getModel<Customer>("Customer", session.user.id)
+    const customer = await getModel<Customer>("Customer", session.user.name)
 
     return (
         <div>
@@ -35,7 +35,7 @@ export default async function Layout({ children }: { children: React.ReactNode }
                                 <span className="sr-only">打开菜单</span>
                                 <Image
                                     alt=""
-                                    src={session.user.image}
+                                    src={customer.avatar}
                                     className="size-8 rounded-full"
                                     width="50"
                                     height="50"

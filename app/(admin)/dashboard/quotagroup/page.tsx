@@ -7,7 +7,7 @@ import { auth } from '@/auth';
 export default async function QuotaGroupPage() {
     const session = await auth()
 
-    const conditions = {customer_id: session.user.id}
+    const conditions = {customer_id: session.user.name}
     const quotaGroups = await findModels<QuotaGroup>("QuotaGroup", conditions, {})
 
     return (

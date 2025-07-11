@@ -72,11 +72,9 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
       <meta name="theme-color" media="(prefers-color-scheme: dark)" content="#000" />
 
       <body className="bg-white pl-[calc(100vw-100%)] text-black antialiased dark:bg-gray-950 dark:text-white">
-        <ThemeProvider attribute="class" defaultTheme={siteMetadata.theme} enableSystem>
           <section className="mx-auto px-4 sm:px-6 xl:px-0">
               <main className="mb-auto">{children}</main>
           </section>
-        </ThemeProvider>
       </body>
     </html>
   )

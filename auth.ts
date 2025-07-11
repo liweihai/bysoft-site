@@ -20,17 +20,7 @@ export const { auth, signIn, signOut } = NextAuth({
                 return false; // Redirect unauthenticated users to login page
             } 
             return true;
-        },
-        jwt({ token, user }) {
-            if (user) { // User is available during sign-in
-                token.id = user.id
-            }
-            return token
-        },
-        session({ session, token }) {
-            session.user.id = token.id as string
-            return session
-        },
+        }
     },
     trustHost: true,
     providers: [
@@ -44,12 +34,9 @@ export const { auth, signIn, signOut } = NextAuth({
                     const { username, password } = parsedCredentials.data;
                     const account = await login(username, password);
 
-                    const customer = await getModel<Customer>("Customer", account.customer_id)
-
                     const user = {
-                        name: customer.name,
-                        id: customer.id,
-                        image: customer.avatar,
+                        name: account.customer_id,
+                        image: null,
                     }
                     return user;
                 }

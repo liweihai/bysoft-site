@@ -2,15 +2,7 @@
 
 const nextConfig = {
     images: {
-        remotePatterns: [
-            {
-                protocol: 'https',
-                hostname: 'www.bysoft.net.cn',
-                port: '',
-                pathname: '/**',
-                search: '',
-            },
-        ],
+        unoptimized: true
     },
 };
 

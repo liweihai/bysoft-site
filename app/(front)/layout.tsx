@@ -74,11 +74,9 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
       <meta name="theme-color" media="(prefers-color-scheme: dark)" content="#000" />
 
       <body className="bg-gray-200 font-sans font-thin px-6 bg-fixed bg-cover bg-no-repeat" style={{backgroundImage: "url('https://images.unsplash.com/photo-1523742238290-adf3b54101bf?w=1800')"}}>
-        <ThemeProvider attribute="class" defaultTheme={siteMetadata.theme} enableSystem>
             <Header />
             <main className="mx-auto max-w-6xl bg-white py-20 px-12 lg:px-24 shadow-xl mb-24">{children}</main>
             <Footer />
-        </ThemeProvider>
       </body>
     </html>
   )
