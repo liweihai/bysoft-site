@@ -35,7 +35,7 @@ export default function EditForm({obj, algorithms}) {
                 </div>
 
                 <div className="flex justify-end">
-                    <button type="submit" className="px-6 py-2 bg-indigo-500 text-white font-semibold rounded-md hover:bg-indigo-600 focus:outline-none">{isPending ? "保存大模型组中..." : "保存模型组"}</button>
+                    <button type="submit" className="px-6 py-2 bg-indigo-500 text-white font-semibold rounded-md hover:bg-indigo-600 focus:outline-none">{isPending ? "保存模型组中..." : "保存模型组"}</button>
                 </div>
             </form>
         </div>

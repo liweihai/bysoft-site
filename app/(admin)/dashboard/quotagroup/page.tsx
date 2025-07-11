@@ -4,7 +4,7 @@ import {countModels, findModels} from "@/lib/data"
 import {QuotaGroup} from "@/lib/definitions"
 import { auth } from '@/auth';
 
-export default async function EndpointPage() {
+export default async function QuotaGroupPage() {
     const session = await auth()
 
     const conditions = {customer_id: session.user.id}
@@ -30,6 +30,7 @@ export default async function EndpointPage() {
                     <tbody className="bg-white">
                     {quotaGroups.map((quotagroup) => {
                     const href = "/dashboard/quotagroup/edit/" + quotagroup.id
+                    const hrefOfView = "/dashboard/quotagroup/view/" + quotagroup.id
                     return (
                     <tr key={quotagroup.id}>
                         <td className="px-6 py-4 whitespace-no-wrap border-b border-gray-500">
@@ -37,6 +38,7 @@ export default async function EndpointPage() {
                         </td>
                         <td className="px-6 py-4 whitespace-no-wrap border-b text-blue-900 border-gray-500 text-sm leading-5">{quotagroup.algorithm}</td>
                         <td className="px-6 py-4 whitespace-no-wrap text-right border-b border-gray-500 text-sm leading-5">
+                            <button className="px-5 py-2 border-blue-500 border text-blue-500 rounded transition duration-300 hover:bg-blue-700 hover:text-white focus:outline-none mr-3"><Link href={ hrefOfView }>查看</Link></button>
                             <button className="px-5 py-2 border-blue-500 border text-blue-500 rounded transition duration-300 hover:bg-blue-700 hover:text-white focus:outline-none"><Link href={ href }>修改</Link></button>
                         </td>
                     </tr>

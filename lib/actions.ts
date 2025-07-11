@@ -98,6 +98,23 @@ export async function saveQuotaGroup(prevState, formData) {
     }
 }
 
+export async function saveQuota(prevState, formData) {
+    const obj = Object.fromEntries(formData.entries()) as Quota;
+
+    try {
+        if (obj.id) {
+            await updateModel<Quota>("Quota", obj.id, obj)
+        } else {
+            await createModel<Quota>("Quota", obj)
+        }
+        redirect('/dashboard/quotagroup/view/' + obj.quota_group_id)
+
+        return 1
+    } catch(error) {
+        throw error;
+    }
+}
+
 export async function createApiKey(prevState, formData) {
     const obj = Object.fromEntries(formData.entries()) as ApiKey;
 
@@ -118,7 +135,7 @@ export async function deleteOne(prevState, formData) {
     try {
         await deleteModel(obj.model, obj.id)
 
-        redirect('/dashboard/' + obj.model.toLowerCase())
+        redirect(formData.redirect_url || ('/dashboard/' + obj.model.toLowerCase()))
 
         return 1
     } catch(error) {
