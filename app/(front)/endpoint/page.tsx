@@ -9,6 +9,11 @@ export default async function EndpointPage() {
 
     return (
         <div className="rounded-2xl bg-white px-5 pb-5 pt-5 dark:bg-white/[0.03] sm:px-6 sm:pt-6">
+            <div className="space-y-2 pt-6 pb-8 md:space-y-5">
+                <h1 className="text-3xl lg:text-4xl text-center mb-6 tracking-wider">
+                免费大模型
+                </h1>
+            </div>
             <div className="align-middle inline-block min-w-full overflow-hidden bg-white pt-3 rounded-bl-lg rounded-br-lg">
                 <table className="min-w-full">
                     <thead>

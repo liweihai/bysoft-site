@@ -49,7 +49,7 @@ export default async function Page(props: { params: Promise<{ slug: string }> })
     const post = await getModel<Blog>("Article", slug)
 
     return (
-        <section className="mx-auto max-w-3xl px-4 sm:px-6 xl:max-w-5xl xl:px-0">
+        <section className="mx-auto max-w-4xl px-4 sm:px-6 xl:max-w-5xl xl:px-0">
             <article>
                 <div>
                     <header>
@@ -69,9 +69,9 @@ export default async function Page(props: { params: Promise<{ slug: string }> })
                             </dl>
                         </div>
                     </header>
-                    <div className="grid-rows-[auto_1fr] divide-y divide-gray-200 pb-8 xl:divide-y-0 dark:divide-gray-700">
-                        <div className="divide-y divide-gray-200 xl:col-span-3 xl:row-span-2 xl:pb-0 dark:divide-gray-700">
-                            <div dangerouslySetInnerHTML={{ __html: post.content }} className="tracking-wide text-xs text-gray-600 leading-loose mx-auto max-w-xl text-left"></div>
+                    <div className="divide-y divide-gray-200 pb-8 xl:divide-y-0 dark:divide-gray-700">
+                        <div className="divide-y divide-gray-200 xl:pb-0 dark:divide-gray-700">
+                            <div dangerouslySetInnerHTML={{ __html: post.content }} className="tracking-wide prose text-gray-600 leading-loose mx-auto text-left"></div>
                         </div>
 
                         <footer>
