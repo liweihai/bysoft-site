@@ -26,7 +26,7 @@ export default async function Header(){
         title: category
       })
     });
-    headerNavLinks.push({ href: '/endpoint', title: '大模型' })
+    headerNavLinks.push({ href: '/endpoint', title: '免费大模型' })
     headerNavLinks.push({ href: '/dashboard', title: '控制台' })
 
     return (

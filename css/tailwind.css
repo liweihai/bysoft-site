@@ -171,3 +171,8 @@ input:-webkit-autofill:focus {
   display: inline-block;
   vertical-align: middle;
 }
+
+.__col {
+  writing-mode: vertical-lr;
+  transform: rotate(180deg)
+}
