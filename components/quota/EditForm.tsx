@@ -23,10 +23,11 @@ export default function EditForm({obj, endpoints}) {
     return (
         <div className="min-w-full">
             <form action={formAction}>
-                <div className="grid md:grid-cols-3 gap-4">
+                <div className="grid md:grid-cols-2 gap-4">
                     <input type="hidden" name="id" value={obj.id} />
                     <input type="hidden" name="customer_id" value={obj.customer_id} />
                     <input type="hidden" name="quota_group_id" value={obj.quota_group_id} />
+                    <input type="hidden" name="priority" value={obj.priority} />
 
                     <div className="mb-6">
                         <label htmlFor="endpoint_id" className="block text-lg font-medium text-gray-800 mb-1">大模型</label>   
@@ -47,11 +48,6 @@ export default function EditForm({obj, endpoints}) {
                     <div className="mb-6">
                         <label htmlFor="api_key" className="block text-lg font-medium text-gray-800 mb-1">Api Key</label>
                         <input type="text" defaultValue={obj.api_key} id="api_key" name="api_key" className="w-full bg-transparent placeholder:text-slate-400 text-slate-700 text-sm border border-slate-200 rounded-md px-3 py-2 transition duration-300 ease focus:outline-none focus:border-slate-400 hover:border-slate-300 shadow-sm focus:shadow" required />
-                    </div>
-
-                    <div className="mb-6">
-                        <label htmlFor="priority" className="block text-lg font-medium text-gray-800 mb-1">优先级</label>
-                        <input type="number" defaultValue={obj.priority} id="priority" name="priority" className="w-full bg-transparent placeholder:text-slate-400 text-slate-700 text-sm border border-slate-200 rounded-md px-3 py-2 transition duration-300 ease focus:outline-none focus:border-slate-400 hover:border-slate-300 shadow-sm focus:shadow" required />
                     </div>
                 </div>
 

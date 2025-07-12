@@ -13,8 +13,8 @@ export async function login(username: String, password: String): Promise<Account
     }
 }
 
-export async function findModels<T>(modelName: String, conditions = {}, filter = {}): Promise<T[]> {
-    const response = await callApi("/select/" + modelName, {conditions: conditions || {}, filter: filter || {}});
+export async function findModels<T>(modelName: String, conditions = {}, filters = {}): Promise<T[]> {
+    const response = await callApi("/select/" + modelName, {conditions: conditions || {}, filters: filters || {}});
 
     try {
         const blogs: T[] =  await response.json();
@@ -41,7 +41,7 @@ export async function countModels(modelName: String, conditions: {}): Promise<nu
 
 export async function getModel<T>(modelName: String, id:String): Promise<T> {
     if (id) {
-        const response = await callApi("/select/" + modelName, {conditions: {id: id}, filter: {limit: 1, offset: 0}});
+        const response = await callApi("/select/" + modelName, {conditions: {id: id}, filters: {limit: 1, offset: 0}});
 
         try {
             const models: T[] =  await response.json();
