@@ -3,14 +3,14 @@ import { CredentialsSignin } from 'next-auth';
 import { Account, ServerError } from "./definitions";
 
 export async function login(username: String, password: String): Promise<Account> {
-    const response = await callApi("/account/login", { username: username, password: password });
-    const account : Account = await response.json();
+    try {
+        const response = await callApi("/account/login", { username: username, password: password });
+        const account : Account = await response.json();
 
-    if ("token" in account) {
         return account
+    } catch(err) {
+        throw new CredentialsSignin()
     }
-
-    throw new CredentialsSignin()
 }
 
 export async function findModels<T>(modelName: String, conditions = {}, filter = {}): Promise<T[]> {
@@ -40,15 +40,19 @@ export async function countModels(modelName: String, conditions: {}): Promise<nu
 }
 
 export async function getModel<T>(modelName: String, id:String): Promise<T> {
-    const response = await callApi("/select/" + modelName, {conditions: {id: id}, filter: {limit: 1, offset: 0}});
+    if (id) {
+        const response = await callApi("/select/" + modelName, {conditions: {id: id}, filter: {limit: 1, offset: 0}});
 
-    try {
-        const models: T[] =  await response.json();
+        try {
+            const models: T[] =  await response.json();
 
-        return models[0]
-    } catch (err) {
-        console.error(err)
+            return models[0]
+        } catch (err) {
+            console.error(err)
 
+            return null
+        }
+    } else {
         return null
     }
 }
@@ -105,9 +109,9 @@ export async function callApi(path: string, data: {}): Promise<Response> {
     const response = await fetch(url, options);
 
     if (!response.ok) {
-        const errorText = await response.text();
-        console.error('Error response:', errorText);
-        throw new Error(`服务器繁忙: ${response.status} ${response.statusText}`);
+        const error : ServerError = await response.json();
+        console.error('Error response:', error);
+        throw error
     }
 
     return response

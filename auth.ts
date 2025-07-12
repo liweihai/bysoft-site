@@ -7,7 +7,7 @@ import {login} from "@/lib/data"
 import {Customer} from "@/lib/definitions"
 import {getModel} from "@/lib/data"
 
-export const { auth, signIn, signOut } = NextAuth({
+export const { handlers, signIn, signOut, auth } = NextAuth({
     pages: {
         signIn: '/login',
     },
@@ -20,11 +20,35 @@ export const { auth, signIn, signOut } = NextAuth({
                 return false; // Redirect unauthenticated users to login page
             } 
             return true;
-        }
+        },
+
+        jwt({ token, user }) {
+            if (user) { // User is available during sign-in
+                token.id = user.id
+            }
+
+            return token
+        },
+
+        session({ session, token }) {
+            session.user.id = token.id as string
+            return session
+        },
     },
     trustHost: true,
     providers: [
         Credentials({
+              credentials: {
+                username: {
+                    type: "text",
+                    label: "用户名",
+                },
+                password: {
+                    type: "password",
+                    label: "密码",
+                    placeholder: "*****",
+                },
+            },
             async authorize(credentials) {
                 const parsedCredentials = z
                 .object({ username: z.string().min(6), password: z.string().min(6) })
@@ -35,13 +59,14 @@ export const { auth, signIn, signOut } = NextAuth({
                     const account = await login(username, password);
 
                     const user = {
-                        name: account.customer_id,
-                        image: null,
+                        id: account.customer_id,
+                        name: account.token
                     }
+                    
                     return user;
                 }
         
-                return null;
+                return null
             },
         }),
     ]

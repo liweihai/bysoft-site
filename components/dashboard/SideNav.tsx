@@ -54,7 +54,7 @@ export default function SideNav({role}) {
     return (
         <>
         <div className="justify-between sidebar-header flex items-center gap-2 pt-8 pb-7 justify-between text-lg  font-bold">
-            <Link href="/dashboard">
+            <Link href="/">
                 {siteMetadata.headerTitle}
             </Link>
         </div>

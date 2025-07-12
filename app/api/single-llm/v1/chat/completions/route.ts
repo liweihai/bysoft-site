@@ -39,6 +39,16 @@ export async function POST(request: NextRequest) {
 
         const endpoint = await getModel<Endpoint>("Endpoint", quota.endpoint_id)
 
+        //检查免费配额是否已经用完了
+        if ((endpoint.rpm_threshold > 0 && quota.rpm >= endpoint.rpm_threshold)
+            || (endpoint.rpd_threshold > 0 && quota.rpd >= endpoint.rpd_threshold)
+            || (endpoint.tpm_threshold > 0 && quota.tpm >= endpoint.tpm_threshold)
+            || (endpoint.tpd_threshold > 0 && quota.tpd >= endpoint.tpd_threshold)
+            || (endpoint.free_tokens > 0 && quota.tokens_used >= endpoint.free_tokens)
+        ) {
+            continue;
+        }
+
         const targetUrl = new URL(endpoint.base_url);
         targetUrl.pathname = "/chat/completions";
         targetUrl.search = url.search;
@@ -78,13 +88,18 @@ export async function POST(request: NextRequest) {
                 const responseJson = JSON.parse(responseBody)
                 responseJson.model = groupName
 
-                quota.rpm += 1
-                quota.rpd += 1
-                quota.tpm += responseJson.usage.total_tokens
-                quota.tpd += responseJson.usage.total_tokens
-                quota.requests_used += 1
-                quota.tokens_used += responseJson.usage.total_tokens
-                await updateModel<Quota>("Quota", quota.id, quota)
+                try {
+                    const newQuota = await getModel<Quota>("Quota", quota.id)
+                    newQuota.rpm += 1
+                    newQuota.rpd += 1
+                    newQuota.tpm += responseJson.usage.total_tokens
+                    newQuota.tpd += responseJson.usage.total_tokens
+                    newQuota.requests_used += 1
+                    newQuota.tokens_used += responseJson.usage.total_tokens
+                    await updateModel<Quota>("Quota", newQuota.id, newQuota)
+                } catch(err) {
+                    console.error(err)
+                }
 
                 const utf8Array = new TextEncoder().encode(JSON.stringify(responseJson))
 

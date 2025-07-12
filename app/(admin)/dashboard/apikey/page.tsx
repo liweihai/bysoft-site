@@ -11,7 +11,7 @@ import DelForm from '@/components/DelForm';
 export default async function ApiKeyPage() {
     const session = await auth()
 
-    const conditions = {customer_id: session.user.name}
+    const conditions = {customer_id: session.user.id}
     const apiKeys = await findModels<ApiKey>("ApiKey", conditions, {})
 
     return (
@@ -19,7 +19,7 @@ export default async function ApiKeyPage() {
             <div className="align-middle rounded-tl-lg rounded-tr-lg inline-block w-full py-4 overflow-hidden bg-white px-12">
                 <div className="flex justify-between">
                     <div> </div>
-                    <EditForm obj={{customer_id: session.user.name}} />
+                    <EditForm obj={{customer_id: session.user.id}} />
                 </div>
             </div>
             <div className="align-middle inline-block min-w-full overflow-hidden bg-white p-8 pt-3 rounded-bl-lg rounded-br-lg">

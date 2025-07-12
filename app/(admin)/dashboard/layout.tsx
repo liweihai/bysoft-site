@@ -13,7 +13,7 @@ import {Customer} from "@/lib/definitions"
 export default async function Layout({ children }: { children: React.ReactNode }) {
     const session = await auth()
 
-    const customer = await getModel<Customer>("Customer", session.user.name)
+    const customer = await getModel<Customer>("Customer", session.user.id)
 
     return (
         <div>

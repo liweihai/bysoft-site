@@ -22,7 +22,7 @@ export default async function QuotaGroupViewPage(props: { params: Promise<{ slug
         <div className="rounded-2xl bg-white px-5 pb-5 pt-5 dark:bg-white/[0.03] sm:px-6 sm:pt-6">
             <div className="align-middle rounded-tl-lg rounded-tr-lg inline-block w-full py-4 overflow-hidden bg-white px-12">
                 <div className="flex justify-between">
-                    <EditForm obj={{customer_id: session.user.name, quota_group_id: quotaGroup.id, priority: quotas.length + 1}} endpoints={endpoints} />
+                    <EditForm obj={{customer_id: session.user.id, quota_group_id: quotaGroup.id, priority: quotas.length + 1}} endpoints={endpoints} />
                 </div>
             </div>
             <div className="align-middle inline-block min-w-full overflow-hidden bg-white p-8 pt-3 rounded-bl-lg rounded-br-lg">
