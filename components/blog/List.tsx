@@ -6,6 +6,7 @@ import { usePathname } from 'next/navigation'
 import { formatDate } from '@/utils/datetime'
 import Link from '@/components/Link'
 import Tag from '@/components/Tag'
+import Category from '@/components/Category'
 import {Blog} from '@/lib/definitions'
 import siteMetadata from '@/data/siteMetadata'
 
@@ -82,7 +83,7 @@ export default function List({
           <ul className="divide-y divide-gray-200 dark:divide-gray-700">
             {!posts.length && '没有找到。'}
             {posts.map((post) => {
-              const { id, create_time, title, remark, keywords } = post
+              const { id, create_time, title, remark, category, keywords } = post
               return (
                 <li key={id} className="py-12">
                   <article>
@@ -105,6 +106,7 @@ export default function List({
                               </Link>
                             </h2>
                             <div className="flex flex-wrap">
+                              <Category key={category} text={category} />
                               {(keywords ? keywords : '').split(",").map((tag) => (
                                 <Tag key={tag} text={tag} />
                               ))}

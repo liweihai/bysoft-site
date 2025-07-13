@@ -2,6 +2,7 @@ import Image from "next/image";
 
 import Link from '@/components/Link'
 import Tag from '@/components/Tag'
+import Category from '@/components/Category'
 import {findModels} from "@/lib/data"
 import {Blog} from "@/lib/definitions"
 import siteMetadata from '@/data/siteMetadata'
@@ -21,7 +22,7 @@ export default async function Home() {
           <ul className="divide-y divide-gray-200 dark:divide-gray-700">
             {!blogs.length && '暂时没有文章.'}
             {blogs.map((blog) => {
-              const { id, create_time, title, remark, keywords } = blog
+              const { id, create_time, title, remark, category, keywords } = blog
               return (
                 <li key={id} className="py-12">
                   <article>
@@ -44,6 +45,7 @@ export default async function Home() {
                               </Link>
                             </h2>
                             <div className="flex flex-wrap">
+                              <Category key={category} text={category} />
                               {(keywords ? keywords : '').split(",").map((tag) => (
                                 <Tag key={tag} text={tag} />
                               ))}
