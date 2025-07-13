@@ -3,6 +3,7 @@ export type Blog = {
     title: string;
     remark: string;
     content: string;
+    content_type: number,
     category: string;
     keywords: string;
     publish: string;
