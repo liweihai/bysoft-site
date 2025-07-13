@@ -20,13 +20,13 @@ export default async function Header(){
     const headerNavLinks = [
       { href: '/', title: '首页' },
     ]
+    headerNavLinks.push({ href: '/endpoint', title: '免费大模型' })
     categories.forEach(category => {
       headerNavLinks.push({
         href: '/category/' + category,
         title: category
       })
     });
-    headerNavLinks.push({ href: '/endpoint', title: '免费大模型' })
     headerNavLinks.push({ href: '/dashboard', title: '控制台' })
 
     return (

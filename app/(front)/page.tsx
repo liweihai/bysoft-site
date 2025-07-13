@@ -7,8 +7,6 @@ import {Blog} from "@/lib/definitions"
 import siteMetadata from '@/data/siteMetadata'
 import { formatDate } from '@/utils/datetime'
 
-const MAX_DISPLAY = 5
-
 export default async function Home() {
   const blogs = await findModels<Blog>("Article", {state: 1}, {limit: 5, offset: 0, order: 'create_time DESC'})
 
@@ -22,7 +20,7 @@ export default async function Home() {
           </div>
           <ul className="divide-y divide-gray-200 dark:divide-gray-700">
             {!blogs.length && '暂时没有文章.'}
-            {blogs.slice(0, MAX_DISPLAY).map((blog) => {
+            {blogs.map((blog) => {
               const { id, create_time, title, remark, keywords } = blog
               return (
                 <li key={id} className="py-12">
@@ -72,7 +70,7 @@ export default async function Home() {
             })}
           </ul>
         </div>
-        {blogs.length >= MAX_DISPLAY && (
+        {blogs.length == 5 && (
           <div className="flex justify-end text-base leading-6 font-medium">
             <Link
               href="/blog"
