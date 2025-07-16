@@ -8,7 +8,7 @@ import {
   ExclamationCircleIcon,
 } from '@heroicons/react/24/outline';
 
-export default function EditForm({obj}) {
+export default function EditForm() {
     const [message, formAction, isPending] = useActionState(createCooperation, undefined);
 
     return (
