@@ -3,6 +3,7 @@ import Link from 'next/link';
 import {countModels, findModels} from "@/lib/data"
 import {Blog} from "@/lib/definitions"
 import Search from "@/components/Search"
+import {formatDate} from '@/utils/datetime'
 
 export default async function BlogPage(props: { searchParams?: Promise<{query?: string; page?: string;}>}) {
     const params = await props.searchParams;
@@ -10,7 +11,7 @@ export default async function BlogPage(props: { searchParams?: Promise<{query?: 
     const query = params?.query || '';
     const page = Number(params?.page) || 1;
 
-    const conditions = {}
+    const conditions = {category: '提示语'}
     if (query) {
         conditions["title"] = {$regex: query}
     }
@@ -27,7 +28,9 @@ export default async function BlogPage(props: { searchParams?: Promise<{query?: 
             <div className="align-middle rounded-tl-lg rounded-tr-lg inline-block w-full py-4 overflow-hidden bg-white px-12">
                 <div className="flex justify-between">
                     <Search placeholder="搜索文章..." />
-                    <button className="mx-5 px-5 py-2 border-blue-500 border text-blue-500 rounded transition duration-300 hover:bg-blue-700 hover:text-white focus:outline-none"><Link href="/dashboard/blog/create">创建文章</Link></button>
+                    <button className="mx-5 px-5 py-2 border-blue-500 border text-blue-500 rounded transition duration-300 hover:bg-blue-700 hover:text-white focus:outline-none">
+                        <Link href="/dashboard/blog/create">新建提示语</Link>
+                    </button>
                 </div>
             </div>
             <div className="align-middle inline-block min-w-full overflow-hidden bg-white p-8 pt-3 rounded-bl-lg rounded-br-lg">
@@ -35,8 +38,8 @@ export default async function BlogPage(props: { searchParams?: Promise<{query?: 
                     <thead>
                         <tr>
                             <th className="px-6 py-3 border-b-2 border-gray-300 text-left text-sm leading-4 text-blue-500 tracking-wider">标题</th>
-                            <th className="px-6 py-3 border-b-2 border-gray-300 text-left text-sm leading-4 text-blue-500 tracking-wider">分类</th>
                             <th className="px-6 py-3 border-b-2 border-gray-300 text-left text-sm leading-4 text-blue-500 tracking-wider">标签</th>
+                            <th className="px-6 py-3 border-b-2 border-gray-300 text-left text-sm leading-4 text-blue-500 tracking-wider">摘要</th>
                             <th className="px-6 py-3 border-b-2 border-gray-300 text-left text-sm leading-4 text-blue-500 tracking-wider">时间</th>
                             <th className="px-6 py-3 border-b-2 border-gray-300 text-left text-sm leading-4 text-blue-500 tracking-wider">状态</th>
                             <th className="px-6 py-3 border-b-2 border-gray-300"></th>
@@ -44,17 +47,16 @@ export default async function BlogPage(props: { searchParams?: Promise<{query?: 
                     </thead>
                     <tbody className="bg-white">
                     {blogs.map((blog) => {
-                    const { id, create_time, title, remark, keywords, category, state } = blog
-                    const href = "/dashboard/blog/edit/" + id
+                    const href = "/dashboard/blog/edit/" + blog.id
                     return (
-                    <tr key={id}>
+                    <tr key={blog.id}>
                         <td className="px-6 py-4 whitespace-no-wrap border-b border-gray-500">
-                            <div className="text-sm leading-5 text-blue-900">{ title }</div>
+                            <div className="text-sm leading-5 text-blue-900">{ blog.title }</div>
                         </td>
-                        <td className="px-6 py-4 whitespace-no-wrap border-b text-blue-900 border-gray-500 text-sm leading-5">{category}</td>
-                        <td className="px-6 py-4 whitespace-no-wrap border-b text-blue-900 border-gray-500 text-sm leading-5">{keywords}</td>
-                        <td className="px-6 py-4 whitespace-no-wrap border-b border-gray-500 text-blue-900 text-sm leading-5">{create_time}</td>
-                        <td className="px-6 py-4 whitespace-no-wrap border-b border-gray-500 text-blue-900 text-sm leading-5">{state == 0 ? '下线' : '上线'}</td>
+                        <td className="px-6 py-4 whitespace-no-wrap border-b text-blue-900 border-gray-500 text-sm leading-5">{blog.keywords}</td>
+                        <td className="px-6 py-4 whitespace-no-wrap border-b text-blue-900 border-gray-500 text-sm leading-5">{blog.remark}</td>                        
+                        <td className="px-6 py-4 whitespace-no-wrap border-b border-gray-500 text-blue-900 text-sm leading-5">{formatDate(blog.create_time)}</td>
+                        <td className="px-6 py-4 whitespace-no-wrap border-b border-gray-500 text-blue-900 text-sm leading-5">{blog.state == 0 ? '下线' : '上线'}</td>
                         <td className="px-6 py-4 whitespace-no-wrap text-right border-b border-gray-500 text-sm leading-5">
                             <button className="px-5 py-2 border-blue-500 border text-blue-500 rounded transition duration-300 hover:bg-blue-700 hover:text-white focus:outline-none"><Link href={ href }>修改</Link></button>
                         </td>

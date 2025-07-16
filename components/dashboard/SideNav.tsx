@@ -41,7 +41,7 @@ export default function SideNav({role}) {
         })
         links.push({
             icon: DocumentDuplicateIcon,
-            name: '文章',
+            name: '提示语',
             href: '/dashboard/blog'
         })
         links.push({

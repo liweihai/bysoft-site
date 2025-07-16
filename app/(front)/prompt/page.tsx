@@ -10,8 +10,8 @@ export default async function Page(props: { searchParams: Promise<{ page?: strin
     const params = await props.searchParams
     const page = Number(params?.page) || 1;
 
-    const blogs = await findModels<Blog>("Article", {state: 1}, {limit: POSTS_PER_PAGE, offset: (page - 1) * POSTS_PER_PAGE, order: 'create_time DESC'})
-    const totalBlogs = await countModels("Article", {state: 1})
+    const blogs = await findModels<Blog>("Article", {state: 1, category: '提示语'}, {limit: POSTS_PER_PAGE, offset: (page - 1) * POSTS_PER_PAGE, order: 'create_time DESC'})
+    const totalBlogs = await countModels("Article", {state: 1, category: '提示语'})
 
     const totalPages = Math.ceil(totalBlogs / POSTS_PER_PAGE)
 
@@ -24,7 +24,7 @@ export default async function Page(props: { searchParams: Promise<{ page?: strin
         <List
           posts={blogs}
           pagination={pagination}
-          title="所有博文"
+          title="所有提示词"
         />
     )
 }

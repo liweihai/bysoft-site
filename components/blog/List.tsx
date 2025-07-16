@@ -6,7 +6,6 @@ import { usePathname } from 'next/navigation'
 import { formatDate } from '@/utils/datetime'
 import Link from '@/components/Link'
 import Tag from '@/components/Tag'
-import Category from '@/components/Category'
 import {Blog} from '@/lib/definitions'
 import siteMetadata from '@/data/siteMetadata'
 
@@ -106,7 +105,6 @@ export default function List({
                               </Link>
                             </h2>
                             <div className="flex flex-wrap">
-                              <Category key={category} text={category} />
                               {(keywords ? keywords : '').split(",").map((tag) => (
                                 <Tag key={tag} text={tag} />
                               ))}

@@ -17,16 +17,10 @@ export default async function Header(){
     const categoryConfigs = await findModels<Config>("Config", {name: 'categories'}, {limit: 1, offset: 0})
 
     const categories = categoryConfigs[0].value.split(",")
-    const headerNavLinks = [
-      { href: '/', title: '首页' },
-    ]
+    const headerNavLinks = []
+    headerNavLinks.push({ href: '/', title: '首页' })
+    headerNavLinks.push({ href: '/prompt', title: '提示词' })
     headerNavLinks.push({ href: '/endpoint', title: 'Single LLM' })
-    categories.forEach(category => {
-      headerNavLinks.push({
-        href: '/category/' + category,
-        title: category
-      })
-    });
     headerNavLinks.push({ href: '/contactus', title: '联系我们' })
     headerNavLinks.push({ href: '/dashboard', title: '控制台' })
 

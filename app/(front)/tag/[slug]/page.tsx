@@ -13,7 +13,7 @@ export default async function TagPage(props: { params: Promise<{ slug: string }>
     const params = await props.params
     const tag = decodeURIComponent(params.slug)
 
-    const conditions = {"state": 1, "keywords": {"$regex": tag}}
+    const conditions = {"state": 1, category: '提示语', "keywords": {"$regex": tag}}
 
     const totalBlogs = await countModels("Article", conditions)
     const totalPages = Math.ceil(totalBlogs / POSTS_PER_PAGE)

@@ -2,21 +2,20 @@ import Image from "next/image";
 
 import Link from '@/components/Link'
 import Tag from '@/components/Tag'
-import Category from '@/components/Category'
 import {findModels} from "@/lib/data"
 import {Blog} from "@/lib/definitions"
 import siteMetadata from '@/data/siteMetadata'
 import { formatDate } from '@/utils/datetime'
 
 export default async function Home() {
-  const blogs = await findModels<Blog>("Article", {state: 1}, {limit: 5, offset: 0, order: 'create_time DESC'})
+  const blogs = await findModels<Blog>("Article", {state: 1, category: '提示语'}, {limit: 5, offset: 0, order: 'create_time DESC'})
 
   return (
       <>
         <div className="divide-y divide-gray-200 dark:divide-gray-700">
           <div className="space-y-2 pt-6 pb-8 md:space-y-5">
             <h1 className="text-3xl lg:text-4xl text-center mb-6 tracking-wider">
-              最新文章
+              最新提示词
             </h1>
           </div>
           <ul className="divide-y divide-gray-200 dark:divide-gray-700">
@@ -45,7 +44,6 @@ export default async function Home() {
                               </Link>
                             </h2>
                             <div className="flex flex-wrap">
-                              <Category key={category} text={category} />
                               {(keywords ? keywords : '').split(",").map((tag) => (
                                 <Tag key={tag} text={tag} />
                               ))}
@@ -75,11 +73,11 @@ export default async function Home() {
         {blogs.length == 5 && (
           <div className="flex justify-end text-base leading-6 font-medium">
             <Link
-              href="/blog"
+              href="/prompt"
               className="text-primary-500 hover:text-primary-600 dark:hover:text-primary-400"
               aria-label="All posts"
             >
-              所有文章 &rarr;
+              所有提示词 &rarr;
             </Link>
           </div>
         )}
