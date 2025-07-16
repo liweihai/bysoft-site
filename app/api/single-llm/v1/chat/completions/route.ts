@@ -138,10 +138,10 @@ export async function POST(request: NextRequest) {
                 
                 return modifiedResponse;
             } else {
-                console.error(`Error proxying request to ${endpoint.model}:`);
+                console.error(targetUrl.toString() + ' failed');
             }
         } catch (error) {
-            console.error(`Error proxying request to ${endpoint.model}:`, error);
+            console.error(targetUrl.toString() + ' failed', error);
         }
     }
 
