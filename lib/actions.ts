@@ -6,7 +6,7 @@ import { AuthError } from 'next-auth';
 
 import { signIn } from '@/auth';
 import {updateModel, createModel, deleteModel, getModel, findModels} from "@/lib/data"
-import {Config, Blog, Endpoint, QuotaGroup, Quota, ApiKey} from "@/lib/definitions"
+import {Config, Blog, Endpoint, QuotaGroup, Quota, ApiKey, Cooperation} from "@/lib/definitions"
 
 export async function authenticate(
   prevState: string | undefined,
@@ -156,6 +156,18 @@ export async function createApiKey(prevState, formData) {
         await createModel<ApiKey>("ApiKey", obj)
 
         redirect('/dashboard/apikey')
+
+        return 1
+    } catch(error) {
+        throw error;
+    }
+}
+
+export async function createCooperation(prevState, formData) {
+    const obj = Object.fromEntries(formData.entries()) as Cooperation;
+
+    try {
+        await createModel<Cooperation>("Cooperation", obj)
 
         return 1
     } catch(error) {

@@ -27,6 +27,7 @@ export default async function Header(){
         title: category
       })
     });
+    headerNavLinks.push({ href: '/contactus', title: '联系我们' })
     headerNavLinks.push({ href: '/dashboard', title: '控制台' })
 
     return (

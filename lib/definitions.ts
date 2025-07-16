@@ -86,3 +86,11 @@ export type Customer = {
     state: number
 }
 
+export type Cooperation = {
+    id: string;
+    name: string;
+    phone: string;
+    description: string;
+    state: number;
+    create_time: string;
+};
