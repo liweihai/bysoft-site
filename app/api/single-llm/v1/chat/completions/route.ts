@@ -12,21 +12,22 @@ export async function POST(request: NextRequest) {
     const authorizations = (request.headers.get("Authorization") || '').split(" ")
 
     if (authorizations.length < 2) {
-        return new Response("没有权限", {status: 400});
+        return new Response("请注册并创建Api Key", {status: 400});
     }
         
     const apiKey = authorizations[authorizations.length - 1]
-
-    const key = await getModel<ApiKey>("ApiKey", apiKey)
-    if (!key) {
-        return new Response("请注册并创建Api Key", {status: 400});
-    }
 
     const url = new URL(request.url);
     const newBody = await request.json();
 
     const groupName = newBody["model"]
-    const quotaGroups = await findModels<QuotaGroup>("QuotaGroup", {customer_id: key.customer_id, name: groupName}, {limit: 1})
+
+    const key = await getModel<ApiKey>("ApiKey", apiKey)
+    if (key) {
+        var quotaGroups = await findModels<QuotaGroup>("QuotaGroup", {customer_id: key.customer_id, name: groupName}, {limit: 1})
+    } else {
+        var quotaGroups = await findModels<QuotaGroup>("QuotaGroup", {customer_id: '1827e53ba48811e8ae8900163e1aebd1', name: groupName}, {limit: 1})
+    }
 
     if (quotaGroups.length == 0) {
         return new Response("模型不存在", {status: 500});
@@ -39,14 +40,16 @@ export async function POST(request: NextRequest) {
 
         const endpoint = await getModel<Endpoint>("Endpoint", quota.endpoint_id)
 
-        //检查免费配额是否已经用完了
-        if ((endpoint.rpm_threshold > 0 && quota.rpm >= endpoint.rpm_threshold)
-            || (endpoint.rpd_threshold > 0 && quota.rpd >= endpoint.rpd_threshold)
-            || (endpoint.tpm_threshold > 0 && quota.tpm >= endpoint.tpm_threshold)
-            || (endpoint.tpd_threshold > 0 && quota.tpd >= endpoint.tpd_threshold)
-            || (endpoint.free_tokens > 0 && quota.tokens_used >= endpoint.free_tokens)
-        ) {
-            continue;
+        if (key) {
+            //检查免费配额是否已经用完了
+            if ((endpoint.rpm_threshold > 0 && quota.rpm >= endpoint.rpm_threshold)
+                || (endpoint.rpd_threshold > 0 && quota.rpd >= endpoint.rpd_threshold)
+                || (endpoint.tpm_threshold > 0 && quota.tpm >= endpoint.tpm_threshold)
+                || (endpoint.tpd_threshold > 0 && quota.tpd >= endpoint.tpd_threshold)
+                || (endpoint.free_tokens > 0 && quota.tokens_used >= endpoint.free_tokens)
+            ) {
+                continue;
+            }
         }
 
         const targetUrl = new URL(endpoint.base_url);
@@ -64,7 +67,16 @@ export async function POST(request: NextRequest) {
             }
         }
 
-        cleanedHeaders.set("Authorization", "Bearer: " + quota.api_key)
+        if (key) {
+            cleanedHeaders.set("Authorization", "Bearer: " + quota.api_key)
+        } else {
+            var apiKeys = apiKey.split(",")
+            if (i < apiKeys.length && apiKeys[i]){
+                cleanedHeaders.set("Authorization", "Bearer: " + apiKeys[i])
+            } else {
+                continue;
+            }
+        }
 
         newBody["model"] = endpoint.model
 
@@ -78,6 +90,8 @@ export async function POST(request: NextRequest) {
             redirect: 'follow'
         });
 
+        console.log(targetUrl.toString())
+
         // Forward the request to the appropriate LLM API
         try {
             const response = await fetch(modifiedRequest);
@@ -88,17 +102,19 @@ export async function POST(request: NextRequest) {
                 const responseJson = JSON.parse(responseBody)
                 responseJson.model = groupName
 
-                try {
-                    const newQuota = await getModel<Quota>("Quota", quota.id)
-                    newQuota.rpm += 1
-                    newQuota.rpd += 1
-                    newQuota.tpm += responseJson.usage.total_tokens
-                    newQuota.tpd += responseJson.usage.total_tokens
-                    newQuota.requests_used += 1
-                    newQuota.tokens_used += responseJson.usage.total_tokens
-                    await updateModel<Quota>("Quota", newQuota.id, newQuota)
-                } catch(err) {
-                    console.error(err)
+                if (key) {
+                    try {
+                        const newQuota = await getModel<Quota>("Quota", quota.id)
+                        newQuota.rpm += 1
+                        newQuota.rpd += 1
+                        newQuota.tpm += responseJson.usage.total_tokens
+                        newQuota.tpd += responseJson.usage.total_tokens
+                        newQuota.requests_used += 1
+                        newQuota.tokens_used += responseJson.usage.total_tokens
+                        await updateModel<Quota>("Quota", newQuota.id, newQuota)
+                    } catch(err) {
+                        console.error(err)
+                    }
                 }
 
                 const utf8Array = new TextEncoder().encode(JSON.stringify(responseJson))

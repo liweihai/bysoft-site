@@ -20,7 +20,7 @@ export default async function Header(){
     const headerNavLinks = [
       { href: '/', title: '首页' },
     ]
-    headerNavLinks.push({ href: '/endpoint', title: '免费大模型' })
+    headerNavLinks.push({ href: '/endpoint', title: 'Single LLM' })
     categories.forEach(category => {
       headerNavLinks.push({
         href: '/category/' + category,

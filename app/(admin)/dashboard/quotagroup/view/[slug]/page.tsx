@@ -5,6 +5,7 @@ import {QuotaGroup, Quota, Endpoint} from "@/lib/definitions"
 import { auth } from '@/auth';
 import DelForm from '@/components/DelForm';
 import EditForm from '@/components/quota/EditForm';
+import EditPriorityForm from '@/components/quota/EditPriorityForm';
 
 export default async function QuotaGroupViewPage(props: { params: Promise<{ slug: string }> }) {
     const params = await props.params
@@ -29,22 +30,31 @@ export default async function QuotaGroupViewPage(props: { params: Promise<{ slug
                 <table className="min-w-full">
                     <thead>
                         <tr>
+                            <th className="px-6 py-3 border-b-2 border-gray-300"></th>
                             <th className="px-6 py-3 border-b-2 border-gray-300 text-left text-sm leading-4 text-blue-500 tracking-wider">供应商</th>
                             <th className="px-6 py-3 border-b-2 border-gray-300 text-left text-sm leading-4 text-blue-500 tracking-wider">大模型</th>
-                            <th className="px-6 py-3 border-b-2 border-gray-300 text-left text-sm leading-4 text-blue-500 tracking-wider">请求数/分钟</th>
-                            <th className="px-6 py-3 border-b-2 border-gray-300 text-left text-sm leading-4 text-blue-500 tracking-wider">请求数/天</th>
-                            <th className="px-6 py-3 border-b-2 border-gray-300 text-left text-sm leading-4 text-blue-500 tracking-wider">令牌数/分钟</th>
-                            <th className="px-6 py-3 border-b-2 border-gray-300 text-left text-sm leading-4 text-blue-500 tracking-wider">令牌数/天</th>
+                            <th className="px-6 py-3 border-b-2 border-gray-300 text-left text-sm leading-4 text-blue-500 tracking-wider">RPM</th>
+                            <th className="px-6 py-3 border-b-2 border-gray-300 text-left text-sm leading-4 text-blue-500 tracking-wider">RPD</th>
+                            <th className="px-6 py-3 border-b-2 border-gray-300 text-left text-sm leading-4 text-blue-500 tracking-wider">TPM</th>
+                            <th className="px-6 py-3 border-b-2 border-gray-300 text-left text-sm leading-4 text-blue-500 tracking-wider">TPD</th>
                             <th className="px-6 py-3 border-b-2 border-gray-300 text-left text-sm leading-4 text-blue-500 tracking-wider">赠送令牌</th>
                             <th className="px-6 py-3 border-b-2 border-gray-300"></th>
                         </tr>
                     </thead>
                     <tbody className="bg-white">
-                    {quotas.map((quota) => {
+                    {quotas.map((quota, i) => {
                     const href = "/dashboard/quota/edit/" + quota.id
                     const endpoint = endpoints.find(function(e){ return e.id == quota.endpoint_id}) || endpoints[0]
                     return (
                     <tr key={quota.id}>
+                        <td className="px-6 py-4 whitespace-no-wrap text-right border-b border-gray-500 text-sm leading-5">
+                            {i > 0 && (
+                                <EditPriorityForm id={quota.id} direction={-1}></EditPriorityForm>
+                            )}
+                            {i < quotas.length - 1 && (
+                                <EditPriorityForm id={quota.id} direction={1}></EditPriorityForm>
+                            )}
+                        </td>
                         <td className="px-6 py-4 whitespace-no-wrap border-b border-gray-500">
                             <Link target="_blank" href={endpoint.site_url} className="text-sm leading-5 text-blue-900">{ endpoint.provider }</Link>
                         </td>

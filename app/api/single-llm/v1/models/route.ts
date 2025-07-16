@@ -12,17 +12,17 @@ export async function GET(request: NextRequest) {
     const authorizations = (request.headers.get("Authorization") || '').split(" ")
 
     if (authorizations.length < 2) {
-        return new Response("没有权限", {status: 400});
-    }
-        
-    const apiKey = authorizations[authorizations.length - 1]
-
-    const key = await getModel<ApiKey>("ApiKey", apiKey)
-    if (!key) {
         return new Response("请注册并创建Api Key", {status: 400});
     }
-
-    const quotaGroups = await findModels<QuotaGroup>("QuotaGroup", {customer_id: key.customer_id})
+    
+    const apiKey = authorizations[authorizations.length - 1]
+        
+    const key = await getModel<ApiKey>("ApiKey", apiKey)
+    if (key) {
+        var quotaGroups = await findModels<QuotaGroup>("QuotaGroup", {customer_id: key.customer_id})
+    } else {
+        var quotaGroups = await findModels<QuotaGroup>("QuotaGroup", {customer_id: '1827e53ba48811e8ae8900163e1aebd1'}, {})
+    }
 
     const models = {
         object: "list",
@@ -33,7 +33,7 @@ export async function GET(request: NextRequest) {
         models.data.push({
             id: quotaGroups[i].name,
             object: "model",
-            owned_by: "bysoft"
+            owned_by: "bysoft.site"
         })
     }
 

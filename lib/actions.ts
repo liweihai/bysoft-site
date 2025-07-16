@@ -5,7 +5,7 @@ import { redirect } from 'next/navigation';
 import { AuthError } from 'next-auth';
 
 import { signIn } from '@/auth';
-import {updateModel, createModel, deleteModel} from "@/lib/data"
+import {updateModel, createModel, deleteModel, getModel, findModels} from "@/lib/data"
 import {Config, Blog, Endpoint, QuotaGroup, Quota, ApiKey} from "@/lib/definitions"
 
 export async function authenticate(
@@ -108,6 +108,40 @@ export async function saveQuota(prevState, formData) {
             await createModel<Quota>("Quota", obj)
         }
         redirect('/dashboard/quotagroup/view/' + obj.quota_group_id)
+
+        return 1
+    } catch(error) {
+        throw error;
+    }
+}
+
+export async function EditQuotaPriority(prevState, formData) {
+    const obj = Object.fromEntries(formData.entries());
+
+    try {
+        const quota  = await getModel<Quota>("Quota", obj.id)
+        const quotas = await findModels<Quota>("Quota", {quota_group_id: quota.quota_group_id}, {order: "priority ASC"})
+
+        const i = quotas.findIndex(function(q) { return q.id == obj.id})
+        if (obj.direction == 1) {
+            if (i < quotas.length - 1) {
+                quota.priority = quota.priority + 1
+                await updateModel<Quota>("Quota", quota.id, quota)
+
+                quotas[i + 1].priority = quotas[i + 1].priority - 1
+                await updateModel<Quota>("Quota", quotas[i + 1].id, quotas[i + 1])
+            }
+        } else {
+            if (i > 0) {
+                quota.priority = quota.priority - 1
+                await updateModel<Quota>("Quota", quota.id, quota)
+
+                quotas[i - 1].priority = quotas[i - 1].priority + 1
+                await updateModel<Quota>("Quota", quotas[i - 1].id, quotas[i - 1])
+            }
+        }
+
+        redirect('/dashboard/quotagroup/view/' + quota.quota_group_id)
 
         return 1
     } catch(error) {
