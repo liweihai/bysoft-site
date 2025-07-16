@@ -181,7 +181,11 @@ export async function deleteOne(prevState, formData) {
     try {
         await deleteModel(obj.model, obj.id)
 
-        redirect(formData.redirect_url || ('/dashboard/' + obj.model.toLowerCase()))
+        if (obj.redirect_url) {
+            redirect(obj.redirect_url)
+        } else {
+            redirect('/dashboard/' + obj.model.toLowerCase())
+        }
 
         return 1
     } catch(error) {
