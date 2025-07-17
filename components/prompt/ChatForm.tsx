@@ -14,9 +14,9 @@ export default function ChatForm({obj, base_url, model, api_key}) {
             <div
                 className=" h-[85vh] flex-1 overflow-y-auto bg-slate-300 text-sm leading-6 text-slate-900 shadow-md dark:bg-slate-800 dark:text-slate-300 sm:text-base sm:leading-7"
             >
-                {messages.map((message) => {
+                {messages.map((message, i) => {
                     return (
-                        <div className="m-4">
+                        <div className="m-4" key={i}>
                         {message.role == 'user' && (
                             <div className="flex items-start">
                                 <img
@@ -78,10 +78,10 @@ export default function ChatForm({obj, base_url, model, api_key}) {
                 <div className="w-full">
                     <input type="hidden" name="prompt_id" value={obj.id} />
 
-                    {messages.length == 0 && matches.map((match) => {
+                    {messages.length == 0 && matches.map((match, i) => {
                         const m = match.replaceAll("{", '').replaceAll("}", '')
                         return (
-                            <div
+                            <div key={i}
                                 className="rounded-lg rounded-b-none border border-slate-300 bg-slate-50 px-2 py-2 dark:border-slate-700 dark:bg-slate-800"
                                 >
                                 <label htmlFor={m} className="sr-only">{m}</label>
