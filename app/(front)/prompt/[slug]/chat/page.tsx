@@ -12,7 +12,7 @@ async function ChatPage(props: { params: Promise<{ slug: string }> }) {
 
     const session = await auth()
 
-    if (session.user) {
+    if (session) {
         var apikeys = await findModels<ApiKey>("ApiKey", {customer_id: session.user.id}, {limit: 1})
     }
 
@@ -28,7 +28,7 @@ async function ChatPage(props: { params: Promise<{ slug: string }> }) {
                 </div>
             </header>
             <Suspense>
-                <ChatForm obj={prompt} base_url="https://www.bysoft.site/api/single-llm/v1" model="free-text-model" api_key={session.user ? apikeys[0].id: ''} />
+                <ChatForm obj={prompt} base_url="https://www.bysoft.site/api/single-llm/v1" model="free-text-model" api_key={session ? apikeys[0].id: ''} />
             </Suspense>
         </div>
     )

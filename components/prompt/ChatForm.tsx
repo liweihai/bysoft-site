@@ -77,7 +77,8 @@ export default function ChatForm({obj, base_url, model, api_key}) {
             >
                 <div className="w-full">
                     <input type="hidden" name="prompt_id" value={obj.id} />
-                    {matches.map((match) => {
+
+                    {messages.length == 0 && matches.map((match) => {
                         const m = match.replaceAll("{", '').replaceAll("}", '')
                         return (
                             <div
@@ -95,6 +96,21 @@ export default function ChatForm({obj, base_url, model, api_key}) {
                             </div>
                         )
                     })}
+                    {messages.length > 0 && (
+                        <div
+                            className="rounded-lg rounded-b-none border border-slate-300 bg-slate-50 px-2 py-2 dark:border-slate-700 dark:bg-slate-800"
+                            >
+                            <label htmlFor="content" className="sr-only">提示词</label>
+                            <textarea
+                                id="content"
+                                name="content"
+                                rows={2}
+                                className="w-full border-0 bg-slate-50 px-0 text-base text-slate-900 focus:outline-none dark:bg-slate-800 dark:text-slate-200 dark:placeholder-slate-400"
+                                placeholder="提示词"
+                                required
+                            ></textarea>
+                        </div>
+                    )}
 
                     <div className="ml-2 flex items-center py-2">
                         <div>
@@ -102,7 +118,7 @@ export default function ChatForm({obj, base_url, model, api_key}) {
                             type="submit"
                             className="inline-flex items-center gap-x-2 rounded-lg bg-blue-600 px-4 py-2.5 text-center text-base font-medium text-slate-50 hover:bg-blue-800 focus:ring-4 focus:ring-blue-200 dark:focus:ring-blue-900"
                             >
-                            发送
+                                {isPending ? "发送..." : "发送"}
                                 <svg
                                     xmlns="http://www.w3.org/2000/svg"
                                     className="h-4 w-4"
@@ -125,27 +141,27 @@ export default function ChatForm({obj, base_url, model, api_key}) {
 
                     <div className="border-t border-gray-200">
                         <dl>
-                            <div className="bg-gray-50 px-4 py-5 sm:grid sm:grid-cols-3 sm:gap-4 sm:px-6">
+                            <div className="bg-gray-50 px-4 py-5 sm:grid sm:grid-cols-4 sm:gap-4 sm:px-6">
                                 <dt className="text-sm font-medium text-gray-500">
-                                    链接
+                                    Api 链接
                                 </dt>
-                                <dd className="mt-1 text-sm text-gray-900 sm:mt-0 sm:col-span-2">
+                                <dd className="mt-1 text-sm text-gray-900 sm:mt-0 sm:col-span-3">
                                     <input type="text" defaultValue={base_url} id="base_url" name="base_url" className="w-full bg-transparent placeholder:text-slate-400 text-slate-700 text-sm border border-slate-200 rounded-md px-3 py-2 transition duration-300 ease focus:outline-none focus:border-slate-400 hover:border-slate-300 shadow-sm focus:shadow" required />
                                 </dd>
                             </div>
-                            <div className="bg-white px-4 py-5 sm:grid sm:grid-cols-3 sm:gap-4 sm:px-6">
+                            <div className="bg-white px-4 py-5 sm:grid sm:grid-cols-4 sm:gap-4 sm:px-6">
                                 <dt className="text-sm font-medium text-gray-500">
                                     Api Key
                                 </dt>
-                                <dd className="mt-1 text-sm text-gray-900 sm:mt-0 sm:col-span-2">
+                                <dd className="mt-1 text-sm text-gray-900 sm:mt-0 sm:col-span-3">
                                     <input type="password" defaultValue={api_key} id="api_key" name="api_key" className="w-full bg-transparent placeholder:text-slate-400 text-slate-700 text-sm border border-slate-200 rounded-md px-3 py-2 transition duration-300 ease focus:outline-none focus:border-slate-400 hover:border-slate-300 shadow-sm focus:shadow" required />
                                 </dd>
                             </div>
-                            <div className="bg-gray-50 px-4 py-5 sm:grid sm:grid-cols-3 sm:gap-4 sm:px-6">
+                            <div className="bg-gray-50 px-4 py-5 sm:grid sm:grid-cols-4 sm:gap-4 sm:px-6">
                                 <dt className="text-sm font-medium text-gray-500">
                                     模型名
                                 </dt>
-                                <dd className="mt-1 text-sm text-gray-900 sm:mt-0 sm:col-span-2">
+                                <dd className="mt-1 text-sm text-gray-900 sm:mt-0 sm:col-span-3">
                                     <input type="text" defaultValue={model} id="model" name="model" className="w-full bg-transparent placeholder:text-slate-400 text-slate-700 text-sm border border-slate-200 rounded-md px-3 py-2 transition duration-300 ease focus:outline-none focus:border-slate-400 hover:border-slate-300 shadow-sm focus:shadow" required />
                                 </dd>
                             </div>

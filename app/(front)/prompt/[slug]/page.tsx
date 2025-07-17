@@ -1,5 +1,5 @@
 import '@/css/prism.css'
-
+import Link from 'next/link';
 import { Metadata } from 'next'
 import { notFound } from 'next/navigation'
 import siteMetadata from '@/data/siteMetadata'
@@ -16,6 +16,7 @@ export async function generateMetadata(props: { params: Promise<{ slug: string }
 
     const publishedAt = new Date(post.create_time).toISOString()
     const modifiedAt = new Date(post.update_time).toISOString()
+
 
     let imageList = [siteMetadata.socialBanner]
 
@@ -47,6 +48,8 @@ export default async function Page(props: { params: Promise<{ slug: string }> })
     const slug = params.slug
 
     const post = await getModel<Prompt>("Article", slug)
+
+    const chatHref = "/prompt/" + slug + "/chat"
 
     let contentHtml = post.content;
     if (post.content_type == 1) {
@@ -86,6 +89,14 @@ export default async function Page(props: { params: Promise<{ slug: string }> })
                     </div>
                 </div>
             </article>
+            <div className="align-middle rounded-tl-lg rounded-tr-lg inline-block w-full py-4 overflow-hidden bg-white px-12">
+                <div className="flex justify-between">
+                    <div> </div>
+                    <button className="mx-5 px-5 py-2 border-blue-500 border text-blue-500 rounded transition duration-300 hover:bg-blue-700 hover:text-white focus:outline-none">
+                        <Link href={chatHref}>试用该提示词</Link>
+                    </button>
+                </div>
+            </div>
         </section>
     )
 }

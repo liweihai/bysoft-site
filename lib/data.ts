@@ -117,7 +117,7 @@ export async function callApi(path: string, data: {}): Promise<Response> {
     return response
 }
 
-export async function chatWith(chat: {}): Promise<ChatMessage[]> {
+export async function chatWith(history: [], chat: {}): Promise<ChatMessage[]> {
     const { env, cf, ctx } = await getCloudflareContext({async: true});
 
     let baseUrl  = ""
@@ -125,6 +125,7 @@ export async function chatWith(chat: {}): Promise<ChatMessage[]> {
     let model    = ""
     let promptId = null
     let keyVals  = {}
+    let content = ""
     Object.keys(chat).forEach(function(key) {
         if (key == 'model') {
             model = chat[key]
@@ -134,28 +135,36 @@ export async function chatWith(chat: {}): Promise<ChatMessage[]> {
             apiKey = chat[key]
         } else if (key == "base_url") {
             baseUrl = chat[key]
+        } else if (key == "content") {
+            content = chat[key]
         } else {
             keyVals[key] = chat[key]
         }
     })
 
-    const prompt = await getModel<Prompt>("Article", promptId)
-    let content = prompt.content
-    Object.keys(keyVals).forEach(function(k) {
-        content = content.replaceAll("{{" + k + "}}", keyVals[k])
-    })
+    if (history.length == 0) {
+        const prompt = await getModel<Prompt>("Article", promptId)
+        content = prompt.content
+        Object.keys(keyVals).forEach(function(k) {
+            content = content.replaceAll("{{" + k + "}}", keyVals[k])
+        })
+    }
 
-    const messages = [{
+    const messages = [];
+
+    for(var i = 0; i < history.length; i++) {
+        messages.push(history[i])
+    }
+
+    messages.push({
         role: "user",
         content: content
-    }]
+    })
 
     const body = {
         model: model,
         messages: messages
     }
-
-    console.log(body)
 
     const utf8Array = new TextEncoder().encode(JSON.stringify(body))
 
@@ -178,7 +187,6 @@ export async function chatWith(chat: {}): Promise<ChatMessage[]> {
     }
 
     const obj = await response.json()
-    console.log(obj["choices"][0].message)
 
     messages.push(obj["choices"][0].message)
     return messages

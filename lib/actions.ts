@@ -214,7 +214,7 @@ export async function chat(
     const obj = Object.fromEntries(formData.entries());
 
     try {
-        return await chatWith(obj)
+        return await chatWith(prevState, obj)
     } catch(error) {
         throw error;
     }
