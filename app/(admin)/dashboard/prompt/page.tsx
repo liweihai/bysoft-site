@@ -1,17 +1,25 @@
 import Link from 'next/link';
 
-import {countModels, findModels} from "@/lib/data"
-import {Prompt} from "@/lib/definitions"
+import {countModels, findModels, getModel} from "@/lib/data"
+import {Prompt, Customer} from "@/lib/definitions"
 import Search from "@/components/Search"
 import {formatDate} from '@/utils/datetime'
+import {auth} from '@/auth';
+import EditStateForm from '@/components/prompt/EditStateForm';
 
 export default async function PromptPage(props: { searchParams?: Promise<{query?: string; page?: string;}>}) {
     const params = await props.searchParams;
 
+    const session = await auth()
+    const customer = await getModel<Customer>("Customer", session.user.id)
+
     const query = params?.query || '';
     const page = Number(params?.page) || 1;
-
+    
     const conditions = {category: '提示语'}
+    if (customer.role == 0) {
+        conditions['customer_id'] = customer.id
+    }
     if (query) {
         conditions["title"] = {$regex: query}
     }
@@ -19,7 +27,7 @@ export default async function PromptPage(props: { searchParams?: Promise<{query?
     const total = await countModels("Article", conditions)
 
     const offset = (page - 1) * 20;
-    const blogs = await findModels<Prompt>("Article", conditions, {limit: 20, offset: (page - 1) * 20})
+    const prompts = await findModels<Prompt>("Article", conditions, {limit: 20, offset: (page - 1) * 20})
 
     const totalPages = Math.ceil(total / 20)
 
@@ -29,7 +37,7 @@ export default async function PromptPage(props: { searchParams?: Promise<{query?
                 <div className="flex justify-between">
                     <Search placeholder="搜索提示词..." />
                     <button className="mx-5 px-5 py-2 border-blue-500 border text-blue-500 rounded transition duration-300 hover:bg-blue-700 hover:text-white focus:outline-none">
-                        <Link href="/dashboard/blog/create">新建提示词</Link>
+                        <Link href="/dashboard/prompt/create">新建提示词</Link>
                     </button>
                 </div>
             </div>
@@ -41,23 +49,29 @@ export default async function PromptPage(props: { searchParams?: Promise<{query?
                             <th className="px-6 py-3 border-b-2 border-gray-300 text-left text-sm leading-4 text-blue-500 tracking-wider">标签</th>
                             <th className="px-6 py-3 border-b-2 border-gray-300 text-left text-sm leading-4 text-blue-500 tracking-wider">摘要</th>
                             <th className="px-6 py-3 border-b-2 border-gray-300 text-left text-sm leading-4 text-blue-500 tracking-wider">时间</th>
-                            <th className="px-6 py-3 border-b-2 border-gray-300 text-left text-sm leading-4 text-blue-500 tracking-wider">状态</th>
-                            <th className="px-6 py-3 border-b-2 border-gray-300"></th>
+                            {customer.role == 1 && (
+                                <th className="py-3 border-b-2 border-gray-300"></th>
+                            )}
+                            <th className="py-3 border-b-2 border-gray-300"></th>
                         </tr>
                     </thead>
                     <tbody className="bg-white">
-                    {blogs.map((blog) => {
-                    const href = "/dashboard/blog/edit/" + blog.id
+                    {prompts.map((prompt) => {
+                    const href = "/dashboard/prompt/edit/" + prompt.id
                     return (
-                    <tr key={blog.id}>
+                    <tr key={prompt.id}>
                         <td className="px-6 py-4 whitespace-no-wrap border-b border-gray-500">
-                            <div className="text-sm leading-5 text-blue-900">{ blog.title }</div>
+                            <div className="text-sm leading-5 text-blue-900">{ prompt.title }</div>
                         </td>
-                        <td className="px-6 py-4 whitespace-no-wrap border-b text-blue-900 border-gray-500 text-sm leading-5">{blog.keywords}</td>
-                        <td className="px-6 py-4 whitespace-no-wrap border-b text-blue-900 border-gray-500 text-sm leading-5">{blog.remark}</td>                        
-                        <td className="px-6 py-4 whitespace-no-wrap border-b border-gray-500 text-blue-900 text-sm leading-5">{formatDate(blog.create_time)}</td>
-                        <td className="px-6 py-4 whitespace-no-wrap border-b border-gray-500 text-blue-900 text-sm leading-5">{blog.state == 0 ? '下线' : '上线'}</td>
-                        <td className="px-6 py-4 whitespace-no-wrap text-right border-b border-gray-500 text-sm leading-5">
+                        <td className="px-6 py-4 whitespace-no-wrap border-b text-blue-900 border-gray-500 text-sm leading-5">{prompt.keywords}</td>
+                        <td className="px-6 py-4 whitespace-no-wrap border-b text-blue-900 border-gray-500 text-sm leading-5">{prompt.remark}</td>                        
+                        <td className="px-6 py-4 whitespace-no-wrap border-b border-gray-500 text-blue-900 text-sm leading-5">{formatDate(prompt.create_time)}</td>
+                        {customer.role == 1 && (
+                        <td className="py-4 whitespace-no-wrap text-right border-b border-gray-500 text-sm leading-5">
+                            <EditStateForm obj={prompt} />
+                        </td>
+                        )}
+                        <td className="py-4 whitespace-no-wrap text-right border-b border-gray-500 text-sm leading-5">
                             <button className="px-5 py-2 border-blue-500 border text-blue-500 rounded transition duration-300 hover:bg-blue-700 hover:text-white focus:outline-none"><Link href={ href }>修改</Link></button>
                         </td>
                     </tr>
@@ -71,7 +85,7 @@ export default async function PromptPage(props: { searchParams?: Promise<{query?
                         显示
                         <span className="font-medium"> { offset } </span>
                         到
-                        <span className="font-medium"> { blogs.length + offset} </span>
+                        <span className="font-medium"> { prompts.length + offset} </span>
                         共
                         <span className="font-medium"> { total } </span>
                         结果

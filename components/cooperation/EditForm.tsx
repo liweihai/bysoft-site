@@ -46,7 +46,7 @@ export default function EditForm() {
                         )}
 
                         <div className="mt-8 w-full border-t border-gray-800 p-2 pt-8 text-center">
-                            <a className="text-indigo-400">weihailee@bysoft.site</a>
+                            <a className="text-indigo-400">support@bysoft.site</a>
                             <p className="my-5 leading-normal"></p>
                         </div>
 

@@ -33,6 +33,11 @@ export default function SideNav({role}) {
             name: 'Api Key',
             href: '/dashboard/apikey'
         },
+        {
+            icon: DocumentDuplicateIcon,
+            name: '提示词',
+            href: '/dashboard/prompt'
+        }
     ]
     if (role == 1) {
         links.push({
@@ -40,11 +45,7 @@ export default function SideNav({role}) {
             name: '大模型',
             href: '/dashboard/endpoint'
         })
-        links.push({
-            icon: DocumentDuplicateIcon,
-            name: '提示词',
-            href: '/dashboard/prompt'
-        })
+
         links.push({
             icon: ChatBubbleBottomCenterTextIcon,
             name: '客户留言',

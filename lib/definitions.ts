@@ -1,5 +1,6 @@
 export type Prompt = {
     id: string;
+    customer_id: string;
     title: string;
     remark: string;
     content: string;
@@ -18,7 +19,6 @@ export type Config = {
     value: string;
     create_time: string;
     update_time: string;
-
 };
 
 export type Account = {

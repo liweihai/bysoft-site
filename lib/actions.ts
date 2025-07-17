@@ -44,6 +44,20 @@ export async function saveConfig(prevState, formData) {
     }
 }
 
+export async function editPromptState(prevState, formData) {
+    const obj = Object.fromEntries(formData.entries()) as Prompt;
+
+    try {
+        await updateModel<Prompt>("Article", obj.id, obj)
+
+        redirect('/dashboard/prompt')
+
+        return 1
+    } catch(error) {
+        throw error;
+    }
+}
+
 export async function savePrompt(prevState, formData) {
     const obj = Object.fromEntries(formData.entries()) as Prompt;
     obj.keywords = formData.getAll('keywords');
@@ -115,7 +129,7 @@ export async function saveQuota(prevState, formData) {
     }
 }
 
-export async function EditQuotaPriority(prevState, formData) {
+export async function editQuotaPriority(prevState, formData) {
     const obj = Object.fromEntries(formData.entries());
 
     try {

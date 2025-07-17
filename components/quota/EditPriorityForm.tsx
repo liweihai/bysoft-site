@@ -3,7 +3,7 @@
 import Link from 'next/link';
 import { useActionState } from 'react'
 
-import { EditQuotaPriority } from "@/lib/actions";
+import { editQuotaPriority } from "@/lib/actions";
 
 import {
   ArrowUpIcon,
@@ -11,7 +11,7 @@ import {
 } from '@heroicons/react/24/outline';
 
 export default function EditPriorityForm({id, direction}) {
-    const [message, formAction, isPending] = useActionState(EditQuotaPriority, undefined);
+    const [message, formAction, isPending] = useActionState(editQuotaPriority, undefined);
 
     return (
         <div className="min-w-full">
