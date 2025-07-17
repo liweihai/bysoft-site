@@ -3,12 +3,12 @@ import Image from "next/image";
 import Link from '@/components/Link'
 import Tag from '@/components/Tag'
 import {findModels} from "@/lib/data"
-import {Blog} from "@/lib/definitions"
+import {Prompt} from "@/lib/definitions"
 import siteMetadata from '@/data/siteMetadata'
 import { formatDate } from '@/utils/datetime'
 
 export default async function Home() {
-  const blogs = await findModels<Blog>("Article", {state: 1, category: '提示语'}, {limit: 5, offset: 0, order: 'create_time DESC'})
+  const blogs = await findModels<Prompt>("Article", {state: 1, category: '提示语'}, {limit: 5, offset: 0, order: 'create_time DESC'})
 
   return (
       <>
@@ -37,7 +37,7 @@ export default async function Home() {
                           <div>
                             <h2 className="text-2xl leading-8 font-bold tracking-tight">
                               <Link
-                                href={`/blog/${id}`}
+                                href={`/prompt/${id}`}
                                 className="text-gray-900 dark:text-gray-100 block text-xl"
                               >
                                 {title}
@@ -55,7 +55,7 @@ export default async function Home() {
                         </div>
                         <div className="text-base leading-6 font-medium">
                           <Link
-                            href={`/blog/${id}`}
+                            href={`/prompt/${id}`}
                             className="text-primary-500 hover:text-primary-600 dark:hover:text-primary-400"
                             aria-label={`Read more: "${title}"`}
                           >

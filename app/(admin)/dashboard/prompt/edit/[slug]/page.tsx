@@ -1,6 +1,6 @@
 import {getModel, findModels} from "@/lib/data"
-import {Config, Blog} from "@/lib/definitions"
-import EditForm from '@/components/blog/EditForm';
+import {Config, Prompt} from "@/lib/definitions"
+import EditForm from '@/components/prompt/EditForm';
 import { Suspense } from 'react'
 
 async function EditPage(props: { params: Promise<{ slug: string }> }) {
@@ -9,7 +9,7 @@ async function EditPage(props: { params: Promise<{ slug: string }> }) {
     const params = await props.params
     const slug = params.slug
 
-    const blog = await getModel<Blog>("Article", slug)
+    const blog = await getModel<Prompt>("Article", slug)
 
     return (
         <div className="mx-auto p-4">

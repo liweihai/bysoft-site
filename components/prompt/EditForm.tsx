@@ -2,10 +2,10 @@
 
 import {  useActionState } from 'react'
 
-import {saveBlog} from "@/lib/actions";
+import {savePrompt} from "@/lib/actions";
 
 export default function EditForm({obj, tags}) {
-    const [message, formAction, isPending] = useActionState(saveBlog, undefined);
+    const [message, formAction, isPending] = useActionState(savePrompt, undefined);
 
     return (
         <div className="mx-auto p-4">
@@ -59,7 +59,7 @@ export default function EditForm({obj, tags}) {
                 </div>
 
                 <div className="flex justify-end">
-                    <button type="submit" className="px-6 py-2 bg-indigo-500 text-white font-semibold rounded-md hover:bg-indigo-600 focus:outline-none">{isPending ? "保存文章中..." : "保存文章"}</button>
+                    <button type="submit" className="px-6 py-2 bg-indigo-500 text-white font-semibold rounded-md hover:bg-indigo-600 focus:outline-none">{isPending ? "保存提示词中..." : "保存提示词"}</button>
                 </div>
             </form>
         </div>

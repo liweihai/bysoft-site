@@ -4,7 +4,7 @@ import { Metadata } from 'next'
 import { notFound } from 'next/navigation'
 import siteMetadata from '@/data/siteMetadata'
 import {getModel} from "@/lib/data"
-import {Blog} from "@/lib/definitions"
+import {Prompt} from "@/lib/definitions"
 import { formatDate } from '@/utils/datetime'
 import { remark } from 'remark';
 import html from 'remark-html';
@@ -12,7 +12,7 @@ import html from 'remark-html';
 export async function generateMetadata(props: { params: Promise<{ slug: string }> }): Promise<Metadata | undefined> {
     const params = await props.params
     const slug = params.slug
-    const post = await getModel<Blog>("Article", slug)
+    const post = await getModel<Prompt>("Article", slug)
 
     const publishedAt = new Date(post.create_time).toISOString()
     const modifiedAt = new Date(post.update_time).toISOString()
@@ -46,7 +46,7 @@ export default async function Page(props: { params: Promise<{ slug: string }> })
     const params = await props.params
     const slug = params.slug
 
-    const post = await getModel<Blog>("Article", slug)
+    const post = await getModel<Prompt>("Article", slug)
 
     let contentHtml = post.content;
     if (post.content_type == 1) {

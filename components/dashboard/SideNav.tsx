@@ -10,7 +10,8 @@ import {
   Cog6ToothIcon,
   Battery50Icon,
   RectangleGroupIcon,
-  KeyIcon
+  KeyIcon,
+  ChatBubbleBottomCenterTextIcon
 } from '@heroicons/react/24/outline';
 
 export default function SideNav({role}) {
@@ -41,8 +42,13 @@ export default function SideNav({role}) {
         })
         links.push({
             icon: DocumentDuplicateIcon,
-            name: '提示语',
-            href: '/dashboard/blog'
+            name: '提示词',
+            href: '/dashboard/prompt'
+        })
+        links.push({
+            icon: ChatBubbleBottomCenterTextIcon,
+            name: '客户留言',
+            href: '/dashboard/cooperation'
         })
         links.push({
             icon: Cog6ToothIcon,

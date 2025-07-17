@@ -1,4 +1,4 @@
-export type Blog = {
+export type Prompt = {
     id: string;
     title: string;
     remark: string;

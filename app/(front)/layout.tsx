@@ -11,49 +11,29 @@ import Footer from '@/components/Footer'
 import siteMetadata from '@/data/siteMetadata'
 
 const space_grotesk = Space_Grotesk({
-  subsets: ['latin'],
-  display: 'swap',
-  variable: '--font-space-grotesk',
+    subsets: ['latin'],
+    display: 'swap',
+    variable: '--font-space-grotesk',
 })
 
 export const metadata: Metadata = {
-  metadataBase: new URL(siteMetadata.siteUrl),
-  title: {
-    default: siteMetadata.title,
-    template: `%s | ${siteMetadata.title}`,
-  },
-  description: siteMetadata.description,
-  openGraph: {
-    title: siteMetadata.title,
+    metadataBase: new URL(siteMetadata.siteUrl),
+    title: {
+        default: siteMetadata.title,
+        template: `%s | ${siteMetadata.title}`,
+    },
     description: siteMetadata.description,
-    url: './',
-    siteName: siteMetadata.title,
-    images: [siteMetadata.socialBanner],
-    locale: 'en_US',
-    type: 'website',
-  },
-  alternates: {
-    canonical: './',
-    types: {
-      'application/rss+xml': `${siteMetadata.siteUrl}/feed.xml`,
-    },
-  },
-  robots: {
-    index: true,
-    follow: true,
-    googleBot: {
-      index: true,
-      follow: true,
-      'max-video-preview': -1,
-      'max-image-preview': 'large',
-      'max-snippet': -1,
-    },
-  },
-  twitter: {
-    title: siteMetadata.title,
-    card: 'summary_large_image',
-    images: [siteMetadata.socialBanner],
-  },
+    robots: {
+        index: true,
+        follow: true,
+        googleBot: {
+            index: true,
+            follow: true,
+            'max-video-preview': -1,
+            'max-image-preview': 'large',
+            'max-snippet': -1,
+      },
+    }
 }
 
 export default function RootLayout({ children }: { children: React.ReactNode }) {
@@ -61,9 +41,9 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
 
     return (
         <html
-          lang={siteMetadata.language}
-          className={`${space_grotesk.variable} scroll-smooth`}
-          suppressHydrationWarning
+            lang={siteMetadata.language}
+            className={`${space_grotesk.variable} scroll-smooth`}
+            suppressHydrationWarning
         >
             <link
               rel="icon"
@@ -80,7 +60,6 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
                 <main className="mx-auto max-w-6xl bg-white py-20 px-12 shadow-xl mb-24">{children}</main>
                 <Footer />
             </body>
-
         </html>
     )
 }

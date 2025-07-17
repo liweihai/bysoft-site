@@ -6,7 +6,7 @@ import { AuthError } from 'next-auth';
 
 import { signIn } from '@/auth';
 import {updateModel, createModel, deleteModel, getModel, findModels} from "@/lib/data"
-import {Config, Blog, Endpoint, QuotaGroup, Quota, ApiKey, Cooperation} from "@/lib/definitions"
+import {Config, Prompt, Endpoint, QuotaGroup, Quota, ApiKey, Cooperation} from "@/lib/definitions"
 
 export async function authenticate(
   prevState: string | undefined,
@@ -44,18 +44,18 @@ export async function saveConfig(prevState, formData) {
     }
 }
 
-export async function saveBlog(prevState, formData) {
-    const obj = Object.fromEntries(formData.entries()) as Blog;
+export async function savePrompt(prevState, formData) {
+    const obj = Object.fromEntries(formData.entries()) as Prompt;
     obj.keywords = formData.getAll('keywords');
 
     try {
         if (obj.id) {
-            await updateModel<Blog>("Article", obj.id, obj)
+            await updateModel<Prompt>("Article", obj.id, obj)
         } else {
-            await createModel<Blog>("Article", obj)
+            await createModel<Prompt>("Article", obj)
         }
 
-        redirect('/dashboard/blog')
+        redirect('/dashboard/prompt')
 
         return 1
     } catch(error) {

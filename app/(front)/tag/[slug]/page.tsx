@@ -1,8 +1,8 @@
 import { notFound } from 'next/navigation'
 
-import List from '@/components/blog/List'
+import List from '@/components/prompt/List'
 import {findModels, countModels} from "@/lib/data"
-import {Blog} from "@/lib/definitions"
+import {Prompt} from "@/lib/definitions"
 
 const POSTS_PER_PAGE = 20
 
@@ -15,10 +15,10 @@ export default async function TagPage(props: { params: Promise<{ slug: string }>
 
     const conditions = {"state": 1, category: '提示语', "keywords": {"$regex": tag}}
 
-    const totalBlogs = await countModels("Article", conditions)
-    const totalPages = Math.ceil(totalBlogs / POSTS_PER_PAGE)
+    const totalPrompts = await countModels("Article", conditions)
+    const totalPages = Math.ceil(totalPrompts / POSTS_PER_PAGE)
 
-    const blogs = await findModels<Blog>("Article", conditions, {limit: POSTS_PER_PAGE, offset: POSTS_PER_PAGE *(page - 1), order: 'create_time DESC'})
+    const blogs = await findModels<Prompt>("Article", conditions, {limit: POSTS_PER_PAGE, offset: POSTS_PER_PAGE *(page - 1), order: 'create_time DESC'})
 
     const pagination = {
       currentPage: page,

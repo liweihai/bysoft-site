@@ -1,11 +1,11 @@
 import Link from 'next/link';
 
 import {countModels, findModels} from "@/lib/data"
-import {Blog} from "@/lib/definitions"
+import {Prompt} from "@/lib/definitions"
 import Search from "@/components/Search"
 import {formatDate} from '@/utils/datetime'
 
-export default async function BlogPage(props: { searchParams?: Promise<{query?: string; page?: string;}>}) {
+export default async function PromptPage(props: { searchParams?: Promise<{query?: string; page?: string;}>}) {
     const params = await props.searchParams;
 
     const query = params?.query || '';
@@ -19,7 +19,7 @@ export default async function BlogPage(props: { searchParams?: Promise<{query?: 
     const total = await countModels("Article", conditions)
 
     const offset = (page - 1) * 20;
-    const blogs = await findModels<Blog>("Article", conditions, {limit: 20, offset: (page - 1) * 20})
+    const blogs = await findModels<Prompt>("Article", conditions, {limit: 20, offset: (page - 1) * 20})
 
     const totalPages = Math.ceil(total / 20)
 
@@ -27,9 +27,9 @@ export default async function BlogPage(props: { searchParams?: Promise<{query?: 
         <div className="rounded-2xl bg-white px-5 pb-5 pt-5 dark:bg-white/[0.03] sm:px-6 sm:pt-6">
             <div className="align-middle rounded-tl-lg rounded-tr-lg inline-block w-full py-4 overflow-hidden bg-white px-12">
                 <div className="flex justify-between">
-                    <Search placeholder="搜索文章..." />
+                    <Search placeholder="搜索提示词..." />
                     <button className="mx-5 px-5 py-2 border-blue-500 border text-blue-500 rounded transition duration-300 hover:bg-blue-700 hover:text-white focus:outline-none">
-                        <Link href="/dashboard/blog/create">新建提示语</Link>
+                        <Link href="/dashboard/blog/create">新建提示词</Link>
                     </button>
                 </div>
             </div>

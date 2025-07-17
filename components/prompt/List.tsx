@@ -6,7 +6,7 @@ import { usePathname } from 'next/navigation'
 import { formatDate } from '@/utils/datetime'
 import Link from '@/components/Link'
 import Tag from '@/components/Tag'
-import {Blog} from '@/lib/definitions'
+import {Prompt} from '@/lib/definitions'
 import siteMetadata from '@/data/siteMetadata'
 
 interface PaginationProps {
@@ -15,9 +15,9 @@ interface PaginationProps {
 }
 
 interface ListLayoutProps {
-  posts: Blog[]
+  posts: Prompt[]
   title: string
-  initialDisplayPosts?: Blog[]
+  initialDisplayPosts?: Prompt[]
   pagination?: PaginationProps
 }
 
@@ -98,7 +98,7 @@ export default function List({
                           <div>
                             <h2 className="text-2xl leading-8 font-bold tracking-tight">
                               <Link
-                                href={`/blog/${id}`}
+                                href={`/prompt/${id}`}
                                 className="text-gray-900 dark:text-gray-100 block text-xl"
                               >
                                 {title}
@@ -116,7 +116,7 @@ export default function List({
                         </div>
                         <div className="text-base leading-6 font-medium">
                           <Link
-                            href={`/blog/${id}`}
+                            href={`/prompt/${id}`}
                             className="text-primary-500 hover:text-primary-600 dark:hover:text-primary-400"
                             aria-label={`Read more: "${title}"`}
                           >
