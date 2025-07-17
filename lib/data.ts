@@ -1,6 +1,6 @@
 import { getCloudflareContext } from "@opennextjs/cloudflare";
 import { CredentialsSignin } from 'next-auth';
-import { Account, ServerError } from "./definitions";
+import { Account, ServerError, Prompt, ChatMessage } from "./definitions";
 
 export async function login(username: String, password: String): Promise<Account> {
     try {
@@ -116,3 +116,71 @@ export async function callApi(path: string, data: {}): Promise<Response> {
 
     return response
 }
+
+export async function chatWith(chat: {}): Promise<ChatMessage[]> {
+    const { env, cf, ctx } = await getCloudflareContext({async: true});
+
+    let baseUrl  = ""
+    let apiKey   = ""
+    let model    = ""
+    let promptId = null
+    let keyVals  = {}
+    Object.keys(chat).forEach(function(key) {
+        if (key == 'model') {
+            model = chat[key]
+        } else if (key == "prompt_id") {
+            promptId = chat[key]
+        } else if (key == "api_key") {
+            apiKey = chat[key]
+        } else if (key == "base_url") {
+            baseUrl = chat[key]
+        } else {
+            keyVals[key] = chat[key]
+        }
+    })
+
+    const prompt = await getModel<Prompt>("Article", promptId)
+    let content = prompt.content
+    Object.keys(keyVals).forEach(function(k) {
+        content = content.replaceAll("{{" + k + "}}", keyVals[k])
+    })
+
+    const messages = [{
+        role: "user",
+        content: content
+    }]
+
+    const body = {
+        model: model,
+        messages: messages
+    }
+
+    console.log(body)
+
+    const utf8Array = new TextEncoder().encode(JSON.stringify(body))
+
+    const options = {
+        method: 'POST',
+        headers: { 
+            'Content-Type': 'application/json',
+            'User-Agent': 'Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/135.0.0.0 Safari/537.36 Edg/135.0.0.0',
+            'Authorization': 'Bearer ' + apiKey
+        },
+        body: utf8Array,
+    };
+    
+    const response = await fetch(baseUrl + "/chat/completions", options);
+
+    if (!response.ok) {
+        const error : ServerError = await response.json();
+        console.error('Error response:', error);
+        throw error
+    }
+
+    const obj = await response.json()
+    console.log(obj["choices"][0].message)
+
+    messages.push(obj["choices"][0].message)
+    return messages
+}
+

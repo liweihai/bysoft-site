@@ -138,10 +138,10 @@ export async function POST(request: NextRequest) {
                 
                 return modifiedResponse;
             } else {
-                console.error(targetUrl.toString() + ' failed');
+                console.error(targetUrl.toString() + ' failed', newBody, responseBody);
             }
         } catch (error) {
-            console.error(targetUrl.toString() + ' failed', error);
+            console.error(targetUrl.toString() + ' failed', error, newBody);
         }
     }
 

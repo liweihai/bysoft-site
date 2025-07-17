@@ -1,6 +1,5 @@
 'use client'
 
-import TinyMCEEditor from '@/components/TinyMCEEditor'
 import { useActionState, useState } from 'react'
 import {
   ExclamationCircleIcon,

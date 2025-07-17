@@ -1,4 +1,4 @@
-export const formatDate = (date: string, locale = 'en-US') => {
+export const formatDate = (date: string, locale = 'zh-CN') => {
   const options: Intl.DateTimeFormatOptions = {
     year: 'numeric',
     month: 'long',

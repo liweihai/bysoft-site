@@ -5,7 +5,7 @@ import { redirect } from 'next/navigation';
 import { AuthError } from 'next-auth';
 
 import { signIn } from '@/auth';
-import {updateModel, createModel, deleteModel, getModel, findModels} from "@/lib/data"
+import {updateModel, createModel, deleteModel, getModel, findModels, chatWith} from "@/lib/data"
 import {Config, Prompt, Endpoint, QuotaGroup, Quota, ApiKey, Cooperation} from "@/lib/definitions"
 
 export async function authenticate(
@@ -205,4 +205,18 @@ export async function deleteOne(prevState, formData) {
     } catch(error) {
         throw error;
     }
+}
+
+export async function chat(
+  prevState: [],
+  formData: FormData,
+) {
+    const obj = Object.fromEntries(formData.entries());
+
+    try {
+        return await chatWith(obj)
+    } catch(error) {
+        throw error;
+    }
+
 }

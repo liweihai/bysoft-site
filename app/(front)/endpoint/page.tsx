@@ -92,7 +92,7 @@ export default async function EndpointPage() {
                                 https://www.bysoft.site/api/single-llm/v1
                             </dd>
                         </div>
-                        <div className="bg-gray-50 px-4 py-5 sm:grid sm:grid-cols-3 sm:gap-4 sm:px-6">
+                        <div className="bg-white px-4 py-5 sm:grid sm:grid-cols-3 sm:gap-4 sm:px-6">
                             <dt className="text-sm font-medium text-gray-500">
                                 Api Key
                             </dt>
@@ -100,7 +100,7 @@ export default async function EndpointPage() {
                                 上列免费大模型的 Api Key，用,分割，不使用某个大模型则直接用，。
                             </dd>
                         </div>
-                        <div className="bg-white px-4 py-5 sm:grid sm:grid-cols-3 sm:gap-4 sm:px-6">
+                        <div className="bg-gray-50 px-4 py-5 sm:grid sm:grid-cols-3 sm:gap-4 sm:px-6">
                             <dt className="text-sm font-medium text-gray-500">
                                 模型名
                             </dt>
