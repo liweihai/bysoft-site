@@ -118,77 +118,93 @@ export async function callApi(path: string, data: {}): Promise<Response> {
 }
 
 export async function chatWith(history: [], chat: {}): Promise<ChatMessage[]> {
-    const { env, cf, ctx } = await getCloudflareContext({async: true});
-
-    let baseUrl  = ""
-    let apiKey   = ""
-    let model    = ""
-    let promptId = null
-    let keyVals  = {}
-    let content = ""
-    Object.keys(chat).forEach(function(key) {
-        if (key == 'model') {
-            model = chat[key]
-        } else if (key == "prompt_id") {
-            promptId = chat[key]
-        } else if (key == "api_key") {
-            apiKey = chat[key]
-        } else if (key == "base_url") {
-            baseUrl = chat[key]
-        } else if (key == "content") {
-            content = chat[key]
-        } else {
-            keyVals[key] = chat[key]
-        }
-    })
-
-    if (history.length == 0) {
-        const prompt = await getModel<Prompt>("Article", promptId)
-        content = prompt.content
-        Object.keys(keyVals).forEach(function(k) {
-            content = content.replaceAll("{{" + k + "}}", keyVals[k])
-        })
-    }
-
     const messages = [];
 
     for(var i = 0; i < history.length; i++) {
         messages.push(history[i])
     }
 
-    messages.push({
-        role: "user",
-        content: content
-    })
+    try {
+        let baseUrl  = ""
+        let apiKey   = ""
+        let model    = ""
+        let promptId = null
+        let keyVals  = {}
+        let content = ""
+        Object.keys(chat).forEach(function(key) {
+            if (key == 'model') {
+                model = chat[key]
+            } else if (key == "prompt_id") {
+                promptId = chat[key]
+            } else if (key == "api_key") {
+                apiKey = chat[key]
+            } else if (key == "base_url") {
+                baseUrl = chat[key]
+            } else if (key == "content") {
+                content = chat[key]
+            } else {
+                keyVals[key] = chat[key]
+            }
+        })
 
-    const body = {
-        model: model,
-        messages: messages
+        if (history.length == 0) {
+            const prompt = await getModel<Prompt>("Article", promptId)
+            content = prompt.content
+            Object.keys(keyVals).forEach(function(k) {
+                content = content.replaceAll("{{" + k + "}}", keyVals[k])
+            })
+        }
+
+        messages.push({
+            role: "user",
+            content: content
+        })
+
+        const body = {
+            model: model,
+            messages: messages
+        }
+
+        const utf8Array = new TextEncoder().encode(JSON.stringify(body))
+
+        const options = {
+            method: 'POST',
+            headers: { 
+                'Content-Type': 'application/json',
+                'User-Agent': 'Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/135.0.0.0 Safari/537.36 Edg/135.0.0.0',
+                'Authorization': 'Bearer ' + apiKey
+            },
+            body: utf8Array,
+        cache: <RequestCache><any>'no-cache'
+        };
+        
+        const timestamp = Date.now();
+        const response = await fetch(baseUrl + "/chat/completions?t=" + timestamp, options);
+
+        if (!response.ok) {
+            const error : ServerError = await response.json();
+            console.error('Error response:', error);
+
+            messages.push({
+                role: 'assistant',
+                content: error.toString()
+            })
+            return messages
+        }
+
+        const obj = await response.json()
+
+        messages.push(obj["choices"][0].message)
+        return messages
+    } catch(error) {
+        console.error('Error response message:', error);
+
+        messages.push({
+            role: 'assistant',
+            content: error.toString()
+        })
+
+        return messages
     }
-
-    const utf8Array = new TextEncoder().encode(JSON.stringify(body))
-
-    const options = {
-        method: 'POST',
-        headers: { 
-            'Content-Type': 'application/json',
-            'User-Agent': 'Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/135.0.0.0 Safari/537.36 Edg/135.0.0.0',
-            'Authorization': 'Bearer ' + apiKey
-        },
-        body: utf8Array,
-    };
-    
-    const response = await fetch(baseUrl + "/chat/completions", options);
-
-    if (!response.ok) {
-        const error : ServerError = await response.json();
-        console.error('Error response:', error);
-        throw error
-    }
-
-    const obj = await response.json()
-
-    messages.push(obj["choices"][0].message)
-    return messages
 }
 

@@ -5,7 +5,8 @@ import {chat} from "@/lib/actions";
 
 export default function ChatForm({obj, base_url, model, api_key}) {
     const regexp  = /{{.+}}/g
-    const matches = obj.content.match(regexp)
+    let matches = obj.content.match(regexp)
+    matches = [...new Set(matches)]
 
     const [messages, formAction, isPending] = useActionState(chat, []);
 
