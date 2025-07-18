@@ -7,8 +7,6 @@ import {findModels, getModel, updateModel} from "@/lib/data"
 import {ApiKey, QuotaGroup, Quota, Endpoint} from "@/lib/definitions"
 
 export async function POST(request: NextRequest) {
-    const { env, cf, ctx } = await getCloudflareContext({async: true});
-
     const authorizations = (request.headers.get("Authorization") || '').split(" ")
 
     if (authorizations.length < 2) {

@@ -6,7 +6,7 @@ import { AuthError } from 'next-auth';
 
 import { signIn } from '@/auth';
 import {updateModel, createModel, deleteModel, getModel, findModels, chatWith} from "@/lib/data"
-import {Config, Prompt, Endpoint, QuotaGroup, Quota, ApiKey, Cooperation} from "@/lib/definitions"
+import {Config, Prompt, Endpoint, QuotaGroup, Quota, ApiKey, Cooperation, Chat} from "@/lib/definitions"
 
 export async function authenticate(
   prevState: string | undefined,
@@ -207,10 +207,7 @@ export async function deleteOne(prevState, formData) {
     }
 }
 
-export async function chat(
-  prevState: [],
-  formData: FormData,
-) {
+export async function aiChat(prevState: Chat, formData: FormData) {
     const obj = Object.fromEntries(formData.entries());
 
     try {

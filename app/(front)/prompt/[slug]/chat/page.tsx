@@ -3,6 +3,8 @@ import {Prompt, ApiKey} from "@/lib/definitions"
 import ChatForm from '@/components/prompt/ChatForm';
 import { Suspense } from 'react'
 import {auth} from '@/auth';
+import { Chat } from "@/lib/definitions";
+import { headers } from "next/headers";
 
 async function ChatPage(props: { params: Promise<{ slug: string }> }) {
     const params = await props.params
@@ -12,8 +14,19 @@ async function ChatPage(props: { params: Promise<{ slug: string }> }) {
 
     const session = await auth()
 
+    const chat = {} as Chat;
+    chat.prompt_id = prompt.id
+    chat.base_url  = "https://www.bysoft.site/api/single-llm/v1"
+    chat.model     = "free-text-model"
+    chat.messages  = []
+    chat.api_key   = ""
+    chat.headers   = await headers()
+
     if (session) {
-        var apikeys = await findModels<ApiKey>("ApiKey", {customer_id: session.user.id}, {limit: 1})
+        var apiKeys = await findModels<ApiKey>("ApiKey", {customer_id: session.user.id}, {limit: 1})
+        if (apiKeys.length > 0) {
+            chat.api_key = apiKeys[0].id
+        }
     }
 
     return (
@@ -28,7 +41,7 @@ async function ChatPage(props: { params: Promise<{ slug: string }> }) {
                 </div>
             </header>
             <Suspense>
-                <ChatForm obj={prompt} base_url="https://www.bysoft.site/api/single-llm/v1" model="free-text-model" api_key={session ? apikeys[0].id: ''} />
+                <ChatForm obj={prompt} chatInit={chat} />
             </Suspense>
         </div>
     )

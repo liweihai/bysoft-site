@@ -3,7 +3,7 @@
 import {useState, useActionState} from 'react'
 import {deleteOne} from "@/lib/actions";
 
-export default function EditForm({obj}) {
+export default function DelForm({obj}) {
     const [message, formAction, isPending] = useActionState(deleteOne, undefined);
 
     return (

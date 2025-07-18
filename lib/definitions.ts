@@ -95,15 +95,16 @@ export type Cooperation = {
     create_time: string;
 };
 
-export type Chat = {
-    role: string;
-    content: string;
-    base_url: string;
-    model: string;
-    api_key: string;
-};
-
 export type ChatMessage = {
     role: string;
     content: string;
 }
+
+export type Chat = {
+    prompt_id: string;
+    base_url: string;
+    model: string;
+    api_key: string;
+    messages: ChatMessage[],
+    headers: Headers;
+};

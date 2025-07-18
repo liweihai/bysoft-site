@@ -1,6 +1,7 @@
 import { getCloudflareContext } from "@opennextjs/cloudflare";
 import { CredentialsSignin } from 'next-auth';
-import { Account, ServerError, Prompt, ChatMessage } from "./definitions";
+import { Account, ServerError, Prompt, Chat, ChatMessage } from "./definitions";
+import { NextRequest, NextResponse } from "next/server";
 
 export async function login(username: String, password: String): Promise<Account> {
     try {
@@ -117,94 +118,92 @@ export async function callApi(path: string, data: {}): Promise<Response> {
     return response
 }
 
-export async function chatWith(history: [], chat: {}): Promise<ChatMessage[]> {
-    const messages = [];
+export async function chatWith(chat: Chat, keyVals: {}): Promise<Chat> {
+    const newChat = {} as Chat;
 
-    for(var i = 0; i < history.length; i++) {
-        messages.push(history[i])
+    newChat.prompt_id = chat.prompt_id
+    newChat.base_url  = chat.base_url
+    newChat.model     = chat.model
+    newChat.api_key   = chat.api_key
+    newChat.headers   = chat.headers
+    newChat.messages  = []
+    for(var i = 0; i < chat.messages.length; i++) {
+        newChat.messages.push(chat.messages[i])
     }
 
     try {
-        let baseUrl  = ""
-        let apiKey   = ""
-        let model    = ""
-        let promptId = null
-        let keyVals  = {}
         let content = ""
-        Object.keys(chat).forEach(function(key) {
-            if (key == 'model') {
-                model = chat[key]
-            } else if (key == "prompt_id") {
-                promptId = chat[key]
-            } else if (key == "api_key") {
-                apiKey = chat[key]
-            } else if (key == "base_url") {
-                baseUrl = chat[key]
-            } else if (key == "content") {
-                content = chat[key]
-            } else {
-                keyVals[key] = chat[key]
-            }
-        })
 
-        if (history.length == 0) {
-            const prompt = await getModel<Prompt>("Article", promptId)
+        if (chat.messages.length == 0) {
+            const prompt = await getModel<Prompt>("Article", chat.prompt_id)
             content = prompt.content
             Object.keys(keyVals).forEach(function(k) {
                 content = content.replaceAll("{{" + k + "}}", keyVals[k])
             })
+        } else {
+            content = keyVals['content']
         }
 
-        messages.push({
-            role: "user",
+        newChat.messages.push({
+            role: 'user',
             content: content
         })
 
         const body = {
-            model: model,
-            messages: messages
+            model: chat.model,
+            messages: newChat.messages
         }
 
-        const utf8Array = new TextEncoder().encode(JSON.stringify(body))
+        const cleanedHeaders = new Headers();
+        for (const [key, value] of chat.headers) {
+            // Skip Cloudflare-specific headers and other headers we want to clean
+            if (!key.toLowerCase().startsWith('cf-') && 
+                !['x-real-ip', 'x-forwarded-for', 'x-forwarded-proto', 
+                  'x-forwarded-host', 'x-forwarded-port', 'x-forwarded-scheme',
+                  'x-forwarded-ssl', 'cdn-loop'].includes(key.toLowerCase())) {
+                cleanedHeaders.set(key, value);
+            }
+        }
 
-        const options = {
-            method: 'POST',
-            headers: { 
-                'Content-Type': 'application/json',
-                'User-Agent': 'Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/135.0.0.0 Safari/537.36 Edg/135.0.0.0',
-                'Authorization': 'Bearer ' + apiKey
-            },
-            body: utf8Array,
-        cache: <RequestCache><any>'no-cache'
-        };
-        
+        cleanedHeaders.set("Authorization", "Bearer: " + chat.api_key)
+
+        const utf8Array = new TextEncoder().encode(JSON.stringify(body))
+        cleanedHeaders.set("content-length", '' + utf8Array.length)
+
         const timestamp = Date.now();
-        const response = await fetch(baseUrl + "/chat/completions?t=" + timestamp, options);
+        const modifiedRequest = new NextRequest(chat.base_url + "/chat/completions?t=" + timestamp, {
+            method: "POST",
+            headers: cleanedHeaders,
+            body: utf8Array,
+            redirect: 'follow'
+        });
+
+        const response = await fetch(modifiedRequest);
 
         if (!response.ok) {
-            const error : ServerError = await response.json();
+            const error = await response.text();
             console.error('Error response:', error);
 
-            messages.push({
+            newChat.messages.push({
                 role: 'assistant',
-                content: error.toString()
+                content: error
             })
-            return messages
+            return newChat
         }
 
         const obj = await response.json()
 
-        messages.push(obj["choices"][0].message)
-        return messages
+        newChat.messages.push(obj["choices"][0].message)
+        return newChat
     } catch(error) {
         console.error('Error response message:', error);
 
-        messages.push({
+        newChat.messages.push({
             role: 'assistant',
             content: error.toString()
         })
 
-        return messages
+        return newChat
     }
 }
 

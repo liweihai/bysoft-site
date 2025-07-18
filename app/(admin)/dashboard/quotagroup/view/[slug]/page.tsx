@@ -6,6 +6,7 @@ import { auth } from '@/auth';
 import DelForm from '@/components/DelForm';
 import EditForm from '@/components/quota/EditForm';
 import EditPriorityForm from '@/components/quota/EditPriorityForm';
+import CopyButton from '@/components/CopyButton';
 
 export default async function QuotaGroupViewPage(props: { params: Promise<{ slug: string }> }) {
     const params = await props.params
@@ -38,7 +39,8 @@ export default async function QuotaGroupViewPage(props: { params: Promise<{ slug
                             <th className="px-6 py-3 border-b-2 border-gray-300 text-left text-sm leading-4 text-blue-500 tracking-wider">TPM</th>
                             <th className="px-6 py-3 border-b-2 border-gray-300 text-left text-sm leading-4 text-blue-500 tracking-wider">TPD</th>
                             <th className="px-6 py-3 border-b-2 border-gray-300 text-left text-sm leading-4 text-blue-500 tracking-wider">赠送令牌</th>
-                            <th className="px-6 py-3 border-b-2 border-gray-300"></th>
+                            <th className="px-6 py-3 border-b-2 border-gray-300 text-left text-sm leading-4 text-blue-500 tracking-wider">Api Key</th>
+                            <th className="py-3 border-b-2 border-gray-300"></th>
                         </tr>
                     </thead>
                     <tbody className="bg-white">
@@ -74,7 +76,10 @@ export default async function QuotaGroupViewPage(props: { params: Promise<{ slug
                         <td className="px-6 py-4 whitespace-no-wrap border-b text-blue-900 border-gray-500 text-sm leading-5">
                             {quota.tokens_used} / { endpoint.free_tokens}
                         </td>
-                        <td className="px-6 py-4 whitespace-no-wrap text-right border-b border-gray-500 text-sm leading-5">
+                        <td className="px-6 py-4 whitespace-no-wrap border-b text-blue-900 border-gray-500 text-sm leading-5">
+                             <CopyButton text={quota.api_key} />
+                        </td>
+                        <td className="py-4 whitespace-no-wrap text-right border-b border-gray-500 text-sm leading-5">
                              <DelForm obj={{model:"Quota", id:quota.id, redirect_url: '/dashboard/quotagroup/view/' + quotaGroup.id}} />
                         </td>
                     </tr>
