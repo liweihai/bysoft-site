@@ -17,7 +17,6 @@ export async function generateMetadata(props: { params: Promise<{ slug: string }
     const publishedAt = new Date(post.create_time).toISOString()
     const modifiedAt = new Date(post.update_time).toISOString()
 
-
     let imageList = [siteMetadata.socialBanner]
 
     return {
@@ -56,6 +55,13 @@ export default async function Page(props: { params: Promise<{ slug: string }> })
         const processedContent = await remark().use(html).process(post.content);
         contentHtml = processedContent.toString();
     }
+
+    const regexp  = /{{.+}}/g
+    let matches = contentHtml.match(regexp)
+    for(var i = 0; i < matches.length; i++) {
+        var match = matches[i].replaceAll("{{", "").replaceAll("}}", "")
+        contentHtml = contentHtml.replaceAll(matches[i], "<var>" + match + "</var>")
+    }
     
     return (
         <section className="mx-auto max-w-4xl px-4 sm:px-6 xl:max-w-5xl xl:px-0">
@@ -93,7 +99,7 @@ export default async function Page(props: { params: Promise<{ slug: string }> })
                 <div className="flex justify-between">
                     <div> </div>
                     <button className="mx-5 px-5 py-2 border-blue-500 border text-blue-500 rounded transition duration-300 hover:bg-blue-700 hover:text-white focus:outline-none">
-                        <Link href={chatHref}>试用该提示词</Link>
+                        <Link href={chatHref}>试用一下</Link>
                     </button>
                 </div>
             </div>

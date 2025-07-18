@@ -180,3 +180,9 @@ input:-webkit-autofill:focus {
 code {
   white-space: normal;
 }
+
+var {
+  margin: 10px; 
+  border: 2px solid oklch(0.656 0.241 354.308); 
+  padding: 3px
+}
