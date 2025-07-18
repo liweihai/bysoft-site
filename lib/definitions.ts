@@ -97,7 +97,7 @@ export type Cooperation = {
 
 export type ChatMessage = {
     role: string;
-    content: string;
+    content: string
 }
 
 export type Chat = {
@@ -106,5 +106,6 @@ export type Chat = {
     model: string;
     api_key: string;
     messages: ChatMessage[],
+    htmls: string[],
     headers: Headers;
 };

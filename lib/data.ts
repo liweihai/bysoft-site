@@ -2,6 +2,8 @@ import { getCloudflareContext } from "@opennextjs/cloudflare";
 import { CredentialsSignin } from 'next-auth';
 import { Account, ServerError, Prompt, Chat, ChatMessage } from "./definitions";
 import { NextRequest, NextResponse } from "next/server";
+import { remark } from 'remark';
+import html from 'remark-html';
 
 export async function login(username: String, password: String): Promise<Account> {
     try {
@@ -127,8 +129,10 @@ export async function chatWith(chat: Chat, keyVals: {}): Promise<Chat> {
     newChat.api_key   = chat.api_key
     newChat.headers   = chat.headers
     newChat.messages  = []
+    newChat.htmls     = []
     for(var i = 0; i < chat.messages.length; i++) {
         newChat.messages.push(chat.messages[i])
+        newChat.htmls.push(chat.htmls[i])
     }
 
     try {
@@ -148,6 +152,8 @@ export async function chatWith(chat: Chat, keyVals: {}): Promise<Chat> {
             role: 'user',
             content: content
         })
+        let htmlContent = await remark().use(html).process(content)
+        newChat.htmls.push(htmlContent.toString())
 
         const body = {
             model: chat.model,
@@ -186,22 +192,28 @@ export async function chatWith(chat: Chat, keyVals: {}): Promise<Chat> {
 
             newChat.messages.push({
                 role: 'assistant',
-                content: error
+                content: ""
             })
+            newChat.htmls.push(error)
             return newChat
         }
 
         const obj = await response.json()
 
-        newChat.messages.push(obj["choices"][0].message)
+        const message = obj["choices"][0].message
+        newChat.messages.push(message)
+
+        htmlContent = await remark().use(html).process(message.content)
+        newChat.htmls.push(htmlContent.toString())
         return newChat
     } catch(error) {
         console.error('Error response message:', error);
 
         newChat.messages.push({
             role: 'assistant',
-            content: error.toString()
+            content: ""
         })
+        newChat.htmls.push(error.toString())
 
         return newChat
     }

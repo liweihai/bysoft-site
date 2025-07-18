@@ -50,10 +50,12 @@ export default function ChatForm({obj, chatInit}) {
                                     alt="user"
                                     className="mr-2 flex h-8 w-8 rounded-full sm:mr-4"
                                     src="https://dummyimage.com/256x256/363536/ffffff&text=U"
+                                    width="48"
+                                    height="48"
                                 />
 
                                 <div className="flex rounded-b-xl rounded-tr-xl bg-slate-50 p-4 dark:bg-slate-800 sm:max-w-md md:max-w-2xl">
-                                    <p>{message.content}</p>
+                                    <p dangerouslySetInnerHTML={{ __html: (newChat || chat).htmls[i] }}></p>
                                 </div>
                             </div>
                         )}
@@ -63,11 +65,13 @@ export default function ChatForm({obj, chatInit}) {
                                     alt="assistant"
                                     className="ml-2 h-8 w-8 rounded-full"
                                     src="https://dummyimage.com/128x128/354ea1/ffffff&text=G"
+                                    width="48"
+                                    height="48"
                                 />
                                 <div
                                     className="flex min-h-[85px] rounded-b-xl rounded-tl-xl bg-slate-50 p-4 dark:bg-slate-800 sm:min-h-0 sm:max-w-md md:max-w-2xl"
                                 >
-                                    <p>{message.content}</p>
+                                    <p dangerouslySetInnerHTML={{ __html: (newChat || chat).htmls[i] }}></p>
                                 </div>
                                 <div
                                     className="mr-2 mt-1 flex flex-col-reverse gap-2 text-slate-500 sm:flex-row"
