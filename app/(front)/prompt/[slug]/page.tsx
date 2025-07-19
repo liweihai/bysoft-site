@@ -8,23 +8,24 @@ import {Prompt} from "@/lib/definitions"
 import { formatDate } from '@/utils/datetime'
 import { remark } from 'remark';
 import html from 'remark-html';
+import CopyButton from '@/components/CopyButton'
 
 export async function generateMetadata(props: { params: Promise<{ slug: string }> }): Promise<Metadata | undefined> {
     const params = await props.params
     const slug = params.slug
-    const post = await getModel<Prompt>("Article", slug)
+    const prompt = await getModel<Prompt>("Article", slug)
 
-    const publishedAt = new Date(post.create_time).toISOString()
-    const modifiedAt = new Date(post.update_time).toISOString()
+    const publishedAt = new Date(prompt.create_time).toISOString()
+    const modifiedAt = new Date(prompt.update_time).toISOString()
 
     let imageList = [siteMetadata.socialBanner]
 
     return {
-        title: post.title,
-        description: post.remark,
+        title: prompt.title,
+        description: prompt.remark,
         openGraph: {
-            title: post.title,
-            description: post.remark,
+            title: prompt.title,
+            description: prompt.remark,
             siteName: siteMetadata.title,
             locale: 'zh_CN',
             type: 'article',
@@ -35,8 +36,8 @@ export async function generateMetadata(props: { params: Promise<{ slug: string }
         },
         twitter: {
             card: 'summary_large_image',
-            title: post.title,
-            description: post.remark,
+            title: prompt.title,
+            description: prompt.remark,
             images: imageList,
         },
     }
@@ -46,13 +47,13 @@ export default async function Page(props: { params: Promise<{ slug: string }> })
     const params = await props.params
     const slug = params.slug
 
-    const post = await getModel<Prompt>("Article", slug)
+    const prompt = await getModel<Prompt>("Article", slug)
 
     const chatHref = "/prompt/" + slug + "/chat"
 
-    let contentHtml = post.content;
-    if (post.content_type == 1) {
-        const processedContent = await remark().use(html).process(post.content);
+    let contentHtml = prompt.content;
+    if (prompt.content_type == 1) {
+        const processedContent = await remark().use(html).process(prompt.content);
         contentHtml = processedContent.toString();
     }
 
@@ -71,14 +72,14 @@ export default async function Page(props: { params: Promise<{ slug: string }> })
                         <div className="space-y-1 pb-10 text-center">
                             <div>
                                 <h1 className="text-3xl lg:text-4xl text-center mb-6 tracking-wider">
-                                    {post.title}
+                                    {prompt.title}
                                 </h1>
                             </div>
                             <dl>
                                 <div>
                                     <dt className="sr-only">发表时间</dt>
                                     <dd className="tracking-wide text-sm mb-6 leading-relaxed mx-auto max-w-xl text-center">
-                                        <time dateTime={post.create_time}>{formatDate(post.create_time, siteMetadata.locale)}</time>
+                                        <time dateTime={prompt.create_time}>{formatDate(prompt.create_time, siteMetadata.locale)}</time>
                                     </dd>
                                 </div>
                             </dl>
@@ -97,10 +98,13 @@ export default async function Page(props: { params: Promise<{ slug: string }> })
             </article>
             <div className="align-middle rounded-tl-lg rounded-tr-lg inline-block w-full py-4 overflow-hidden bg-white px-12">
                 <div className="flex justify-between">
-                    <div> </div>
-                    <button className="mx-5 px-5 py-2 border-blue-500 border text-blue-500 rounded transition duration-300 hover:bg-blue-700 hover:text-white focus:outline-none">
-                        <Link href={chatHref}>试用一下</Link>
-                    </button>
+                    <div>  </div>
+                    <div>
+                        <CopyButton text={prompt.content} />
+                        <button className="mx-5 px-5 py-2 border-blue-500 border text-blue-500 rounded transition duration-300 hover:bg-blue-700 hover:text-white focus:outline-none">
+                            <Link href={chatHref}>试用</Link>
+                        </button>
+                    </div>
                 </div>
             </div>
         </section>

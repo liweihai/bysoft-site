@@ -45,6 +45,8 @@ export type Endpoint = {
     tpd_threshold: number,
     free_tokens: number,
     modals: string,
+    in_modals: string,
+    context_window: number,
     state: number
 };
 

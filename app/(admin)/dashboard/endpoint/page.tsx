@@ -42,6 +42,7 @@ export default async function EndpointPage(props: { searchParams?: Promise<{quer
                             <th className="px-6 py-3 border-b-2 border-gray-300 text-left text-sm leading-4 text-blue-500 tracking-wider">令牌数/天</th>
                             <th className="px-6 py-3 border-b-2 border-gray-300 text-left text-sm leading-4 text-blue-500 tracking-wider">赠送令牌</th>
                             <th className="px-6 py-3 border-b-2 border-gray-300 text-left text-sm leading-4 text-blue-500 tracking-wider">模态</th>
+                            <th className="px-6 py-3 border-b-2 border-gray-300 text-left text-sm leading-4 text-blue-500 tracking-wider">上下文</th>
                             <th className="px-6 py-3 border-b-2 border-gray-300"></th>
                         </tr>
                     </thead>
@@ -55,22 +56,25 @@ export default async function EndpointPage(props: { searchParams?: Promise<{quer
                         </td>
                         <td className="px-6 py-4 whitespace-no-wrap border-b text-blue-900 border-gray-500 text-sm leading-5">{endpoint.model}</td>
                         <td className="px-6 py-4 whitespace-no-wrap border-b text-blue-900 border-gray-500 text-sm leading-5">
-                            { endpoint.rpm_threshold > 0 ? endpoint.rpm_threshold : '无限制' }
+                            { endpoint.rpm_threshold > 0 ? endpoint.rpm_threshold : '/=' }
                         </td>
                         <td className="px-6 py-4 whitespace-no-wrap border-b text-blue-900 border-gray-500 text-sm leading-5">
-                            { endpoint.rpd_threshold > 0 ? endpoint.rpd_threshold : '无限制' } 
+                            { endpoint.rpd_threshold > 0 ? endpoint.rpd_threshold : '/' } 
                         </td>
                         <td className="px-6 py-4 whitespace-no-wrap border-b text-blue-900 border-gray-500 text-sm leading-5">
-                           { endpoint.tpm_threshold > 0 ? endpoint.tpm_threshold : '无限制' } 
+                           { endpoint.tpm_threshold > 0 ? endpoint.tpm_threshold : '/' } 
                         </td>
                         <td className="px-6 py-4 whitespace-no-wrap border-b text-blue-900 border-gray-500 text-sm leading-5">
-                           { endpoint.tpd_threshold > 0 ? endpoint.tpd_threshold : '无限制' }
+                           { endpoint.tpd_threshold > 0 ? endpoint.tpd_threshold : '/' }
                         </td>
                         <td className="px-6 py-4 whitespace-no-wrap border-b text-blue-900 border-gray-500 text-sm leading-5">
                             { endpoint.free_tokens}
                         </td>
                         <td className="px-6 py-4 whitespace-no-wrap border-b text-blue-900 border-gray-500 text-sm leading-5">
-                            { endpoint.modals}
+                            { endpoint.in_modals}{' => '}{ endpoint.modals}
+                        </td>
+                        <td className="px-6 py-4 whitespace-no-wrap border-b text-blue-900 border-gray-500 text-sm leading-5">
+                            { endpoint.context_window}K
                         </td>
                         <td className="px-6 py-4 whitespace-no-wrap text-right border-b border-gray-500 text-sm leading-5">
                             <button className="px-5 py-2 border-blue-500 border text-blue-500 rounded transition duration-300 hover:bg-blue-700 hover:text-white focus:outline-none"><Link href={ href }>修改</Link></button>
