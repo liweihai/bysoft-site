@@ -3,6 +3,7 @@ import Link from 'next/link';
 import {countModels, findModels} from "@/lib/data"
 import {QuotaGroup} from "@/lib/definitions"
 import { auth } from '@/auth';
+import { Button } from "@/components/ui/button"
 
 export default async function QuotaGroupPage() {
     const session = await auth()
@@ -15,8 +16,9 @@ export default async function QuotaGroupPage() {
             <div className="align-middle rounded-tl-lg rounded-tr-lg inline-block w-full py-4 overflow-hidden bg-white px-12">
                 <div className="flex justify-between">
                     <div> </div>
-                    <button className="mx-5 px-5 py-2 border-blue-500 border text-blue-500 rounded transition duration-300 hover:bg-blue-700 hover:text-white focus:outline-none"><Link href="/dashboard/quotagroup/create">创建模型组</Link></button>
-                </div>
+                    
+                    <Button><Link href="/dashboard/quotagroup/create">创建模型组</Link></Button>
+               </div>
             </div>
             <div className="align-middle inline-block min-w-full overflow-hidden bg-white p-8 pt-3 rounded-bl-lg rounded-br-lg">
                 <table className="min-w-full">

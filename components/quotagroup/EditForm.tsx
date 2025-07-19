@@ -3,6 +3,7 @@
 import {  useState, useActionState } from 'react'
 
 import {saveQuotaGroup} from "@/lib/actions";
+import { Button } from "@/components/ui/button"
 
 export default function EditForm({obj, algorithms}) {
     const [message, formAction, isPending] = useActionState(saveQuotaGroup, undefined);
@@ -35,7 +36,7 @@ export default function EditForm({obj, algorithms}) {
                 </div>
 
                 <div className="flex justify-end">
-                    <button type="submit" className="px-6 py-2 bg-indigo-500 text-white font-semibold rounded-md hover:bg-indigo-600 focus:outline-none">{isPending ? "保存模型组中..." : "保存模型组"}</button>
+                    <Button type="submit">{isPending ? "保存模型组中..." : "保存模型组"}</Button>
                 </div>
             </form>
         </div>
