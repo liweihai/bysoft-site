@@ -1,15 +1,57 @@
 'use client'
 
-import {  useActionState } from 'react'
+import {  useActionState, useState } from 'react'
 
 import {savePrompt} from "@/lib/actions";
+import { Button } from "@/components/ui/button"
+import { Input } from "@/components/ui/input"
+import { Textarea } from "@/components/ui/textarea"
+import { Checkbox } from "@/components/ui/checkbox"
+import { Label } from "@/components/ui/label"
 
 export default function EditForm({obj, tags}) {
-    const [message, formAction, isPending] = useActionState(savePrompt, undefined);
+    const [isPending, setIsPending] = useState(false);
+
+    const keywordsInit : string[] = obj && obj.keywords ? obj.keywords.split(',') : []
+    const [keywords, setKeywords] = useState(keywordsInit)
+
+    const handleKeywordsChange = (tag) => {
+        const newKeywords = []
+
+        let found = false
+        for(var i = 0; i < keywords.length; i++) {
+            if (keywords[i] == tag) {
+                found = true
+            } else {
+                newKeywords.push(keywords[i])
+            }
+        }
+        if (!found){
+            newKeywords.push(tag)
+        }
+        
+        setKeywords(newKeywords)
+    }
+
+    async function handleSubmit(e) {
+        e.preventDefault();
+
+        setIsPending(true);
+
+        const formData = new FormData(e.target);
+
+        for(var i = 0; i < keywords.length; i++) {
+            formData.set("keywords", keywords[i])
+        }
+
+        await savePrompt(null, formData)
+        
+        setIsPending(false);
+    }
 
     return (
         <div className="mx-auto p-4">
-            <form action={formAction}>
+            <form onSubmit={handleSubmit}>
                 <input type="hidden" name="id" value={obj.id} />
                 <input type="hidden" name="customer_id" value={obj.customer_id} />
                 <input type="hidden" name="category" value="提示语" />
@@ -18,37 +60,36 @@ export default function EditForm({obj, tags}) {
 
                 <div className="mb-6">
                     <label htmlFor="title" className="block text-lg font-medium text-gray-800 mb-1">标题</label>
-                    <input type="text" defaultValue={obj.title} id="title" name="title" className="w-full bg-transparent placeholder:text-slate-400 text-slate-700 text-sm border border-slate-200 rounded-md px-3 py-2 transition duration-300 ease focus:outline-none focus:border-slate-400 hover:border-slate-300 shadow-sm focus:shadow" required />
+                    <Input type="text" defaultValue={obj.title} id="title" name="title" className="w-full bg-transparent placeholder:text-slate-400 text-slate-700 text-sm border border-slate-200 rounded-md px-3 py-2 transition duration-300 ease focus:outline-none focus:border-slate-400 hover:border-slate-300 shadow-sm focus:shadow" required />
                 </div>
 
                 <div className="mb-6">
                     <label htmlFor="keywords" className="block text-lg font-medium text-gray-800 mb-1">标签</label>   
-                    <div className="relative">
-                        <select multiple id="keywords" name="keywords" defaultValue={obj.keywords ? obj.keywords.split(",") : []} className="w-full bg-transparent placeholder:text-slate-400 text-slate-700 text-sm border border-slate-200 rounded pl-3 pr-8 py-2 transition duration-300 ease focus:outline-none focus:border-slate-400 hover:border-slate-400 shadow-sm focus:shadow-md appearance-none cursor-pointer">
+                    <div className="relative flex flex-row gap-3">
                         {tags.map((tag) => {
+                            const checked = keywords.indexOf(tag) >= 0
                             return (
-                            <option key={tag} value={tag}>{tag}</option>
+                            <div className="flex items-start gap-3" key={tag}>
+                                <Checkbox name="keywords" id={tag} checked={checked} onClick={e => handleKeywordsChange(tag)}></Checkbox>
+                                <Label htmlFor={tag}>{tag}</Label>
+                            </div>
                             )
                         })}
-                        </select>
-                        <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth="1.2" stroke="currentColor" className="h-5 w-5 ml-1 absolute top-2.5 right-2.5 text-slate-700">
-                            <path strokeLinecap="round" strokeLinejoin="round" d="M8.25 15 12 18.75 15.75 15m-7.5-6L12 5.25 15.75 9" />
-                        </svg>
                     </div>
                 </div>
 
                 <div className="mb-6">
                     <label htmlFor="remark" className="block text-lg font-medium text-gray-800 mb-1">摘要</label>
-                    <textarea defaultValue={obj.remark} id="remark" name="remark" className="w-full bg-transparent placeholder:text-slate-400 text-slate-700 text-sm border border-slate-200 rounded-md px-3 py-2 transition duration-300 ease focus:outline-none focus:border-slate-400 hover:border-slate-300 shadow-sm focus:shadow" />
+                    <Textarea defaultValue={obj.remark} id="remark" name="remark" className="w-full bg-transparent placeholder:text-slate-400 text-slate-700 text-sm border border-slate-200 rounded-md px-3 py-2 transition duration-300 ease focus:outline-none focus:border-slate-400 hover:border-slate-300 shadow-sm focus:shadow" />
                 </div>
 
                 <div className="mb-6">
                     <label htmlFor="content" className="block text-lg font-medium text-gray-800 mb-1">内容</label>
-                    <textarea defaultValue={obj.content} id="content" name="content" className="min-h-[600px] resize-y w-full bg-transparent placeholder:text-slate-400 text-slate-700 text-sm border border-slate-200 rounded-md px-3 py-2 transition duration-300 ease focus:outline-none focus:border-slate-400 hover:border-slate-300 shadow-sm focus:shadow" />
+                    <Textarea defaultValue={obj.content} id="content" name="content" className="min-h-[600px] resize-y w-full bg-transparent placeholder:text-slate-400 text-slate-700 text-sm border border-slate-200 rounded-md px-3 py-2 transition duration-300 ease focus:outline-none focus:border-slate-400 hover:border-slate-300 shadow-sm focus:shadow" />
                 </div>
 
                 <div className="flex justify-end">
-                    <button type="submit" className="px-6 py-2 bg-indigo-500 text-white font-semibold rounded-md hover:bg-indigo-600 focus:outline-none">{isPending ? "保存提示词中..." : "保存提示词"}</button>
+                    <Button type="submit">{isPending ? "保存提示词中..." : "保存提示词"}</Button>
                 </div>
             </form>
         </div>

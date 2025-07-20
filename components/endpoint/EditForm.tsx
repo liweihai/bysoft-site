@@ -3,6 +3,7 @@
 import {  useState, useActionState } from 'react'
 
 import {saveEndpoint} from "@/lib/actions";
+import { Button } from "@/components/ui/button"
 
 export default function EditForm({obj}) {
     const [message, formAction, isPending] = useActionState(saveEndpoint, undefined);
@@ -99,7 +100,7 @@ export default function EditForm({obj}) {
                 </div>
 
                 <div className="flex justify-end">
-                    <button type="submit" className="px-6 py-2 bg-indigo-500 text-white font-semibold rounded-md hover:bg-indigo-600 focus:outline-none">{isPending ? "保存大模型中..." : "保存大模型"}</button>
+                    <Button type="submit">{isPending ? "保存大模型中..." : "保存大模型"}</Button>
                 </div>
             </form>
         </div>

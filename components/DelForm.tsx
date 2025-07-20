@@ -2,6 +2,7 @@
 
 import {useState, useActionState} from 'react'
 import {deleteOne} from "@/lib/actions";
+import { Button } from "@/components/ui/button"
 
 export default function DelForm({obj}) {
     const [message, formAction, isPending] = useActionState(deleteOne, undefined);
@@ -12,7 +13,7 @@ export default function DelForm({obj}) {
             <input type="hidden" name="id" value={obj.id} />
             <input type="hidden" name="redirect_url" value={obj.redirect_url} />
             
-            <button type="submit" className="mx-5 px-5 py-2 border-blue-500 border text-blue-500 rounded transition duration-300 hover:bg-blue-700 hover:text-white focus:outline-none">{isPending ? "删除中..." : "删除"}</button>
+            <Button variant="destructive" type="submit">{isPending ? "删除中..." : "删除"}</Button>
         </form>
     )
 }

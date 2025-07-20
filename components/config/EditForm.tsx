@@ -6,7 +6,8 @@ import {
 } from '@heroicons/react/24/outline';
 
 import {saveConfig} from "@/lib/actions";
-
+import { Button } from "@/components/ui/button"
+               
 export default function EditForm({obj}) {
     const [message, formAction, isPending] = useActionState(saveConfig, undefined);
 
@@ -26,7 +27,7 @@ export default function EditForm({obj}) {
               </div>
 
               <div className="flex justify-end">
-                  <button type="submit" className="px-6 py-2 bg-indigo-500 text-white font-semibold rounded-md hover:bg-indigo-600 focus:outline-none">{isPending ? "保存配置中..." : "保存配置"}</button>
+                  <Button type="submit">{isPending ? "保存配置中..." : "保存配置"}</Button>
               </div>
 
             {message && (

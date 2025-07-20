@@ -4,6 +4,7 @@ import Link from 'next/link';
 import { useState, useActionState } from 'react'
 
 import {saveQuota} from "@/lib/actions";
+import { Button } from "@/components/ui/button"
 
 export default function EditForm({obj, endpoints}) {
     const [message, formAction, isPending] = useActionState(saveQuota, undefined);
@@ -52,8 +53,8 @@ export default function EditForm({obj, endpoints}) {
                 </div>
 
                 <div className="flex justify-end">
-                    <button className="px-5 py-2 border-blue-500 border text-blue-500 rounded transition duration-300 hover:bg-blue-700 hover:text-white focus:outline-none mr-3"><Link href={ href } target="_blank" >申请Api Key</Link></button>
-                    <button type="submit" className="px-6 py-2 bg-indigo-500 text-white font-semibold rounded-md hover:bg-indigo-600 focus:outline-none">{isPending ? "增加大模型中..." : "增加大模型"}</button>
+                    <Button variant="secondary" asChild><Link href={ href } target="_blank" >申请Api Key</Link></Button>
+                    <Button type="submit">{isPending ? "增加大模型中..." : "增加大模型"}</Button>
                 </div>
             </form>
         </div>

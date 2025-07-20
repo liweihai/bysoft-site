@@ -17,7 +17,7 @@ export default async function QuotaGroupPage() {
                 <div className="flex justify-between">
                     <div> </div>
                     
-                    <Button><Link href="/dashboard/quotagroup/create">创建模型组</Link></Button>
+                    <Button asChild><Link href="/dashboard/quotagroup/create">创建模型组</Link></Button>
                </div>
             </div>
             <div className="align-middle inline-block min-w-full overflow-hidden bg-white p-8 pt-3 rounded-bl-lg rounded-br-lg">
@@ -40,8 +40,8 @@ export default async function QuotaGroupPage() {
                         </td>
                         <td className="px-6 py-4 whitespace-no-wrap border-b text-blue-900 border-gray-500 text-sm leading-5">{quotagroup.algorithm}</td>
                         <td className="px-6 py-4 whitespace-no-wrap text-right border-b border-gray-500 text-sm leading-5">
-                            <button className="px-5 py-2 border-blue-500 border text-blue-500 rounded transition duration-300 hover:bg-blue-700 hover:text-white focus:outline-none mr-3"><Link href={ hrefOfView }>查看</Link></button>
-                            <button className="px-5 py-2 border-blue-500 border text-blue-500 rounded transition duration-300 hover:bg-blue-700 hover:text-white focus:outline-none"><Link href={ href }>修改</Link></button>
+                            <Button asChild variant="secondary"><Link href={ hrefOfView }>查看</Link></Button>
+                            <Button asChild><Link href={ href }>修改</Link></Button>
                         </td>
                     </tr>
                     )
