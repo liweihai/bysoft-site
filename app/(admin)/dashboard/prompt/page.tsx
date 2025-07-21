@@ -7,6 +7,16 @@ import {formatDate} from '@/utils/datetime'
 import {auth} from '@/auth';
 import EditStateForm from '@/components/prompt/EditStateForm';
 import { Button } from "@/components/ui/button"
+import {
+  Table,
+  TableBody,
+  TableCaption,
+  TableCell,
+  TableFooter,
+  TableHead,
+  TableHeader,
+  TableRow,
+} from "@/components/ui/table"
 
 export default async function PromptPage(props: { searchParams?: Promise<{query?: string; page?: string;}>}) {
     const params = await props.searchParams;
@@ -41,38 +51,37 @@ export default async function PromptPage(props: { searchParams?: Promise<{query?
                 </div>
             </div>
             <div className="align-middle inline-block min-w-full overflow-hidden bg-white p-8 pt-3 rounded-bl-lg rounded-br-lg">
-                <table className="min-w-full">
-                    <thead>
-                        <tr>
-                            <th className="px-6 py-3 border-b-2 border-gray-300 text-left text-sm leading-4 text-blue-500 tracking-wider">标题</th>
-                            <th className="px-6 py-3 border-b-2 border-gray-300 text-left text-sm leading-4 text-blue-500 tracking-wider">标签</th>
-                            <th className="px-6 py-3 border-b-2 border-gray-300 text-left text-sm leading-4 text-blue-500 tracking-wider">摘要</th>
-                            <th className="px-6 py-3 border-b-2 border-gray-300 text-left text-sm leading-4 text-blue-500 tracking-wider">时间</th>
-                            <th className="px-6 py-3 border-b-2 border-gray-300"></th>
-                        </tr>
-                    </thead>
-                    <tbody className="bg-white">
+                <Table>
+                    <TableHeader>
+                        <TableRow>
+                            <TableHead>标题</TableHead>
+                            <TableHead>标签</TableHead>
+                            <TableHead>摘要</TableHead>
+                            <TableHead>时间</TableHead>
+                            <TableHead className="text-right"></TableHead>
+                        </TableRow>
+                    </TableHeader>
+                    <TableBody>
                     {prompts.map((prompt) => {
-                    const href = "/dashboard/prompt/edit/" + prompt.id
-                    return (
-                    <tr key={prompt.id}>
-                        <td className="px-6 py-4 whitespace-no-wrap border-b border-gray-500">
-                            <div className="text-sm leading-5 text-blue-900">{ prompt.title }</div>
-                        </td>
-                        <td className="px-6 py-4 whitespace-no-wrap border-b text-blue-900 border-gray-500 text-sm leading-5">{prompt.keywords}</td>
-                        <td className="px-6 py-4 whitespace-no-wrap border-b text-blue-900 border-gray-500 text-sm leading-5">{prompt.remark}</td>                        
-                        <td className="px-6 py-4 whitespace-no-wrap border-b border-gray-500 text-blue-900 text-sm leading-5">{formatDate(prompt.create_time)}</td>
-                        <td className="px-6 py-4 whitespace-no-wrap text-right border-b border-gray-500 text-sm leading-5">
-                            {customer.role == 1 && (
-                                <EditStateForm obj={prompt} />
-                            )}
-                            <Button><Link href={ href }>修改</Link></Button>
-                        </td>
-                    </tr>
-                    )
+                        const href = "/dashboard/prompt/edit/" + prompt.id                        
+                        return (
+                            <TableRow key={prompt.id}>
+                                <TableCell>{ prompt.title }</TableCell>
+                                <TableCell>{prompt.keywords}</TableCell>
+                                <TableCell className="whitespace-normal">{prompt.remark}</TableCell>
+                                <TableCell>{formatDate(prompt.create_time)}</TableCell>
+                                <TableCell className="text-right">
+                                    {customer.role == 1 && (
+                                        <EditStateForm obj={prompt} />
+                                    )}
+                                    <Button><Link href={ href }>修改</Link></Button>
+                                </TableCell>
+                            </TableRow>
+                        )
                     })}
-                    </tbody>
-                </table>
+                    </TableBody>
+                </Table>
+
                 <div className="sm:flex-1 sm:flex sm:items-center sm:justify-between mt-4 work-sans">
                 <div>
                     <p className="text-sm leading-5 text-blue-700">

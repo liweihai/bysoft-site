@@ -7,6 +7,16 @@ import DelForm from '@/components/DelForm';
 import EditForm from '@/components/quota/EditForm';
 import EditPriorityForm from '@/components/quota/EditPriorityForm';
 import CopyButton from '@/components/CopyButton';
+import {
+  Table,
+  TableBody,
+  TableCaption,
+  TableCell,
+  TableFooter,
+  TableHead,
+  TableHeader,
+  TableRow,
+} from "@/components/ui/table"
 
 export default async function QuotaGroupViewPage(props: { params: Promise<{ slug: string }> }) {
     const params = await props.params
@@ -28,65 +38,51 @@ export default async function QuotaGroupViewPage(props: { params: Promise<{ slug
                 </div>
             </div>
             <div className="align-middle inline-block min-w-full overflow-hidden bg-white p-8 pt-3 rounded-bl-lg rounded-br-lg">
-                <table className="min-w-full">
-                    <thead>
-                        <tr>
-                            <th className="px-6 py-3 border-b-2 border-gray-300"></th>
-                            <th className="px-6 py-3 border-b-2 border-gray-300 text-left text-sm leading-4 text-blue-500 tracking-wider">供应商</th>
-                            <th className="px-6 py-3 border-b-2 border-gray-300 text-left text-sm leading-4 text-blue-500 tracking-wider">大模型</th>
-                            <th className="px-6 py-3 border-b-2 border-gray-300 text-left text-sm leading-4 text-blue-500 tracking-wider">RPM</th>
-                            <th className="px-6 py-3 border-b-2 border-gray-300 text-left text-sm leading-4 text-blue-500 tracking-wider">RPD</th>
-                            <th className="px-6 py-3 border-b-2 border-gray-300 text-left text-sm leading-4 text-blue-500 tracking-wider">TPM</th>
-                            <th className="px-6 py-3 border-b-2 border-gray-300 text-left text-sm leading-4 text-blue-500 tracking-wider">TPD</th>
-                            <th className="px-6 py-3 border-b-2 border-gray-300 text-left text-sm leading-4 text-blue-500 tracking-wider">赠送令牌</th>
-                            <th className="px-6 py-3 border-b-2 border-gray-300 text-left text-sm leading-4 text-blue-500 tracking-wider">Api Key</th>
-                            <th className="py-3 border-b-2 border-gray-300"></th>
-                        </tr>
-                    </thead>
-                    <tbody className="bg-white">
+                <Table>
+                    <TableHeader>
+                        <TableRow>
+                            <TableHead></TableHead>
+                            <TableHead>供应商</TableHead>
+                            <TableHead>大模型</TableHead>
+                            <TableHead>RPM</TableHead>
+                            <TableHead>RPD</TableHead>
+                            <TableHead>TPM</TableHead>
+                            <TableHead>TPD</TableHead>
+                            <TableHead>赠送令牌</TableHead>
+                            <TableHead>Api Key</TableHead>
+                            <TableHead className="text-right"></TableHead>
+                        </TableRow>
+                    </TableHeader>
+                    <TableBody>
                     {quotas.map((quota, i) => {
-                    const href = "/dashboard/quota/edit/" + quota.id
-                    const endpoint = endpoints.find(function(e){ return e.id == quota.endpoint_id}) || endpoints[0]
-                    return (
-                    <tr key={quota.id}>
-                        <td className="px-6 py-4 whitespace-no-wrap text-right border-b border-gray-500 text-sm leading-5">
-                            {i > 0 && (
-                                <EditPriorityForm id={quota.id} direction={-1}></EditPriorityForm>
-                            )}
-                            {i < quotas.length - 1 && (
-                                <EditPriorityForm id={quota.id} direction={1}></EditPriorityForm>
-                            )}
-                        </td>
-                        <td className="px-6 py-4 whitespace-no-wrap border-b border-gray-500">
-                            <Link target="_blank" href={endpoint.site_url} className="text-sm leading-5 text-blue-900">{ endpoint.provider }</Link>
-                        </td>
-                        <td className="px-6 py-4 whitespace-no-wrap border-b text-blue-900 border-gray-500 text-sm leading-5">{endpoint.model}</td>
-                        <td className="px-6 py-4 whitespace-no-wrap border-b text-blue-900 border-gray-500 text-sm leading-5">
-                            {quota.rpm} / { endpoint.rpm_threshold > 0 ? endpoint.rpm_threshold : '无限制' }
-                        </td>
-                        <td className="px-6 py-4 whitespace-no-wrap border-b text-blue-900 border-gray-500 text-sm leading-5">
-                            {quota.rpd} / { endpoint.rpd_threshold > 0 ? endpoint.rpd_threshold : '无限制' } 
-                        </td>
-                        <td className="px-6 py-4 whitespace-no-wrap border-b text-blue-900 border-gray-500 text-sm leading-5">
-                           {quota.tpm} / { endpoint.tpm_threshold > 0 ? endpoint.tpm_threshold : '无限制' } 
-                        </td>
-                        <td className="px-6 py-4 whitespace-no-wrap border-b text-blue-900 border-gray-500 text-sm leading-5">
-                           {quota.tpd} / { endpoint.tpd_threshold > 0 ? endpoint.tpd_threshold : '无限制' }
-                        </td>
-                        <td className="px-6 py-4 whitespace-no-wrap border-b text-blue-900 border-gray-500 text-sm leading-5">
-                            {quota.tokens_used} / { endpoint.free_tokens}
-                        </td>
-                        <td className="px-6 py-4 whitespace-no-wrap border-b text-blue-900 border-gray-500 text-sm leading-5">
-                             <CopyButton text={quota.api_key} />
-                        </td>
-                        <td className="py-4 whitespace-no-wrap text-right border-b border-gray-500 text-sm leading-5">
-                             <DelForm obj={{model:"Quota", id:quota.id, redirect_url: '/dashboard/quotagroup/view/' + quotaGroup.id}} />
-                        </td>
-                    </tr>
-                    )
+                        const href = "/dashboard/quota/edit/" + quota.id
+                        const endpoint = endpoints.find(function(e){ return e.id == quota.endpoint_id}) || endpoints[0]
+                        return (
+                            <TableRow key={quota.id}>
+                                <TableCell className="font-medium">
+                                    {i > 0 && (
+                                        <EditPriorityForm id={quota.id} direction={-1}></EditPriorityForm>
+                                    )}
+                                    {i < quotas.length - 1 && (
+                                        <EditPriorityForm id={quota.id} direction={1}></EditPriorityForm>
+                                    )}
+                                </TableCell>
+                                <TableCell><Link target="_blank" href={endpoint.site_url} className="text-sm leading-5 text-blue-900">{ endpoint.provider }</Link></TableCell>
+                                <TableCell>{endpoint.model}</TableCell>
+                                <TableCell>{quota.rpm} / { endpoint.rpm_threshold > 0 ? endpoint.rpm_threshold : '无限制' }</TableCell>
+                                <TableCell>{quota.rpd} / { endpoint.rpd_threshold > 0 ? endpoint.rpd_threshold : '无限制' } </TableCell>
+                                <TableCell>{quota.tpm} / { endpoint.tpm_threshold > 0 ? endpoint.tpm_threshold : '无限制' } </TableCell>
+                                <TableCell>{quota.tpd} / { endpoint.tpd_threshold > 0 ? endpoint.tpd_threshold : '无限制' }</TableCell>
+                                <TableCell>{quota.tokens_used} / { endpoint.free_tokens}</TableCell>
+                                <TableCell><CopyButton text={quota.api_key} /></TableCell>
+                                <TableCell className="text-right">
+                                    <DelForm obj={{model:"Quota", id:quota.id, redirect_url: '/dashboard/quotagroup/view/' + quotaGroup.id}} />
+                                </TableCell>
+                            </TableRow>
+                        )
                     })}
-                    </tbody>
-                </table>
+                    </TableBody>
+                </Table>
             </div>
         </div>
     )

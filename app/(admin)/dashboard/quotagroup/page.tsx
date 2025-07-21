@@ -4,6 +4,16 @@ import {countModels, findModels} from "@/lib/data"
 import {QuotaGroup} from "@/lib/definitions"
 import { auth } from '@/auth';
 import { Button } from "@/components/ui/button"
+import {
+  Table,
+  TableBody,
+  TableCaption,
+  TableCell,
+  TableFooter,
+  TableHead,
+  TableHeader,
+  TableRow,
+} from "@/components/ui/table"
 
 export default async function QuotaGroupPage() {
     const session = await auth()
@@ -21,33 +31,31 @@ export default async function QuotaGroupPage() {
                </div>
             </div>
             <div className="align-middle inline-block min-w-full overflow-hidden bg-white p-8 pt-3 rounded-bl-lg rounded-br-lg">
-                <table className="min-w-full">
-                    <thead>
-                        <tr>
-                            <th className="px-6 py-3 border-b-2 border-gray-300 text-left text-sm leading-4 text-blue-500 tracking-wider">名称</th>
-                            <th className="px-6 py-3 border-b-2 border-gray-300 text-left text-sm leading-4 text-blue-500 tracking-wider">算法</th>
-                            <th className="px-6 py-3 border-b-2 border-gray-300"></th>
-                        </tr>
-                    </thead>
-                    <tbody className="bg-white">
+                <Table>
+                    <TableHeader>
+                        <TableRow>
+                            <TableHead>名称</TableHead>
+                            <TableHead>算法</TableHead>
+                            <TableHead className="text-right"></TableHead>
+                        </TableRow>
+                    </TableHeader>
+                    <TableBody>
                     {quotaGroups.map((quotagroup) => {
-                    const href = "/dashboard/quotagroup/edit/" + quotagroup.id
-                    const hrefOfView = "/dashboard/quotagroup/view/" + quotagroup.id
-                    return (
-                    <tr key={quotagroup.id}>
-                        <td className="px-6 py-4 whitespace-no-wrap border-b border-gray-500">
-                            { quotagroup.name }
-                        </td>
-                        <td className="px-6 py-4 whitespace-no-wrap border-b text-blue-900 border-gray-500 text-sm leading-5">{quotagroup.algorithm}</td>
-                        <td className="px-6 py-4 whitespace-no-wrap text-right border-b border-gray-500 text-sm leading-5">
-                            <Button asChild variant="secondary"><Link href={ hrefOfView }>查看</Link></Button>
-                            <Button asChild><Link href={ href }>修改</Link></Button>
-                        </td>
-                    </tr>
-                    )
+                        const href = "/dashboard/quotagroup/edit/" + quotagroup.id
+                        const hrefOfView = "/dashboard/quotagroup/view/" + quotagroup.id
+                        return (
+                            <TableRow key={quotagroup.id}>
+                                <TableCell className="font-medium">{ quotagroup.name }</TableCell>
+                                <TableCell>{quotagroup.algorithm}</TableCell>
+                                <TableCell className="text-right">
+                                    <Button asChild variant="secondary"><Link href={ hrefOfView }>查看</Link></Button>
+                                    <Button asChild><Link href={ href }>修改</Link></Button>
+                                </TableCell>
+                            </TableRow>
+                        )
                     })}
-                    </tbody>
-                </table>
+                    </TableBody>
+                </Table>
             </div>
         </div>
     )

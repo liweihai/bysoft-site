@@ -41,7 +41,7 @@ export default function EditForm({obj, tags}) {
         const formData = new FormData(e.target);
 
         for(var i = 0; i < keywords.length; i++) {
-            formData.set("keywords", keywords[i])
+            formData.append("keywords", keywords[i]);
         }
 
         await savePrompt(null, formData)
@@ -70,7 +70,7 @@ export default function EditForm({obj, tags}) {
                             const checked = keywords.indexOf(tag) >= 0
                             return (
                             <div className="flex items-start gap-3" key={tag}>
-                                <Checkbox name="keywords" id={tag} checked={checked} onClick={e => handleKeywordsChange(tag)}></Checkbox>
+                                <Checkbox id={tag} checked={checked} onClick={e => handleKeywordsChange(tag)}></Checkbox>
                                 <Label htmlFor={tag}>{tag}</Label>
                             </div>
                             )

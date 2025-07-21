@@ -29,11 +29,6 @@ export default function SideNav({role}) {
             href: '/dashboard/quotagroup'
         },
         {
-            icon: KeyIcon,
-            name: 'Api Key',
-            href: '/dashboard/apikey'
-        },
-        {
             icon: DocumentDuplicateIcon,
             name: '提示词',
             href: '/dashboard/prompt'

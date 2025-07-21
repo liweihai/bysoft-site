@@ -2,6 +2,17 @@ import {countModels, findModels} from "@/lib/data"
 import {Config} from "@/lib/definitions"
 import Link from 'next/link';
 import { Button } from "@/components/ui/button"
+import {
+  Table,
+  TableBody,
+  TableCaption,
+  TableCell,
+  TableFooter,
+  TableHead,
+  TableHeader,
+  TableRow,
+} from "@/components/ui/table"
+import {formatDate} from '@/utils/datetime'
 
 export default async function Page(props: { params: Promise<{ page: number }> }) {
   const params = await props.params
@@ -16,34 +27,33 @@ export default async function Page(props: { params: Promise<{ page: number }> })
   return (
       <div className="-my-2 py-2 overflow-x-auto sm:-mx-6 sm:px-6 lg:-mx-8 pr-10 lg:px-8">
           <div className="align-middle inline-block min-w-full overflow-hidden bg-white p-8 pt-3 rounded-bl-lg rounded-br-lg">
-              <table className="min-w-full">
-                  <thead>
-                      <tr>
-                          <th className="px-6 py-3 border-b-2 border-gray-300 text-left text-sm leading-4 text-blue-500 tracking-wider">名称</th>
-                          <th className="px-6 py-3 border-b-2 border-gray-300 text-left text-sm leading-4 text-blue-500 tracking-wider">值</th>
-                          <th className="px-6 py-3 border-b-2 border-gray-300 text-left text-sm leading-4 text-blue-500 tracking-wider">时间</th>
-                          <th className="px-6 py-3 border-b-2 border-gray-300"></th>
-                      </tr>
-                  </thead>
-                  <tbody className="bg-white">
-                  {configs.map((config) => {
-                    const { id, name, value, create_time } = config
-                    const href = "/dashboard/config/edit/" + id
-                    return (
-                    <tr key={id}>
-                        <td className="px-6 py-4 whitespace-no-wrap border-b border-gray-500">
-                            <div className="text-sm leading-5 text-blue-900">{ name }</div>
-                        </td>
-                        <td className="px-6 py-4 whitespace-no-wrap border-b text-blue-900 border-gray-500 text-sm leading-5">{value}</td>
-                        <td className="px-6 py-4 whitespace-no-wrap border-b border-gray-500 text-blue-900 text-sm leading-5">{create_time}</td>
-                        <td className="px-6 py-4 whitespace-no-wrap text-right border-b border-gray-500 text-sm leading-5">
-                            <Button asChild><Link href={ href }>修改</Link></Button>
-                        </td>
-                    </tr>
-                    )
-                  })}
-                  </tbody>
-              </table>
+              <Table>
+                    <TableHeader>
+                        <TableRow>
+                            <TableHead>名称</TableHead>
+                            <TableHead>值</TableHead>
+                            <TableHead>时间</TableHead>
+                            <TableHead className="text-right"></TableHead>
+                        </TableRow>
+                    </TableHeader>
+                    <TableBody>
+                    {configs.map((config) => {
+                        const { id, name, value, create_time } = config
+                        const href = "/dashboard/config/edit/" + id                  
+                        return (
+                            <TableRow key={config.id}>
+                                <TableCell>{ config.name }</TableCell>
+                                <TableCell>{config.value}</TableCell>
+                                <TableCell>{formatDate(config.create_time)}</TableCell>
+                                <TableCell className="text-right">
+                                    <Button asChild><Link href={ href }>修改</Link></Button>
+                                </TableCell>
+                            </TableRow>
+                        )
+                    })}
+                    </TableBody>
+              </Table>
+
               <div className="sm:flex-1 sm:flex sm:items-center sm:justify-between mt-4 work-sans">
                 <div>
                   <p className="text-sm leading-5 text-blue-700">

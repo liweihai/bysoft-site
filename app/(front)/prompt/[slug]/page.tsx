@@ -9,6 +9,7 @@ import { formatDate } from '@/utils/datetime'
 import { remark } from 'remark';
 import html from 'remark-html';
 import CopyButton from '@/components/CopyButton'
+import { Button } from "@/components/ui/button"
 
 export async function generateMetadata(props: { params: Promise<{ slug: string }> }): Promise<Metadata | undefined> {
     const params = await props.params
@@ -101,9 +102,7 @@ export default async function Page(props: { params: Promise<{ slug: string }> })
                     <div>  </div>
                     <div>
                         <CopyButton text={prompt.content} />
-                        <button className="mx-5 px-5 py-2 border-blue-500 border text-blue-500 rounded transition duration-300 hover:bg-blue-700 hover:text-white focus:outline-none">
-                            <Link href={chatHref}>试用</Link>
-                        </button>
+                        <Button className="ml-2" asChild><Link href={chatHref}>试用</Link></Button>
                     </div>
                 </div>
             </div>

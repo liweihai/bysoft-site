@@ -10,7 +10,8 @@ import { useActionState } from 'react';
 import { useSearchParams } from 'next/navigation';
 
 import { authenticate } from '@/lib/actions';
- 
+ import { Button } from "@/components/ui/button"
+
 export default function LoginForm() {
   const searchParams = useSearchParams();
   const callbackUrl = searchParams.get('callbackUrl') || '/dashboard';
@@ -43,7 +44,7 @@ export default function LoginForm() {
                     </div>
                     <input type="hidden" name="redirectTo" value={callbackUrl} />
                     <div className="relative mt-5">
-                      <button className="bg-blue-500 text-white rounded-md px-2 py-1">登 录</button>
+                      <Button>登 录</Button>
                     </div>
                   </div>
                 </div>
