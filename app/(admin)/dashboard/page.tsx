@@ -51,7 +51,9 @@ export default async function ApiKeyPage() {
                         <TableRow key={apiKey.id}>
                             <TableCell className="font-medium">{formatDate(apiKey.create_time)}</TableCell>
                             <TableCell><span className="mr-5">BS-{mask(apiKey.id)}</span> <CopyButton text={'BS-' + apiKey.id} /></TableCell>
-                            <TableCell className="text-right"><DelForm obj={{model:"ApiKey", id:apiKey.id}} /></TableCell>
+                            <TableCell className="text-right">
+                                <DelForm obj={{model:"ApiKey", id:apiKey.id}} />
+                            </TableCell>
                         </TableRow>
                         ))}
                     </TableBody>
