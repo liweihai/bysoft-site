@@ -4,6 +4,9 @@ const nextConfig = {
     images: {
         unoptimized: true
     },
+    experimental: {
+        serverComponentsHmrCache: false, // defaults to true
+    },
 };
 
 export default nextConfig;

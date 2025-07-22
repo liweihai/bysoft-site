@@ -6,7 +6,6 @@ import MobileNav from './MobileNav'
 import ThemeSwitch from './ThemeSwitch'
 
 import {countModels, findModels} from "@/lib/data"
-import {Config} from "@/lib/definitions"
 
 export default async function Header(){
     let headerClass = 'flex items-center w-full bg-white dark:bg-gray-950 justify-between py-10'
@@ -14,9 +13,6 @@ export default async function Header(){
       headerClass += ' sticky top-0 z-50'
     }
 
-    const categoryConfigs = await findModels<Config>("Config", {name: 'categories'}, {limit: 1, offset: 0})
-
-    const categories = categoryConfigs[0].value.split(",")
     const headerNavLinks = []
     headerNavLinks.push({ href: '/', title: '首页' })
     headerNavLinks.push({ href: '/prompt', title: '提示词' })

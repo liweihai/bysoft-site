@@ -41,22 +41,11 @@ export async function editPromptState(prevState, formData) {
     }
 }
 
-export async function savePrompt(prevState, formData) {
-    const obj = Object.fromEntries(formData.entries()) as Prompt;
-    obj.keywords = formData.getAll('keywords');
-
-    try {
-        if (obj.id) {
-            await updateModel<Prompt>("Article", obj.id, obj)
-        } else {
-            await createModel<Prompt>("Article", obj)
-        }
-
-        redirect('/dashboard/prompt')
-
-        return 1
-    } catch(error) {
-        throw error;
+export async function savePrompt(obj) {
+    if (obj.id) {
+        await updateModel<Prompt>("Article", obj.id, obj)
+    } else {
+        await createModel<Prompt>("Article", obj)
     }
 }
 

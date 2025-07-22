@@ -37,10 +37,10 @@ export default async function PromptPage(props: { searchParams?: Promise<{query?
 
     const total = await countModels("Article", conditions)
 
-    const offset = (page - 1) * 20;
-    const prompts = await findModels<Prompt>("Article", conditions, {limit: 20, offset: (page - 1) * 20})
+    const offset = (page - 1) * 10;
+    const prompts = await findModels<Prompt>("Article", conditions, {order: 'state ASC, create_time DESC', limit: 10, offset: (page - 1) * 10})
 
-    const totalPages = Math.ceil(total / 20)
+    const totalPages = Math.ceil(total / 10)
 
     return (
         <div className="rounded-2xl bg-white px-5 pb-5 pt-5 dark:bg-white/[0.03] sm:px-6 sm:pt-6">
