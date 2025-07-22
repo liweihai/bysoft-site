@@ -1,8 +1,8 @@
 'use client'
 
-import Notification from './Notification'
 import {useState} from 'react'
 import { Button } from "@/components/ui/button"
+import { toast } from "sonner"
 
 export default function CopyButton({text}) {
     const [notificationShow, setNoticationShow] = useState(false)
@@ -10,16 +10,12 @@ export default function CopyButton({text}) {
     const handleCopy = async () => {
         await navigator.clipboard.writeText(text);
 
+        toast.success("复制粘贴板成功")
+
         setNoticationShow(true)
     }
 
     return (
-        <>
-            {notificationShow && (
-                <Notification title="成功" message="复制粘贴板成功" type="success" onClose={e => setNoticationShow(false)} />
-            )}
-            
-            <Button variant="outline" onClick={(e) => handleCopy()}>复制</Button>
-        </>
+        <Button variant="outline" onClick={(e) => handleCopy()}>复制</Button>
     )
 }

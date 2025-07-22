@@ -14,6 +14,7 @@ import {
   TableHeader,
   TableRow,
 } from "@/components/ui/table"
+import {formatDate} from '@/utils/datetime'
 
 export default async function QuotaGroupPage() {
     const session = await auth()
@@ -36,6 +37,8 @@ export default async function QuotaGroupPage() {
                         <TableRow>
                             <TableHead>名称</TableHead>
                             <TableHead>算法</TableHead>
+                            <TableHead>创建时间</TableHead>
+                            <TableHead>上次修改</TableHead>
                             <TableHead className="text-right"></TableHead>
                         </TableRow>
                     </TableHeader>
@@ -47,6 +50,8 @@ export default async function QuotaGroupPage() {
                             <TableRow key={quotagroup.id}>
                                 <TableCell className="font-medium">{ quotagroup.name }</TableCell>
                                 <TableCell>{quotagroup.algorithm}</TableCell>
+                                <TableCell>{formatDate(quotagroup.create_time)}</TableCell>
+                                <TableCell>{formatDate(quotagroup.update_time)}</TableCell>
                                 <TableCell className="text-right">
                                     <Button asChild variant="secondary"><Link href={ hrefOfView }>查看</Link></Button>
                                     <Button asChild><Link href={ href }>修改</Link></Button>

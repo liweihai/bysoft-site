@@ -26,6 +26,9 @@ export default async function ApiKeyPage() {
     const conditions = {customer_id: session.user.id}
     const apiKeys = await findModels<ApiKey>("ApiKey", conditions, {})
 
+    const mask = (cc, num = 4, mask = "*") =>
+        `${cc}`.slice(-num).padStart(`${cc}`.length, mask);
+
     return (
         <div className="rounded-2xl bg-white px-5 pb-5 pt-5 dark:bg-white/[0.03] sm:px-6 sm:pt-6">
             <div className="align-middle rounded-tl-lg rounded-tr-lg inline-block w-full py-4 overflow-hidden bg-white px-12">
@@ -47,7 +50,7 @@ export default async function ApiKeyPage() {
                         {apiKeys.map((apiKey) => (
                         <TableRow key={apiKey.id}>
                             <TableCell className="font-medium">{formatDate(apiKey.create_time)}</TableCell>
-                            <TableCell><CopyButton text={apiKey.id} /></TableCell>
+                            <TableCell><span className="mr-5">BS-{mask(apiKey.id)}</span> <CopyButton text={'BS-' + apiKey.id} /></TableCell>
                             <TableCell className="text-right"><DelForm obj={{model:"ApiKey", id:apiKey.id}} /></TableCell>
                         </TableRow>
                         ))}

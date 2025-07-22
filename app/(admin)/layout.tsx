@@ -4,6 +4,8 @@ import { Space_Grotesk } from 'next/font/google'
 import { ThemeProvider } from 'next-themes'
 import { Metadata } from 'next'
 
+import { Toaster } from "@/components/ui/sonner"
+
 import siteMetadata from '@/data/siteMetadata'
 
 const space_grotesk = Space_Grotesk({
@@ -74,6 +76,7 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
       <body className="bg-white pl-[calc(100vw-100%)] text-black antialiased dark:bg-gray-950 dark:text-white">
           <section className="mx-auto px-4 sm:px-6 xl:px-0">
               <main className="mb-auto">{children}</main>
+              <Toaster richColors/>
           </section>
       </body>
     </html>

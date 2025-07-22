@@ -57,7 +57,7 @@ export default async function PromptPage(props: { searchParams?: Promise<{query?
                             <TableHead>标题</TableHead>
                             <TableHead>标签</TableHead>
                             <TableHead>摘要</TableHead>
-                            <TableHead>时间</TableHead>
+                            <TableHead>创建时间</TableHead>
                             <TableHead className="text-right"></TableHead>
                         </TableRow>
                     </TableHeader>

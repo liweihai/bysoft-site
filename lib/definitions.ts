@@ -54,7 +54,9 @@ export type QuotaGroup = {
     id: string,
     customer_id: string,
     name: string,
-    algorithm: string
+    algorithm: string,
+    create_time: string;
+    update_time: string;
 };
 
 export type Quota = {

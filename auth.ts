@@ -50,23 +50,14 @@ export const { handlers, signIn, signOut, auth } = NextAuth({
                 },
             },
             async authorize(credentials) {
-                const parsedCredentials = z
-                .object({ username: z.string().min(6), password: z.string().min(6) })
-                .safeParse(credentials);
+                const account = await login(credentials?.username as string, credentials?.password as string);
 
-                if (parsedCredentials.success) {
-                    const { username, password } = parsedCredentials.data;
-                    const account = await login(username, password);
-
-                    const user = {
-                        id: account.customer_id,
-                        name: account.token
-                    }
-                    
-                    return user;
+                const user = {
+                    id: account.customer_id,
+                    name: account.token
                 }
-        
-                return null
+                
+                return user;
             },
         }),
     ]

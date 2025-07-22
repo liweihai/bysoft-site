@@ -8,28 +8,11 @@ import { signIn } from '@/auth';
 import {updateModel, createModel, deleteModel, getModel, findModels, chatWith} from "@/lib/data"
 import {Config, Prompt, Endpoint, QuotaGroup, Quota, ApiKey, Cooperation, Chat} from "@/lib/definitions"
 
-export async function authenticate(
-  prevState: string | undefined,
-  formData: FormData,
-) {
-    try {
-      await signIn('credentials', formData);
-    } catch (error) {
-        if (error instanceof AuthError) {
-            switch (error.type) {
-                case 'CredentialsSignin':
-                    return '用户名或密码不正确';
-                default:
-                    return '未知错误，请稍后再试';
-            }
-        }
-        throw error;
-    }
+export async function authenticate(obj) {
+    await signIn('credentials', obj);
 }
 
-export async function saveConfig(prevState, formData) {
-    const obj = Object.fromEntries(formData.entries()) as Config;
-
+export async function saveConfig(obj) {
     try {
         if (obj.id) {
             await updateModel<Config>("Config", obj.id, obj)

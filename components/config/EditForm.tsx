@@ -6,37 +6,81 @@ import {
 } from '@heroicons/react/24/outline';
 
 import {saveConfig} from "@/lib/actions";
+import { zodResolver } from "@hookform/resolvers/zod"
+import { useForm } from "react-hook-form"
+import { z } from "zod"
 import { Button } from "@/components/ui/button"
-               
+import {
+  Form,
+  FormControl,
+  FormDescription,
+  FormField,
+  FormItem,
+  FormLabel,
+  FormMessage,
+} from "@/components/ui/form"
+import { Input } from "@/components/ui/input"
+
+const formSchema = z.object({
+    id: z.string(),
+    name: z.string().min(2, {
+        message: "名称至少 2 个字符.",
+    }),
+    value: z.string().min(1, {
+        message: "值不能为空",
+    }),
+})
+
 export default function EditForm({obj}) {
-    const [message, formAction, isPending] = useActionState(saveConfig, undefined);
+    const [isPending, setIsPending] = useState(false);
+
+    const form = useForm<z.infer<typeof formSchema>>({
+        resolver: zodResolver(formSchema),
+        defaultValues: {
+            id: obj.id,
+            name: obj.name,
+            value: obj.value
+        },
+    })
+
+    async function onSubmit(values: z.infer<typeof formSchema>) {
+        setIsPending(true);
+
+        await saveConfig(values)
+
+        setIsPending(false);
+    }
 
     return (
       <div className="mx-auto p-4">
-          <form action={formAction}>
-              <input type="hidden" name="id" value={obj.id} />
-
-              <div className="mb-6">
-                  <label htmlFor="name" className="block text-lg font-medium text-gray-800 mb-1">名称</label>
-                  <input type="text" defaultValue={obj.name} id="name" name="name" className="w-full px-4 py-2 border border-gray-300 rounded-md focus:outline-none focus:border-indigo-500" required />
-              </div>
-
-                <div className="mb-6">
-                  <label htmlFor="value" className="block text-lg font-medium text-gray-800 mb-1">值</label>
-                  <input type="text" defaultValue={obj.value} id="value" name="value" className="w-full px-4 py-2 border border-gray-300 rounded-md focus:outline-none focus:border-indigo-500" required />
-              </div>
-
-              <div className="flex justify-end">
+          <Form {...form}>
+              <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-8">
+                  <FormField control={form.control} name="name"
+                      render={({ field }) => (
+                          <FormItem>
+                              <FormLabel>名称</FormLabel>
+                              <FormControl>
+                                <Input placeholder="名称" {...field} />
+                              </FormControl>
+                              <FormMessage />
+                          </FormItem>
+                      )}
+                  />
+                  <FormField control={form.control} name="value"
+                      render={({ field }) => (
+                          <FormItem>
+                              <FormLabel>值</FormLabel>
+                              <FormControl>
+                                <Input placeholder="值" {...field} />
+                              </FormControl>
+                              <FormMessage />
+                          </FormItem>
+                      )}
+                  />
                   <Button type="submit">{isPending ? "保存配置中..." : "保存配置"}</Button>
-              </div>
-
-            {message && (
-                <>
-                <ExclamationCircleIcon className="h-5 w-5 text-red-500" />
-                <p className="text-sm text-red-500">{message}</p>
-                </>
-            )}
-          </form>
+                  <FormMessage />
+              </form>
+          </Form>
       </div>
     )
 }

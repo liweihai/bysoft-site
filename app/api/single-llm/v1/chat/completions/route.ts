@@ -20,7 +20,7 @@ export async function POST(request: NextRequest) {
 
     const groupName = newBody["model"]
 
-    const key = await getModel<ApiKey>("ApiKey", apiKey)
+    const key = await getModel<ApiKey>("ApiKey", apiKey.replace("BS-", ""))
     if (key) {
         var quotaGroups = await findModels<QuotaGroup>("QuotaGroup", {customer_id: key.customer_id, name: groupName}, {limit: 1})
     } else {
