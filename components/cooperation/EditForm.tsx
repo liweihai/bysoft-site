@@ -8,6 +8,7 @@ import {
   ExclamationCircleIcon,
 } from '@heroicons/react/24/outline';
 import { Button } from "@/components/ui/button"
+import { toast } from "sonner"
 
 export default function EditForm() {
     const [message, formAction, isPending] = useActionState(createCooperation, undefined);
@@ -39,18 +40,10 @@ export default function EditForm() {
                             <Button type="submit"  className="mx-auto flex">{isPending ? "提交中..." : "提交"}</Button>
                         </div>
 
-                        {message && (
-                            <>
-                            <ExclamationCircleIcon className="h-5 w-5 text-indigo-500" />
-                            <p className="text-sm text-indigo-500">谢谢您的留言，我们将尽快和您联系</p>
-                            </>
-                        )}
-
                         <div className="mt-8 w-full border-t border-gray-800 p-2 pt-8 text-center">
                             <a className="text-indigo-400">support@bysoft.site</a>
                             <p className="my-5 leading-normal"></p>
                         </div>
-
                     </form>
                 </div>
             </div>

@@ -1,13 +1,9 @@
 'use client';
  
-import {
-  ExclamationCircleIcon,
-} from '@heroicons/react/24/outline';
 import { useState } from 'react';
 import { useSearchParams } from 'next/navigation';
 import { useRouter } from 'next/navigation'
 
-import { authenticate } from '@/lib/actions';
 import { Button } from "@/components/ui/button"
 import {
   Card,
@@ -17,8 +13,6 @@ import {
   CardTitle,
 } from "@/components/ui/card"
 import { Input } from "@/components/ui/input"
-import { Label } from "@/components/ui/label"
-import {saveConfig} from "@/lib/actions";
 import { zodResolver } from "@hookform/resolvers/zod"
 import { useForm } from "react-hook-form"
 import { z } from "zod"
@@ -33,14 +27,15 @@ import {
 } from "@/components/ui/form"
 import { toast } from "sonner"
 
+import { authenticate } from "@/lib/actions";
+
 const formSchema = z.object({
     username: z.string().min(2, {
         message: "名称至少 2 个字符.",
     }),
     password: z.string().min(1, {
         message: "密码至少 8 个字符.",
-    }),
-    redirectTo: z.string()
+    })
 })
 
 export default function LoginForm() {
@@ -48,7 +43,6 @@ export default function LoginForm() {
     const callbackUrl  = searchParams.get('callbackUrl') || '/dashboard';
 
     const [isPending, setIsPending] = useState(false);
-    const [errorMessage, setErrorMessage] = useState("");
 
     const router = useRouter()
 
@@ -61,20 +55,18 @@ export default function LoginForm() {
     })
 
     async function onSubmit(values: z.infer<typeof formSchema>) {
-        setErrorMessage("");
-
         setIsPending(true);
 
         try {
             await authenticate({
-              username: values.username,
-              password: values.password,
+                redirect: false,
+                username: values.username,
+                password: values.password,
             })
 
             toast.success("登录成功，欢迎回家")
 
-            router.push(callbackUrl ? callbackUrl : '/')
-
+            router.push(callbackUrl ? callbackUrl : '/dashboard')
         } catch (error) {
             toast.error("用户名和密码错误")
         }

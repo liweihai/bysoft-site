@@ -172,22 +172,8 @@ export async function createCooperation(prevState, formData) {
     }
 }
 
-export async function deleteOne(prevState, formData) {
-    const obj = Object.fromEntries(formData.entries());
-
-    try {
-        await deleteModel(obj.model, obj.id)
-
-        if (obj.redirect_url) {
-            redirect(obj.redirect_url)
-        } else {
-            redirect('/dashboard/' + obj.model.toLowerCase())
-        }
-
-        return 1
-    } catch(error) {
-        throw error;
-    }
+export async function deleteOne(model, id) {
+    return await deleteModel(model, id)
 }
 
 export async function aiChat(prevState: Chat, formData: FormData) {
