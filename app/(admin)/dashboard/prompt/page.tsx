@@ -6,6 +6,7 @@ import Search from "@/components/Search"
 import {formatDate} from '@/utils/datetime'
 import {auth} from '@/auth';
 import EditStateForm from '@/components/prompt/EditStateForm';
+import Pagination from '@/components/dashboard/Pagination';
 import { Button } from "@/components/ui/button"
 import {
   Table,
@@ -17,15 +18,6 @@ import {
   TableHeader,
   TableRow,
 } from "@/components/ui/table"
-import {
-  Pagination,
-  PaginationContent,
-  PaginationEllipsis,
-  PaginationItem,
-  PaginationLink,
-  PaginationNext,
-  PaginationPrevious,
-} from "@/components/ui/pagination"
 
 export default async function PromptPage(props: { searchParams?: Promise<{query?: string; page?: string;}>}) {
     const params = await props.searchParams;
@@ -91,50 +83,7 @@ export default async function PromptPage(props: { searchParams?: Promise<{query?
                     </TableBody>
                 </Table>
 
-                <div className="sm:flex-1 sm:flex sm:items-center sm:justify-between mt-4 work-sans">
-                    <div>
-                        <p className="text-sm leading-5">
-                            显示
-                            <span className="font-medium"> { offset } </span>
-                            到
-                            <span className="font-medium"> { prompts.length + offset} </span>
-                            共
-                            <span className="font-medium"> { total } </span>
-                            结果
-                        </p>
-                    </div>
-                    <div>
-                        <nav className="relative z-0 inline-flex shadow-sm">
-                            <Pagination>
-                                <PaginationContent>
-                                    {page > 1 && (
-                                    <PaginationItem>
-                                        <PaginationPrevious href={'/dashboard/prompt?page=' + (page - 1)} />
-                                    </PaginationItem>
-                                    )}
-                                    {function() {
-                                        let pages = []
-                                        for (let i = 1; i <= totalPages; i++){
-                                            const href = '/dashboard/prompt?page=' + i;
-                                            if (i == page) {
-                                                pages.push(<PaginationItem><PaginationLink isActive href={href}>{i}</PaginationLink></PaginationItem>)
-                                            } else {
-                                                pages.push(<PaginationItem><PaginationLink href={href}>{i}</PaginationLink></PaginationItem>)
-                                            }
-                                        }
-                                        return pages
-                                        }()
-                                    }
-                                    {page < totalPages && (
-                                    <PaginationItem>
-                                        <PaginationNext href={'/dashboard/prompt?page=' + (page + 1)} />
-                                    </PaginationItem>
-                                    )}
-                                </PaginationContent>
-                            </Pagination>
-                        </nav>
-                    </div>
-                </div>
+                <Pagination model="prompt" limit={10} offset={offset} total={total} length={prompts.length} />
             </div>
         </div>
     )

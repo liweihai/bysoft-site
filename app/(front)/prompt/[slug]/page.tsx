@@ -60,9 +60,11 @@ export default async function Page(props: { params: Promise<{ slug: string }> })
 
     const regexp  = /{{.+}}/g
     let matches = contentHtml.match(regexp)
-    for(var i = 0; i < matches.length; i++) {
-        var match = matches[i].replaceAll("{{", "").replaceAll("}}", "")
-        contentHtml = contentHtml.replaceAll(matches[i], "<var>" + match + "</var>")
+    if (matches) {
+        for(var i = 0; i < matches.length; i++) {
+            var match = matches[i].replaceAll("{{", "").replaceAll("}}", "")
+            contentHtml = contentHtml.replaceAll(matches[i], "<var>" + match + "</var>")
+        }
     }
     
     return (
