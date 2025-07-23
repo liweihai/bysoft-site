@@ -42,7 +42,7 @@ function Pagination({ totalPages, currentPage }: PaginationProps) {
             )}
             {prevPage && (
               <Link
-                href={currentPage - 1 === 1 ? `/${basePath}/` : `/${basePath}/page/${currentPage - 1}`}
+                href={currentPage - 1 === 1 ? `/${basePath}/` : `/${basePath}?page=${currentPage - 1}`}
                 rel="prev"
               >
                 上一页
@@ -57,7 +57,7 @@ function Pagination({ totalPages, currentPage }: PaginationProps) {
               </button>
             )}
             {nextPage && (
-              <Link href={`/${basePath}/page/${currentPage + 1}`} rel="next">
+              <Link href={`/${basePath}?page=${currentPage + 1}`} rel="next">
                 下一页
               </Link>
             )}

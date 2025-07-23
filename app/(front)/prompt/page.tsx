@@ -4,7 +4,7 @@ import List from '@/components/prompt/List'
 import {findModels, countModels} from "@/lib/data"
 import {Prompt} from "@/lib/definitions"
 
-const POSTS_PER_PAGE = 20
+const POSTS_PER_PAGE = 10
 
 export default async function Page(props: { searchParams: Promise<{ page?: string }> }) {
     const params = await props.searchParams
