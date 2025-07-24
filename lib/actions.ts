@@ -36,12 +36,9 @@ export async function editPromptState(prevState, formData) {
 
 export async function savePrompt(obj) {
     if (!obj.remark) {
-        const prompt = "为给定的提示词生成一份摘要，重点说明该提示词的用途和目标。摘要应包括：" + 
-                        "提示词旨在解决的问题或满足的需求。" + 
-                        "提示词预期达成的效果或产生的价值。" + 
-                        "使用该提示词可能应用的场景。" + 
-                        "摘要长度限制在100字以内。。提示词如下：" + obj.content
-        obj.remark = await chatWithQuota("free-text-model", prompt)
+        const prompt = await getModel<Prompt>("Article", "aJNCVsoZIbA5CISRyUNBx")
+        const content = prompt.content.replace("{{prompt}}", obj.content)
+        obj.remark = await chatWithQuota("free-text-model", content)
     }
 
     if (obj.id) {

@@ -116,7 +116,7 @@ export default function EditForm({obj}) {
                             <FormItem>
                                 <FormLabel>提示词</FormLabel>
                                 <FormControl>
-                                    <Textarea placeholder="请输入提示词" {...field} />
+                                    <Textarea placeholder="请输入提示词" className="max-h-[480px] resize-none" {...field} />
                                 </FormControl>
                                 <FormMessage />
                             </FormItem>
