@@ -1,24 +1,10 @@
 'use client'
 
-import {   useState } from 'react'
+import { useState } from 'react'
 import { useRouter } from 'next/navigation'
 
-import {savePrompt} from "@/lib/actions";
+import { savePrompt } from "@/lib/actions";
 
-import { Button } from "@/components/ui/button"
-import { Input } from "@/components/ui/input"
-import { Textarea } from "@/components/ui/textarea"
-import {
-  AlertDialog,
-  AlertDialogAction,
-  AlertDialogCancel,
-  AlertDialogContent,
-  AlertDialogDescription,
-  AlertDialogFooter,
-  AlertDialogHeader,
-  AlertDialogTitle,
-  AlertDialogTrigger,
-} from "@/components/ui/alert-dialog"
 import { zodResolver } from "@hookform/resolvers/zod"
 import { useForm } from "react-hook-form"
 import { z } from "zod"
@@ -31,6 +17,9 @@ import {
   FormLabel,
   FormMessage,
 } from "@/components/ui/form"
+import { Button } from "@/components/ui/button"
+import { Input } from "@/components/ui/input"
+import { Textarea } from "@/components/ui/textarea"
 import { toast } from "sonner"
 
 const formSchema = z.object({
@@ -57,15 +46,15 @@ export default function EditForm({obj}) {
     const form = useForm<z.infer<typeof formSchema>>({
         resolver: zodResolver(formSchema),
         defaultValues: {
-            id: obj.id,
-            customer_id: obj.customer_id,
+            id: obj.id || "",
+            customer_id: obj.customer_id || "",
             category: '提示语',
             content_type: 1,
             state: 0,
-            title: obj.title,
-            keywords: obj.keywords,
-            remark: obj.remark,
-            content: obj.content
+            title: obj.title || "",
+            keywords: obj.keywords || "",
+            remark: obj.remark || "",
+            content: obj.content || ""
         },
     })
 
@@ -75,7 +64,7 @@ export default function EditForm({obj}) {
         try {
             await savePrompt(values)
 
-            toast.success("提示语保存成功")
+            toast.success("提示词保存成功")
 
             router.push('/dashboard/prompt')
         } catch (error) {
@@ -116,7 +105,7 @@ export default function EditForm({obj}) {
                             <FormItem>
                                 <FormLabel>摘要</FormLabel>
                                 <FormControl>
-                                <Textarea placeholder="请输入摘要" {...field} />
+                                    <Textarea placeholder="请输入摘要" {...field} />
                                 </FormControl>
                                 <FormMessage />
                             </FormItem>
@@ -127,14 +116,13 @@ export default function EditForm({obj}) {
                             <FormItem>
                                 <FormLabel>提示词</FormLabel>
                                 <FormControl>
-                                <Textarea placeholder="请输入提示词" {...field} />
+                                    <Textarea placeholder="请输入提示词" {...field} />
                                 </FormControl>
                                 <FormMessage />
                             </FormItem>
                         )}
                     />
                     <Button type="submit">{isPending ? "保存提示词中..." : "保存提示词"}</Button>
-                    <FormMessage />
                 </form>
             </Form>
         </div>

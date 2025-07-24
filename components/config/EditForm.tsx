@@ -1,15 +1,13 @@
 'use client'
 
-import { useActionState, useState } from 'react'
-import {
-  ExclamationCircleIcon,
-} from '@heroicons/react/24/outline';
+import { useState } from 'react'
+import { useRouter } from 'next/navigation'
 
-import {saveConfig} from "@/lib/actions";
+import { saveConfig } from "@/lib/actions";
+
 import { zodResolver } from "@hookform/resolvers/zod"
 import { useForm } from "react-hook-form"
 import { z } from "zod"
-import { Button } from "@/components/ui/button"
 import {
   Form,
   FormControl,
@@ -20,6 +18,8 @@ import {
   FormMessage,
 } from "@/components/ui/form"
 import { Input } from "@/components/ui/input"
+import { Button } from "@/components/ui/button"
+import { toast } from "sonner"
 
 const formSchema = z.object({
     id: z.string(),
@@ -34,19 +34,29 @@ const formSchema = z.object({
 export default function EditForm({obj}) {
     const [isPending, setIsPending] = useState(false);
 
+    const router = useRouter()
+
     const form = useForm<z.infer<typeof formSchema>>({
         resolver: zodResolver(formSchema),
         defaultValues: {
-            id: obj.id,
-            name: obj.name,
-            value: obj.value
+            id: obj.id || "",
+            name: obj.name || "",
+            value: obj.value || ""
         },
     })
 
     async function onSubmit(values: z.infer<typeof formSchema>) {
         setIsPending(true);
 
-        await saveConfig(values)
+        try {
+            await saveConfig(values)
+
+            toast.success("配置保存成功")
+
+            router.push('/dashboard/config')
+        } catch (error) {
+            toast.error(error.message)
+        }
 
         setIsPending(false);
     }
@@ -78,7 +88,6 @@ export default function EditForm({obj}) {
                       )}
                   />
                   <Button type="submit">{isPending ? "保存配置中..." : "保存配置"}</Button>
-                  <FormMessage />
               </form>
           </Form>
       </div>

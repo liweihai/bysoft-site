@@ -45,8 +45,8 @@ export default function DelForm({obj}) {
     const form = useForm<z.infer<typeof formSchema>>({
         resolver: zodResolver(formSchema),
         defaultValues: {
-            id: obj.id,
-            model: obj.model
+            id: obj.id || "",
+            model: obj.model || ""
         },
     })
 

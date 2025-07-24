@@ -3,9 +3,8 @@
 import { redirect } from 'next/navigation';
  
 import { AuthError } from 'next-auth';
-
 import { signIn } from '@/auth';
-import {updateModel, createModel, deleteModel, getModel, findModels, chatWith} from "@/lib/data"
+import {updateModel, createModel, deleteModel, getModel, findModels, chatWithPrompt, chatWithQuota} from "@/lib/data"
 import {Config, Prompt, Endpoint, QuotaGroup, Quota, ApiKey, Cooperation, Chat} from "@/lib/definitions"
 
 export async function authenticate(obj) {
@@ -13,17 +12,11 @@ export async function authenticate(obj) {
 }
 
 export async function saveConfig(obj) {
-    try {
-        if (obj.id) {
-            await updateModel<Config>("Config", obj.id, obj)
-        } else {
-            await createModel<Config>("Config", obj)
-        }
-        redirect('/dashboard/config')
 
-        return 1
-    } catch(error) {
-        throw error;
+    if (obj.id) {
+        await updateModel<Config>("Config", obj.id, obj)
+    } else {
+        await createModel<Config>("Config", obj)
     }
 }
 
@@ -42,6 +35,15 @@ export async function editPromptState(prevState, formData) {
 }
 
 export async function savePrompt(obj) {
+    if (!obj.remark) {
+        const prompt = "为给定的提示词生成一份摘要，重点说明该提示词的用途和目标。摘要应包括：" + 
+                        "提示词旨在解决的问题或满足的需求。" + 
+                        "提示词预期达成的效果或产生的价值。" + 
+                        "使用该提示词可能应用的场景。" + 
+                        "摘要长度限制在100字以内。。提示词如下：" + obj.content
+        obj.remark = await chatWithQuota("free-text-model", prompt)
+    }
+
     if (obj.id) {
         await updateModel<Prompt>("Article", obj.id, obj)
     } else {
@@ -169,9 +171,8 @@ export async function aiChat(prevState: Chat, formData: FormData) {
     const obj = Object.fromEntries(formData.entries());
 
     try {
-        return await chatWith(prevState, obj)
+        return await chatWithPrompt(prevState, obj)
     } catch(error) {
         throw error;
     }
-
 }

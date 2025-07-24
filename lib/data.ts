@@ -1,9 +1,10 @@
 import { getCloudflareContext } from "@opennextjs/cloudflare";
 import { CredentialsSignin } from 'next-auth';
-import { Account, ServerError, Prompt, Chat, ChatMessage } from "./definitions";
+import { Account, ServerError, Prompt, ApiKey, Chat, ChatMessage } from "./definitions";
 import { NextRequest, NextResponse } from "next/server";
 import { remark } from 'remark';
 import html from 'remark-html';
+import {auth} from '@/auth';
 
 export async function login(username: String, password: String): Promise<Account> {
     try {
@@ -120,7 +121,7 @@ export async function callApi(path: string, data: {}): Promise<Response> {
     return response
 }
 
-export async function chatWith(chat: Chat, keyVals: {}): Promise<Chat> {
+export async function chatWithPrompt(chat: Chat, keyVals: {}): Promise<Chat> {
     const newChat = {} as Chat;
 
     newChat.prompt_id = chat.prompt_id
@@ -155,36 +156,7 @@ export async function chatWith(chat: Chat, keyVals: {}): Promise<Chat> {
         let htmlContent = await remark().use(html).process(content)
         newChat.htmls.push(htmlContent.toString())
 
-        const body = {
-            model: chat.model,
-            messages: newChat.messages
-        }
-
-        const cleanedHeaders = new Headers();
-        for (const [key, value] of chat.headers) {
-            // Skip Cloudflare-specific headers and other headers we want to clean
-            if (!key.toLowerCase().startsWith('cf-') && 
-                !['x-real-ip', 'x-forwarded-for', 'x-forwarded-proto', 
-                  'x-forwarded-host', 'x-forwarded-port', 'x-forwarded-scheme',
-                  'x-forwarded-ssl', 'cdn-loop'].includes(key.toLowerCase())) {
-                cleanedHeaders.set(key, value);
-            }
-        }
-
-        cleanedHeaders.set("Authorization", "Bearer: " + chat.api_key)
-
-        const utf8Array = new TextEncoder().encode(JSON.stringify(body))
-        cleanedHeaders.set("content-length", '' + utf8Array.length)
-
-        const timestamp = Date.now();
-        const modifiedRequest = new NextRequest(chat.base_url + "/chat/completions?t=" + timestamp, {
-            method: "POST",
-            headers: cleanedHeaders,
-            body: utf8Array,
-            redirect: 'follow'
-        });
-
-        const response = await fetch(modifiedRequest);
+        const response = await chatWith(chat.base_url, chat.model, chat.api_key, newChat.messages)
 
         if (!response.ok) {
             const error = await response.text();
@@ -217,5 +189,60 @@ export async function chatWith(chat: Chat, keyVals: {}): Promise<Chat> {
 
         return newChat
     }
+}
+
+export async function chatWithQuota(name, content): Promise<string> {
+    const session = await auth()
+
+    if (!session.user) {
+        throw new Error("请登录")
+    }
+
+    var apiKeys = await findModels<ApiKey>("ApiKey", {customer_id: session.user.id}, {limit: 1})
+    if (apiKeys.length == 0) {
+        throw new Error("请先创建Api Key")
+    }
+
+    const messages = [{
+        'role': 'user',
+        "content": content
+    }]
+
+    const response = await chatWith("http://localhost:3000/api/single-llm/v1", name, "BS-" + apiKeys[0].id, messages)
+    
+    if (response.ok) {
+        const obj = await response.json()
+
+        return obj["choices"][0].message.content
+    }
+
+    const error = await response.text();
+    console.error('Error response:', error);
+
+    throw new Error(error)
+}
+
+export async function chatWith(url, model, apiKey, messages): Promise<Response> {
+    const body = {
+        model: model,
+        messages: messages
+    }
+
+    const cleanedHeaders = new Headers();
+
+    cleanedHeaders.set("Authorization", "Bearer: " + apiKey)
+
+    const utf8Array = new TextEncoder().encode(JSON.stringify(body))
+    cleanedHeaders.set("content-length", '' + utf8Array.length)
+
+    const timestamp = Date.now();
+    const modifiedRequest = new NextRequest(url + "/chat/completions?t=" + timestamp, {
+        method: "POST",
+        headers: cleanedHeaders,
+        body: utf8Array,
+        redirect: 'follow'
+    });
+
+    return await fetch(modifiedRequest);
 }
 

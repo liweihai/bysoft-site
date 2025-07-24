@@ -18,6 +18,7 @@ import {
   TableHeader,
   TableRow,
 } from "@/components/ui/table"
+import DelForm from '@/components/DelForm';
 
 export default async function PromptPage(props: { searchParams?: Promise<{query?: string; page?: string;}>}) {
     const params = await props.searchParams;
@@ -66,16 +67,23 @@ export default async function PromptPage(props: { searchParams?: Promise<{query?
                     {prompts.map((prompt) => {
                         const href = "/dashboard/prompt/edit/" + prompt.id                        
                         return (
-                            <TableRow key={prompt.id}>
-                                <TableCell>{ prompt.title }</TableCell>
-                                <TableCell>{prompt.keywords}</TableCell>
-                                <TableCell className="whitespace-normal">{prompt.remark}</TableCell>
+                            <TableRow key={ prompt.id }>
+                                <TableCell><Link href={"/prompt/" + prompt.id} target="_blank" >{ prompt.title }</Link></TableCell>
+                                <TableCell>{ prompt.keywords }</TableCell>
+                                <TableCell className="whitespace-normal">{ prompt.remark }</TableCell>
                                 <TableCell>{formatDate(prompt.create_time)}</TableCell>
                                 <TableCell className="text-right">
-                                    {customer.role == 1 && (
-                                        <EditStateForm obj={prompt} />
-                                    )}
-                                    <Button><Link href={ href }>修改</Link></Button>
+                                    <div>
+                                        {customer.role == 1 && (
+                                            <EditStateForm obj={prompt} />
+                                        )}
+                                    </div>
+                                    <div>
+                                        <Button><Link href={ href }>修改</Link></Button>
+                                    </div>
+                                    <div>
+                                        <DelForm obj={{model:"Prompt", id:prompt.id}} />
+                                    </div>
                                 </TableCell>
                             </TableRow>
                         )

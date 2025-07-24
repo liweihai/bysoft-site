@@ -51,7 +51,7 @@ export async function POST(request: NextRequest) {
         }
 
         const targetUrl = new URL(endpoint.base_url);
-        targetUrl.pathname = "/chat/completions";
+        targetUrl.pathname += "/chat/completions";
         targetUrl.search = url.search;
 
         const cleanedHeaders = new Headers();
@@ -80,6 +80,10 @@ export async function POST(request: NextRequest) {
 
         const utf8Array = new TextEncoder().encode(JSON.stringify(newBody))
         cleanedHeaders.set("content-length", '' + utf8Array.length)
+
+        if (utf8Array.length > endpoint.context_window * 1000) {
+            continue
+        }
 
         const modifiedRequest = new NextRequest(targetUrl.toString(), {
             method: "POST",
