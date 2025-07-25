@@ -208,7 +208,12 @@ export async function chatWithQuota(name, content): Promise<string> {
         "content": content
     }]
 
-    const response = await chatWith("http://www.bysoft.site/api/single-llm/v1", name, "BS-" + apiKeys[0].id, messages)
+    const env = process.env.NODE_ENV
+    if(env == "development") {
+        var response = await chatWith("http://localhost:3000/api/single-llm/v1", name, "BS-" + apiKeys[0].id, messages)
+    } else {
+        var response = await chatWith("https://www.bysoft.site/api/single-llm/v1", name, "BS-" + apiKeys[0].id, messages)
+    }
     
     if (response.ok) {
         const obj = await response.json()

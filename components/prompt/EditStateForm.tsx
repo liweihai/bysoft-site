@@ -14,13 +14,13 @@ export default function EditStateForm({obj}) {
             {obj.state == 0 && (
                 <>
                 <input type="hidden" name="state" value={1} />
-                <Button type="submit" variant="destructive">{isPending ? "上线中..." : "上线"}</Button>
+                <Button type="submit" variant="destructive" size="sm">{isPending ? "上线中..." : "上线"}</Button>
                 </>
             )}
             {obj.state != 0 && (
                 <>
                 <input type="hidden" name="state" value={0} />
-                <Button type="submit" variant="secondary">{isPending ? "下线中..." : "下线"}</Button>
+                <Button type="submit" variant="secondary" size="sm">{isPending ? "下线中..." : "下线"}</Button>
                 </>
             )}
         </form>

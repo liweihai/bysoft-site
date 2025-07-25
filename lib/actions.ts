@@ -34,11 +34,57 @@ export async function editPromptState(prevState, formData) {
     }
 }
 
+export async function generatePromptRemarkState(prevState, formData) {
+    const obj = Object.fromEntries(formData.entries()) as Prompt;
+
+    obj.state = 0
+
+    const prompt = await getModel<Prompt>("Article", "aJNCVsoZIbA5CISRyUNBx")
+    const remarkPrompt = prompt.content.replace("{{prompt}}", obj.content)
+    obj.remark = await chatWithQuota("free-text-model", remarkPrompt)
+
+    try {
+        await updateModel<Prompt>("Article", obj.id, obj)
+
+        redirect('/dashboard/prompt')
+
+        return 1
+    } catch(error) {
+        throw error;
+    }
+}
+
+export async function generatePromptKeywordsState(prevState, formData) {
+    const obj = Object.fromEntries(formData.entries()) as Prompt;
+
+    obj.state = 0
+
+    const prompt = await getModel<Prompt>("Article", "DUyEs2-sbDDb6bupi7tsA")
+    const keywordsPrompt = prompt.content.replace("{{prompt}}", obj.content)
+    obj.keywords = await chatWithQuota("free-text-model", keywordsPrompt)
+
+    try {
+        await updateModel<Prompt>("Article", obj.id, obj)
+
+        redirect('/dashboard/prompt')
+
+        return 1
+    } catch(error) {
+        throw error;
+    }
+}
+
 export async function savePrompt(obj) {
     if (!obj.remark) {
         const prompt = await getModel<Prompt>("Article", "aJNCVsoZIbA5CISRyUNBx")
-        const content = prompt.content.replace("{{prompt}}", obj.content)
-        obj.remark = await chatWithQuota("free-text-model", content)
+        const remarkPrompt = prompt.content.replace("{{prompt}}", obj.content)
+        obj.remark = await chatWithQuota("free-text-model", remarkPrompt)
+    }
+
+    if (!obj.keywords) {
+        const prompt = await getModel<Prompt>("Article", "DUyEs2-sbDDb6bupi7tsA")
+        const keywordsPrompt = prompt.content.replace("{{prompt}}", obj.content)
+        obj.keywords = await chatWithQuota("free-text-model", keywordsPrompt)
     }
 
     if (obj.id) {

@@ -6,6 +6,8 @@ import Search from "@/components/Search"
 import {formatDate} from '@/utils/datetime'
 import {auth} from '@/auth';
 import EditStateForm from '@/components/prompt/EditStateForm';
+import GenerateRemarkForm from '@/components/prompt/GenerateRemarkForm';
+import GenerateKeywordsForm from '@/components/prompt/GenerateKeywordsForm';
 import Pagination from '@/components/dashboard/Pagination';
 import { Button } from "@/components/ui/button"
 import {
@@ -69,15 +71,25 @@ export default async function PromptPage(props: { searchParams?: Promise<{query?
                         return (
                             <TableRow key={ prompt.id }>
                                 <TableCell><Link href={"/prompt/" + prompt.id} target="_blank" >{ prompt.title }</Link></TableCell>
-                                <TableCell>{ prompt.keywords }</TableCell>
-                                <TableCell className="whitespace-normal">{ prompt.remark }</TableCell>
-                                <TableCell>{formatDate(prompt.create_time)}</TableCell>
-                                <TableCell className="text-right">
+                                <TableCell className="whitespace-normal">{ prompt.keywords }
+                                    <div>
+                                        <GenerateKeywordsForm obj={prompt} />
+                                    </div>
+                                </TableCell>
+                                <TableCell className="whitespace-normal">{ prompt.remark }
+                                    <div>
+                                        <GenerateRemarkForm obj={prompt} />
+                                    </div>
+                                </TableCell>
+                                <TableCell>
+                                    {formatDate(prompt.create_time)}
                                     <div>
                                         {customer.role == 1 && (
                                             <EditStateForm obj={prompt} />
                                         )}
                                     </div>
+                                </TableCell>
+                                <TableCell className="text-right">
                                     <div>
                                         <Button><Link href={ href }>修改</Link></Button>
                                     </div>
