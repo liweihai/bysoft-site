@@ -188,6 +188,18 @@ var {
   padding: 3px
 }
 
+.prompt-content ul {
+  list-style: square inside;
+}
+
+.prompt-content ol {
+  list-style: decimal inside;
+}
+
+.prompt-content p {
+  margin-top:12px;
+}
+
 @theme inline {
   --radius-sm: calc(var(--radius) - 4px);
   --radius-md: calc(var(--radius) - 2px);

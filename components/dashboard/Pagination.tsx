@@ -21,7 +21,7 @@ export default function PaginationComponent({model, offset, limit, length, total
             <div>
                 <p className="text-sm leading-5">
                     显示
-                    <span className="font-medium"> { offset + 1 } </span>
+                    <span className="font-medium"> { length ? offset + 1 : 0 } </span>
                     到
                     <span className="font-medium"> { length + offset} </span>
                     （共

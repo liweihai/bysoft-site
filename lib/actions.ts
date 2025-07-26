@@ -7,12 +7,11 @@ import { signIn } from '@/auth';
 import {updateModel, createModel, deleteModel, getModel, findModels, chatWithPrompt, chatWithQuota} from "@/lib/data"
 import {Config, Prompt, Endpoint, QuotaGroup, Quota, ApiKey, Cooperation, Chat} from "@/lib/definitions"
 
-export async function authenticate(obj) {
-    await signIn('credentials', obj);
+export async function authenticate(provider, obj) {
+    await signIn(provider, obj);
 }
 
 export async function saveConfig(obj) {
-
     if (obj.id) {
         await updateModel<Config>("Config", obj.id, obj)
     } else {

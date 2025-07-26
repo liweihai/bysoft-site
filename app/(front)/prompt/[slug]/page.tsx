@@ -1,4 +1,3 @@
-import '@/css/prism.css'
 import Link from 'next/link';
 import { Metadata } from 'next'
 import { notFound } from 'next/navigation'
@@ -89,7 +88,7 @@ export default async function Page(props: { params: Promise<{ slug: string }> })
                         </div>
                     </header>
                     <div className="divide-y divide-gray-200 pb-8 xl:divide-y-0 dark:divide-gray-700">
-                        <div className="divide-y divide-gray-200 xl:pb-0 dark:divide-gray-700">
+                        <div className="prompt-content divide-y divide-gray-200 xl:pb-0 dark:divide-gray-700">
                             <div dangerouslySetInnerHTML={{ __html: contentHtml }} className="tracking-wide prose text-gray-600 leading-loose mx-auto text-left"></div>
                         </div>
 

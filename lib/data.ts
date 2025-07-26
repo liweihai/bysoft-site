@@ -13,6 +13,19 @@ export async function login(username: String, password: String): Promise<Account
 
         return account
     } catch(err) {
+        console.error(err)
+        throw new CredentialsSignin()
+    }
+}
+
+export async function githubLogin(id: String, email: String, name: string, avatar: string): Promise<Account> {
+    try {
+        const response = await callApi("/account/login/github", { id: id, email: email, name: name, avatar: avatar });
+        const account : Account = await response.json();
+
+        return account
+    } catch(err) {
+        console.error(err)
         throw new CredentialsSignin()
     }
 }
@@ -96,6 +109,8 @@ export async function deleteModel(modelName: String, id:string) {
 export async function callApi(path: string, data: {}): Promise<Response> {
     const { env, cf, ctx } = await getCloudflareContext({async: true});
 
+    const session = await auth()
+
     const utf8Array = new TextEncoder().encode(JSON.stringify(data))
     const options = {
         method: 'POST',
@@ -107,8 +122,10 @@ export async function callApi(path: string, data: {}): Promise<Response> {
         cache: <RequestCache><any>'no-cache'
     };
     
-    const timestamp = Date.now();
-    const url = env.API_HOST + "/test" + path + "?_code=" + env.API_CODE + "&t=" + timestamp ;
+    let url = env.API_HOST + "/om" + path + "?api_key=" + env.API_CODE
+    if (session) {
+        url += "&token=" + session["token"] ;
+    }
     
     const response = await fetch(url, options);
 

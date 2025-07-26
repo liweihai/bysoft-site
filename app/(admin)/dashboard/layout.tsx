@@ -31,15 +31,15 @@ export default async function Layout({ children }: { children: React.ReactNode }
                             <Menu as="div" className="relative mr-8">
                             <div>
                                 <MenuButton className="relative flex rounded-full bg-gray-800 text-sm focus:outline-hidden focus-visible:ring-2 focus-visible:ring-white focus-visible:ring-offset-2 focus-visible:ring-offset-gray-800">
-                                <span className="absolute -inset-1.5" />
-                                <span className="sr-only">打开菜单</span>
-                                <Image
-                                    alt=""
-                                    src={customer.avatar}
-                                    className="size-8 rounded-full"
-                                    width="50"
-                                    height="50"
-                                />
+                                    <span className="absolute -inset-1.5" />
+                                    <span className="sr-only">打开菜单</span>
+                                    <Image
+                                        alt=""
+                                        src={customer.avatar}
+                                        className="size-8 rounded-full"
+                                        width="50"
+                                        height="50"
+                                    />
                                 </MenuButton>
                             </div>
                             <MenuItems
@@ -49,8 +49,8 @@ export default async function Layout({ children }: { children: React.ReactNode }
                                 <MenuItem>
                                     <form
                                         action={async (formData) => {
-                                        "use server"
-                                        await signOut({ redirectTo: '/', redirect:true })
+                                            "use server"
+                                            await signOut({ redirectTo: '/', redirect:true })
                                         }}
                                     >
                                         <button type="submit" className="text-left w-full cursor-pointer block px-4 py-2 text-sm text-gray-700 data-focus:bg-gray-100 data-focus:outline-hidden">退出</button>
