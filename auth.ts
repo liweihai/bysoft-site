@@ -23,6 +23,10 @@ export const { handlers, signIn, signOut, auth } = NextAuth({
             return true;
         },
 
+        async redirect({ url, baseUrl }) {
+            return baseUrl + "/dashboard"
+        },
+
         async signIn({user, account, profile, email, credentials}) {
             try {
                 console.log("Sign In Callback:", {user, account, profile, email});
@@ -42,29 +46,26 @@ export const { handlers, signIn, signOut, auth } = NextAuth({
         },
 
         async jwt({ token, user, profile }) {
-            if (profile) {
-                try {
+            try {
+                if (profile) {
                     let account = await githubLogin(user.id, user.email, user.name, user.image);
 
                     user.id = account.customer_id
                     user["access_token"] = account.token
-                } catch(err){
-                    console.error(err)
                 }
+
+                if (user) { // User is available during sign-in
+                    token.id = user.id
+                    token.accessToken = user["access_token"]
+                }
+            } catch(error){
+                console.error("jwt:", error)
             }
 
-            if (user) { // User is available during sign-in
-                token.id = user.id
-                token.accessToken = user["access_token"]
-            }
-
-            console.log("jwt:", token, user, profile)
             return token
         },
 
         async session({ session, token }) {
-            console.log("session:", token, session)
-
             session.user.id = token.id as string
 
             return { ...session, token: token.accessToken }
@@ -78,7 +79,7 @@ export const { handlers, signIn, signOut, auth } = NextAuth({
     trustHost: true,
 
     providers: [
-        GitHub,
+        GitHub({}),
         Credentials({
               credentials: {
                 username: {
@@ -107,25 +108,6 @@ export const { handlers, signIn, signOut, auth } = NextAuth({
             },
         }),
     ],
-
-    // 认证事件处理
-    events: {
-        async signIn(message) {
-            console.log("User signed in:", message)
-        },
-        async signOut(message) {
-            console.log("User signed out:", message)
-        },
-        async createUser(message) {
-            console.log("User created:", message)
-        },
-        async linkAccount(message) {
-            console.log("Account linked:", message)
-        },
-        async session(message) {
-            console.log("Session created:", message)
-        },
-    },
 
     // 开发环境启用调试模式
     debug: process.env.NODE_ENV === 'development',

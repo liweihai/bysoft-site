@@ -76,20 +76,8 @@ export default function LoginForm() {
     }
 
     async function handleGithubLogin() {
-        setIsGithubPending(true);
-
-        try {
-            await authenticate('github', {callbackUrl : callbackUrl})
-
-            toast.success("登录成功，欢迎回家")
-
-            router.push(callbackUrl)
-        } catch (error) {
-            toast.error("用户名和密码错误")
-        }
-        
-        setIsGithubPending(false);
-
+        console.log(callbackUrl)
+        await authenticate('github', {redirect: true, callbackUrl : callbackUrl})
     }
     
     return (
@@ -129,7 +117,7 @@ export default function LoginForm() {
                             <Button type="submit" variant="default"className="w-full">{isPending ? "登录中..." : "登录"}</Button>
                         </form>
                     </Form>
-                    <Button onClick={handleGithubLogin} variant="outline" className="w-full mt-3 invisible">{isGithubPending ? "Github 登录中..." : "Github 登录"}</Button>
+                    <Button onClick={handleGithubLogin} variant="outline" className="w-full mt-3">{isGithubPending ? "Github 登录中..." : "Github 登录"}</Button>
                 </CardContent>
             </Card>
         </div>

@@ -2,7 +2,6 @@
 
 import { redirect } from 'next/navigation';
  
-import { AuthError } from 'next-auth';
 import { signIn } from '@/auth';
 import {updateModel, createModel, deleteModel, getModel, findModels, chatWithPrompt, chatWithQuota} from "@/lib/data"
 import {Config, Prompt, Endpoint, QuotaGroup, Quota, ApiKey, Cooperation, Chat} from "@/lib/definitions"
