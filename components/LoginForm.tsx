@@ -129,7 +129,7 @@ export default function LoginForm() {
                             <Button type="submit" variant="default"className="w-full">{isPending ? "登录中..." : "登录"}</Button>
                         </form>
                     </Form>
-                    <Button onClick={handleGithubLogin} variant="outline" className="w-full mt-3">{isGithubPending ? "Github 登录中..." : "Github 登录"}</Button>
+                    <Button onClick={handleGithubLogin} variant="outline" className="w-full mt-3 invisible">{isGithubPending ? "Github 登录中..." : "Github 登录"}</Button>
                 </CardContent>
             </Card>
         </div>
