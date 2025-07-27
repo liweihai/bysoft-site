@@ -5,6 +5,18 @@ import { Suspense } from 'react'
 import {auth} from '@/auth';
 import { Chat } from "@/lib/definitions";
 import { headers } from "next/headers";
+import { Metadata } from 'next'
+
+export async function generateMetadata(props: { params: Promise<{ slug: string }> }): Promise<Metadata | undefined> {
+    const params = await props.params
+    const slug = params.slug
+    const prompt = await getModel<Prompt>("Article", slug)
+
+    return {
+        title: "试用" + prompt.title,
+        description: "试用" + prompt.remark,
+    }
+}
 
 async function ChatPage(props: { params: Promise<{ slug: string }> }) {
     const params = await props.params

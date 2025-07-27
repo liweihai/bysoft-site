@@ -1,6 +1,14 @@
 
 import EditForm from '@/components/cooperation/EditForm';
 import { Suspense } from 'react'
+import { Metadata } from 'next'
+
+export async function generateMetadata(): Promise<Metadata | undefined> {
+    return {
+        title: "联系我们",
+        description: "联系我们",
+    }
+}
 
 export default async function ContactUsPage() {
     return (

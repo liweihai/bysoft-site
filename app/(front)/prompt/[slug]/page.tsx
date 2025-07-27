@@ -1,6 +1,6 @@
 import Link from 'next/link';
-import { Metadata } from 'next'
 import { notFound } from 'next/navigation'
+import { Metadata } from 'next'
 import siteMetadata from '@/data/siteMetadata'
 import {getModel} from "@/lib/data"
 import {Prompt} from "@/lib/definitions"
@@ -15,31 +15,9 @@ export async function generateMetadata(props: { params: Promise<{ slug: string }
     const slug = params.slug
     const prompt = await getModel<Prompt>("Article", slug)
 
-    const publishedAt = new Date(prompt.create_time).toISOString()
-    const modifiedAt = new Date(prompt.update_time).toISOString()
-
-    let imageList = [siteMetadata.socialBanner]
-
     return {
         title: prompt.title,
         description: prompt.remark,
-        openGraph: {
-            title: prompt.title,
-            description: prompt.remark,
-            siteName: siteMetadata.title,
-            locale: 'zh_CN',
-            type: 'article',
-            publishedTime: publishedAt,
-            modifiedTime: modifiedAt,
-            url: './',
-            images: imageList
-        },
-        twitter: {
-            card: 'summary_large_image',
-            title: prompt.title,
-            description: prompt.remark,
-            images: imageList,
-        },
     }
 }
 

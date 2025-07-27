@@ -1,9 +1,10 @@
 /** @type {import("pliny/config").PlinyConfig } */
 const siteMetadata = {
-  title: '丙赟的小屋',
+  title: 'AI提示词大全',
   author: '上海丙赟信息科技有限责任公司',
-  headerTitle: '丙赟的小屋',
-  description: '探索人工智能技术对各行各业的影响',
+  headerTitle: 'AI提示词大全',
+  description: '探索AI提示词的发展和应用',
+  kdywords: '提示词,AI,LLM',
   language: 'zh-cn',
   theme: 'system', // system, dark or light
   siteUrl: 'https://www.bysoft.site',

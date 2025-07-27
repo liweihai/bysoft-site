@@ -1,10 +1,18 @@
 import { notFound } from 'next/navigation'
+import { Metadata } from 'next'
 
 import List from '@/components/prompt/List'
 import {findModels, countModels} from "@/lib/data"
 import {Prompt} from "@/lib/definitions"
 
 const POSTS_PER_PAGE = 10
+
+export async function generateMetadata(): Promise<Metadata | undefined> {
+    return {
+        title: "全部提示词",
+        description: "全部提示词",
+    }
+}
 
 export default async function Page(props: { searchParams: Promise<{ page?: string }> }) {
     const params = await props.searchParams

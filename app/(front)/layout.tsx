@@ -25,6 +25,7 @@ export const metadata: Metadata = {
         template: `%s | ${siteMetadata.title}`,
     },
     description: siteMetadata.description,
+    keywords: siteMetadata.keywords,
     robots: {
         index: true,
         follow: true,
@@ -54,7 +55,7 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
             <meta name="msapplication-TileColor" content="#000000" />
             <meta name="theme-color" media="(prefers-color-scheme: light)" content="#fff" />
             <meta name="theme-color" media="(prefers-color-scheme: dark)" content="#000" />
-            <Script id="gtm">{"(function(w,d,s,l,i){w[l]=w[l]||[];w[l].push({'gtm.start':new Date().getTime(),event:'gtm.js'});var f=d.getElementsByTagName(s)[0],j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src='https://www.googletagmanager.com/gtm.js?id='+i+dl;f.parentNode.insertBefore(j,f);})(window,document,'script','dataLayer','GTM-K5XGRDN8');"}</Script>
+            <Script id="gtm" strategy="beforeInteractive">{"(function(w,d,s,l,i){w[l]=w[l]||[];w[l].push({'gtm.start':new Date().getTime(),event:'gtm.js'});var f=d.getElementsByTagName(s)[0],j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src='https://www.googletagmanager.com/gtm.js?id='+i+dl;f.parentNode.insertBefore(j,f);})(window,document,'script','dataLayer','GTM-K5XGRDN8');"}</Script>
             <Script id="bdtj" strategy="beforeInteractive">{'var _hmt = _hmt || [];(function() {  var hm = document.createElement("script");  hm.src = "https://hm.baidu.com/hm.js?8f3bb053dae14655379dbf06f13706ca";  var s = document.getElementsByTagName("script")[0];   s.parentNode.insertBefore(hm, s);})();'}</Script>
             <body className="bg-gray-200 font-sans font-thin px-6 bg-fixed bg-cover bg-no-repeat" style={{backgroundImage: "url('https://images.unsplash.com/photo-1523742238290-adf3b54101bf?w=1800')"}}>
                 <Header />

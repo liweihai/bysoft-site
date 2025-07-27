@@ -1,8 +1,8 @@
 import Link from 'next/link';
+import { Metadata } from 'next'
 
-import {countModels, findModels} from "@/lib/data"
+import { findModels} from "@/lib/data"
 import {Endpoint, Quota} from "@/lib/definitions"
-import Search from "@/components/Search"
 import { Button } from "@/components/ui/button"
 import {
   Table,
@@ -14,6 +14,13 @@ import {
   TableHeader,
   TableRow,
 } from "@/components/ui/table"
+
+export async function generateMetadata(): Promise<Metadata | undefined> {
+    return {
+        title: "Single LLM",
+        description: "兼容 Open Api 的大模型访问 Api。依次访问下列多个大模型，如果成功则返回成功结果，如果失败继续尝试下一个大模型，直到所有大模型都返回失败。",
+    }
+}
 
 export default async function EndpointPage() {
     const quotas = await findModels<Quota>("Quota", {quota_group_id: 'G38i97eeKG2KgpxW-nvf_'}, {order: 'priority ASC'})
