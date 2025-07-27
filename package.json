@@ -64,7 +64,7 @@
     "cf-typegen": "wrangler types --env-interface CloudflareEnv env.d.ts",
     "check": "npm run build && tsc && wrangler deploy --dry-run",
     "deploy": "wrangler deploy",
-    "dev": "AUTH_SECRET=VNxpci1F980mASAgilLbtk6ylDQ7B/1siurrPRZq9BM= next dev",
+    "dev": "AUTH_SECRET=VNxpci1F980mASAgilLbtk6ylDQ7B/1siurrPRZq9BM= NODE_OPTIONS='--inspect' next dev",
     "lint": "next lint",
     "postbuild": "opennextjs-cloudflare build -s",
     "preview": "npm run build && wrangler dev",

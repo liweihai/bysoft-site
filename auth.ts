@@ -3,6 +3,7 @@ import Credentials from 'next-auth/providers/credentials';
 import GitHub from "next-auth/providers/github"
 import { User } from '@auth/core/types';
 import { z } from 'zod';
+import { cookies } from "next/headers";
 
 import {login, githubLogin} from "@/lib/data"
 import {Customer} from "@/lib/definitions"
@@ -15,22 +16,32 @@ export const { handlers, signIn, signOut, auth } = NextAuth({
     callbacks: {
         authorized({ auth, request: { nextUrl } }) {
             const isLoggedIn = !!auth?.user;
+
             const isOnDashboard = nextUrl.pathname.startsWith('/dashboard');
             if (isOnDashboard) {
-                if (isLoggedIn) return true;
+                if (isLoggedIn) 
+                    return true;
+
                 return false; // Redirect unauthenticated users to login page
             } 
+
             return true;
         },
 
         async redirect({ url, baseUrl }) {
-            return baseUrl + "/dashboard"
+            // Allows relative callback URLs
+            if (url.startsWith("/")) 
+                return `${baseUrl}${url}`
+
+            // Allows callback URLs on the same origin
+            else if (new URL(url).origin === baseUrl) 
+                return url
+            
+            return baseUrl
         },
 
         async signIn({user, account, profile, email, credentials}) {
             try {
-                console.log("Sign In Callback:", {user, account, profile, email});
-
                 // 处理 GitHub 登录
                 if (account && account.provider === 'github' && profile) {
                     await githubLogin(user.id, user.email, user.name, user.image);
@@ -40,7 +51,7 @@ export const { handlers, signIn, signOut, auth } = NextAuth({
 
                 return true;
             } catch (error) {
-                console.error("Error in signIn callback:", error);
+                console.error("Error in signIn callback:", {user, account, profile, email, error});
                 return false;
             }
         },
@@ -74,6 +85,7 @@ export const { handlers, signIn, signOut, auth } = NextAuth({
 
     session: {
         strategy: "jwt",
+        maxAge: 30 * 24 * 60 * 60, // 30 days
     },
 
     trustHost: true,
@@ -108,9 +120,6 @@ export const { handlers, signIn, signOut, auth } = NextAuth({
             },
         }),
     ],
-
-    // 开发环境启用调试模式
-    debug: process.env.NODE_ENV === 'development',
 
     // 日志配置
     logger: {
