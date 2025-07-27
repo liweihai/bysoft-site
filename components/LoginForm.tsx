@@ -76,8 +76,7 @@ export default function LoginForm() {
     }
 
     async function handleGithubLogin() {
-        console.log(callbackUrl)
-        await authenticate('github', {redirect: true, callbackUrl : callbackUrl})
+        await authenticate('github', {redirect: true, redirectTo : callbackUrl})
     }
     
     return (

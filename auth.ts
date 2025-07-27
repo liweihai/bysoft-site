@@ -14,12 +14,15 @@ export const { handlers, signIn, signOut, auth } = NextAuth({
         signIn: '/login',
     },
     callbacks: {
-        authorized({ auth, request: { nextUrl } }) {
+        async authorized({ auth, request: { nextUrl } }) {
             const isLoggedIn = !!auth?.user;
+
+            const cookie = await cookies()
+            const hasLogin = await cookie.has("bysoft.login_at")
 
             const isOnDashboard = nextUrl.pathname.startsWith('/dashboard');
             if (isOnDashboard) {
-                if (isLoggedIn) 
+                if (isLoggedIn && hasLogin) 
                     return true;
 
                 return false; // Redirect unauthenticated users to login page
@@ -120,6 +123,20 @@ export const { handlers, signIn, signOut, auth } = NextAuth({
             },
         }),
     ],
+    events: {
+    async signIn(message) {
+        const cookie = await cookies()
+        await cookie.set("bysoft.login_at", "" + (new Date()).getTime(), {maxAge: 30*24*60*60*1000})
+    },
+    async signOut(message) {
+        const cookie = await cookies()
+        await cookie.delete("bysoft.login_at")
+    },
+    async createUser(message) { /* user created */ },
+    async updateUser(message) { /* user updated - e.g. their email was verified */ },
+    async linkAccount(message) { /* account (e.g. Twitter) linked to a user */ },
+    async session(message) { /* session is active */ },
+    },
 
     // 日志配置
     logger: {
