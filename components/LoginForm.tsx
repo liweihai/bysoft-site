@@ -58,18 +58,18 @@ export default function LoginForm() {
     async function onSubmit(values: z.infer<typeof formSchema>) {
         setIsPending(true);
 
-        try {
-            await authenticate('credentials', {
-                redirect: false,
-                username: values.username,
-                password: values.password,
-            })
+        const result = await authenticate('credentials', {
+            redirect: false,
+            username: values.username,
+            password: values.password,
+        })
 
+        if (result.code == 0) {
             toast.success("登录成功，欢迎回家")
 
             router.push(callbackUrl)
-        } catch (error) {
-            toast.error("用户名和密码错误")
+        } else {
+            toast.error(result.message)
         }
         
         setIsPending(false);

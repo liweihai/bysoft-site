@@ -27,11 +27,6 @@ export type Account = {
     token: string;
 };
 
-export type ServerError = {
-    code: number;
-    message: string;
-};
-
 export type Endpoint = {
     id: string,
     provider: string,
@@ -112,4 +107,10 @@ export type Chat = {
     messages: ChatMessage[],
     htmls: string[],
     headers: Headers;
+};
+
+export type ServerResult = {
+    code: number;
+    message: string;
+    data: {} | []
 };

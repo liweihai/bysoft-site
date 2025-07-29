@@ -18,15 +18,22 @@ export const { handlers, signIn, signOut, auth } = NextAuth({
             const isLoggedIn = !!auth?.user;
 
             const cookie = await cookies()
-            const hasLogin = await cookie.has("bysoft.login_at")
+            
+            if (nextUrl.pathname === '/dashboard') {
+                const hasLogin = await cookie.has("bysoft.login_at")
 
-            const isOnDashboard = nextUrl.pathname.startsWith('/dashboard');
-            if (isOnDashboard) {
-                if (isLoggedIn && hasLogin) 
+                if (isLoggedIn && hasLogin) {
                     return true;
+                }
+                
+                return false 
+            } else if (nextUrl.pathname.startsWith('/dashboard')) {
+                if (isLoggedIn) {
+                    return true;
+                }
 
-                return false; // Redirect unauthenticated users to login page
-            } 
+                return false; // Redirect unauthenticated users to login page 
+            }
 
             return true;
         },

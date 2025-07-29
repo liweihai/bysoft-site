@@ -1,11 +1,11 @@
 'use client'
 
 import {useState, useActionState} from 'react'
-import {generatePromptRemarkState} from "@/lib/actions";
+import {generatePromptRemark} from "@/lib/actions";
 import { Button } from "@/components/ui/button"
 
 export default function GetenrateRemarkForm({obj}) {
-    const [message, formAction, isPending] = useActionState(generatePromptRemarkState, undefined);
+    const [message, formAction, isPending] = useActionState(generatePromptRemark, undefined);
 
     return (
         <form action={formAction}>

@@ -42,7 +42,7 @@ export default async function PromptPage(props: { searchParams?: Promise<{query?
     const total = await countModels("Article", conditions)
 
     const offset = (page - 1) * 10;
-    const prompts = await findModels<Prompt>("Article", conditions, {order: 'state ASC, create_time DESC', limit: 10, offset: (page - 1) * 10})
+    const prompts = await findModels<Prompt>("Article", conditions, {select: 'id, title, keywords, remark, create_time', order: 'state ASC, create_time DESC', limit: 10, offset: (page - 1) * 10})
 
     const totalPages = Math.ceil(total / 10)
 
@@ -94,7 +94,7 @@ export default async function PromptPage(props: { searchParams?: Promise<{query?
                                         <Button><Link href={ href }>修改</Link></Button>
                                     </div>
                                     <div>
-                                        <DelForm obj={{model:"Prompt", id:prompt.id}} />
+                                        <DelForm obj={{model:"Article", id:prompt.id}} />
                                     </div>
                                 </TableCell>
                             </TableRow>

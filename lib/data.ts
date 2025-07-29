@@ -1,6 +1,6 @@
 import { getCloudflareContext } from "@opennextjs/cloudflare";
 import { CredentialsSignin } from 'next-auth';
-import { Account, ServerError, Prompt, ApiKey, Chat, ChatMessage } from "./definitions";
+import { Account, Prompt, ApiKey, Chat, ChatMessage } from "./definitions";
 import { NextRequest, NextResponse } from "next/server";
 import { remark } from 'remark';
 import html from 'remark-html';
@@ -14,6 +14,7 @@ export async function login(username: String, password: String): Promise<Account
         return account
     } catch(err) {
         console.error(err)
+
         throw new CredentialsSignin()
     }
 }
@@ -130,9 +131,9 @@ export async function callApi(path: string, data: {}): Promise<Response> {
     const response = await fetch(url, options);
 
     if (!response.ok) {
-        const error : ServerError = await response.json();
+        const error = await response.json();
         console.error('Error response:', error);
-        throw error
+        throw new Error(error["message"])
     }
 
     return response
@@ -225,12 +226,7 @@ export async function chatWithQuota(name, content): Promise<string> {
         "content": content
     }]
 
-    const env = process.env.NODE_ENV
-    if(env == "development") {
-        var response = await chatWith("http://localhost:3000/api/single-llm/v1", name, "BS-" + apiKeys[0].id, messages)
-    } else {
-        var response = await chatWith("https://www.bysoft.site/api/single-llm/v1", name, "BS-" + apiKeys[0].id, messages)
-    }
+    var response = await chatWith("https://www.bysoft.site/api/single-llm/v1", name, "BS-" + apiKeys[0].id, messages)
     
     if (response.ok) {
         const obj = await response.json()

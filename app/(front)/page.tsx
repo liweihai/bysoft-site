@@ -8,7 +8,7 @@ import siteMetadata from '@/data/siteMetadata'
 import { formatDate } from '@/utils/datetime'
 
 export default async function Home() {
-  const blogs = await findModels<Prompt>("Article", {state: 1, category: '提示语'}, {limit: 5, offset: 0, order: 'create_time DESC'})
+  const blogs = await findModels<Prompt>("Article", {state: 1, category: '提示语'}, {select: 'id, title, keywords, remark, create_time', limit: 5, offset: 0, order: 'create_time DESC'})
 
   return (
       <>

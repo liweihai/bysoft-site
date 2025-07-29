@@ -4,15 +4,13 @@ const siteMetadata = {
   author: '上海丙赟信息科技有限责任公司',
   headerTitle: 'AI提示词大全',
   description: '探索AI提示词的发展和应用',
-  kdywords: '提示词,AI,LLM',
+  keywords: '提示词,AI,LLM',
   language: 'zh-cn',
   theme: 'system', // system, dark or light
   siteUrl: 'https://www.bysoft.site',
   siteRepo: 'https://github.com/timlrx/tailwind-nextjs-starter-blog',
   siteLogo: `${process.env.BASE_PATH || ''}/public/logo.png`,
   locale: 'zh-cn',
-  // set to true if you want a navbar fixed to the top
-  stickyNav: true,
   analytics: {
     // If you want to use an analytics provider you have to add it to the
     // content security policy in the `next.config.js` file.

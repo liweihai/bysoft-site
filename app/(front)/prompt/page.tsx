@@ -18,7 +18,7 @@ export default async function Page(props: { searchParams: Promise<{ page?: strin
     const params = await props.searchParams
     const page = Number(params?.page) || 1;
 
-    const blogs = await findModels<Prompt>("Article", {state: 1, category: '提示语'}, {limit: POSTS_PER_PAGE, offset: (page - 1) * POSTS_PER_PAGE, order: 'create_time DESC'})
+    const blogs = await findModels<Prompt>("Article", {state: 1, category: '提示语'}, {select: 'id, title, keywords, remark, create_time', limit: POSTS_PER_PAGE, offset: (page - 1) * POSTS_PER_PAGE, order: 'create_time DESC'})
     const totalPrompts = await countModels("Article", {state: 1, category: '提示语'})
 
     const totalPages = Math.ceil(totalPrompts / POSTS_PER_PAGE)

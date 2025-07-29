@@ -61,14 +61,14 @@ export default function EditForm({obj}) {
     async function onSubmit(values: z.infer<typeof formSchema>) {
         setIsPending(true);
 
-        try {
-            await savePrompt(values)
+        const result = await savePrompt(values)
+
+        if (result.code == 0) {
+            router.push('/dashboard/prompt')
 
             toast.success("提示词保存成功")
-
-            router.push('/dashboard/prompt')
-        } catch (error) {
-            toast.error(error.message)
+        } else {
+            toast.error(result.message)
         }
         
         setIsPending(false);

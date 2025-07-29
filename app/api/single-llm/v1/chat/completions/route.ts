@@ -21,10 +21,14 @@ export async function POST(request: NextRequest) {
     const groupName = newBody["model"]
 
     const key = await getModel<ApiKey>("ApiKey", apiKey.replace("BS-", ""))
+
+    let quotaGroups = []
     if (key) {
-        var quotaGroups = await findModels<QuotaGroup>("QuotaGroup", {customer_id: key.customer_id, name: groupName}, {limit: 1})
-    } else {
-        var quotaGroups = await findModels<QuotaGroup>("QuotaGroup", {customer_id: '1827e53ba48811e8ae8900163e1aebd1', name: groupName}, {limit: 1})
+        quotaGroups = await findModels<QuotaGroup>("QuotaGroup", {customer_id: key.customer_id, name: groupName}, {limit: 1})
+    }
+
+    if (quotaGroups.length == 0) {
+        quotaGroups = await findModels<QuotaGroup>("QuotaGroup", {customer_id: '1827e53ba48811e8ae8900163e1aebd1', name: groupName}, {limit: 1})
     }
 
     if (quotaGroups.length == 0) {

@@ -1,11 +1,11 @@
 'use client'
 
 import {useState, useActionState} from 'react'
-import {generatePromptKeywordsState} from "@/lib/actions";
+import {generatePromptKeywords} from "@/lib/actions";
 import { Button } from "@/components/ui/button"
 
 export default function GetenrateKeywordsForm({obj}) {
-    const [message, formAction, isPending] = useActionState(generatePromptKeywordsState, undefined);
+    const [message, formAction, isPending] = useActionState(generatePromptKeywords, undefined);
 
     return (
         <form action={formAction}>

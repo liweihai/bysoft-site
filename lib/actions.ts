@@ -4,10 +4,17 @@ import { redirect } from 'next/navigation';
  
 import { signIn } from '@/auth';
 import {updateModel, createModel, deleteModel, getModel, findModels, chatWithPrompt, chatWithQuota} from "@/lib/data"
-import {Config, Prompt, Endpoint, QuotaGroup, Quota, ApiKey, Cooperation, Chat} from "@/lib/definitions"
+import {Config, Prompt, Endpoint, QuotaGroup, Quota, ApiKey, Cooperation, Chat, ServerResult} from "@/lib/definitions"
 
-export async function authenticate(provider, obj) {
-    await signIn(provider, obj);
+export async function authenticate(provider, obj) : Promise<ServerResult> {
+    try {
+        const account = await signIn(provider, obj);
+
+        return {code: 0, message: '', data: account}
+    } catch(error){
+        console.error("authenticate " + provider, {obj, error})
+        return {code: 500, message: "用户名和密码不匹配", data: []}
+    }
 }
 
 export async function saveConfig(obj) {
@@ -32,7 +39,7 @@ export async function editPromptState(prevState, formData) {
     }
 }
 
-export async function generatePromptRemarkState(prevState, formData) {
+export async function generatePromptRemark(prevState, formData) {
     const obj = Object.fromEntries(formData.entries()) as Prompt;
 
     obj.state = 0
@@ -52,7 +59,7 @@ export async function generatePromptRemarkState(prevState, formData) {
     }
 }
 
-export async function generatePromptKeywordsState(prevState, formData) {
+export async function generatePromptKeywords(prevState, formData) {
     const obj = Object.fromEntries(formData.entries()) as Prompt;
 
     obj.state = 0
@@ -72,23 +79,31 @@ export async function generatePromptKeywordsState(prevState, formData) {
     }
 }
 
-export async function savePrompt(obj) {
-    if (!obj.remark) {
-        const prompt = await getModel<Prompt>("Article", "aJNCVsoZIbA5CISRyUNBx")
-        const remarkPrompt = prompt.content.replace("{{prompt}}", obj.content)
-        obj.remark = await chatWithQuota("free-text-model", remarkPrompt)
-    }
+export async function savePrompt(obj) : Promise<ServerResult> {
+    try {
+        if (!obj.remark) {
+            const prompt = await getModel<Prompt>("Article", "aJNCVsoZIbA5CISRyUNBx")
+            const remarkPrompt = prompt.content.replace("{{prompt}}", obj.content)
+            obj.remark = await chatWithQuota("free-text-model", remarkPrompt)
+        }
 
-    if (!obj.keywords) {
-        const prompt = await getModel<Prompt>("Article", "DUyEs2-sbDDb6bupi7tsA")
-        const keywordsPrompt = prompt.content.replace("{{prompt}}", obj.content)
-        obj.keywords = await chatWithQuota("free-text-model", keywordsPrompt)
-    }
+        if (!obj.keywords) {
+            const prompt = await getModel<Prompt>("Article", "DUyEs2-sbDDb6bupi7tsA")
+            const keywordsPrompt = prompt.content.replace("{{prompt}}", obj.content)
+            obj.keywords = await chatWithQuota("free-text-model", keywordsPrompt)
+        }
 
-    if (obj.id) {
-        await updateModel<Prompt>("Article", obj.id, obj)
-    } else {
-        await createModel<Prompt>("Article", obj)
+        if (obj.id) {
+            var result = await updateModel<Prompt>("Article", obj.id, obj)
+        } else {
+            var result = await createModel<Prompt>("Article", obj)
+        }
+
+        return {code: 0, message: '', data: result}
+    } catch(error) {
+        console.error("savePrompt ", {obj, error})
+
+        return {code: 500, message: error.message, data: []}
     }
 }
 
@@ -184,7 +199,7 @@ export async function createApiKey(prevState, formData) {
     try {
         await createModel<ApiKey>("ApiKey", obj)
 
-        redirect('/dashboard/apikey')
+        redirect('/dashboard')
 
         return 1
     } catch(error) {
