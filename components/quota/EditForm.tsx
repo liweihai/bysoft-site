@@ -33,7 +33,7 @@ export default function EditForm({obj, endpoints, quotas}) {
                     <div className="mb-6">
                         <label htmlFor="endpoint_id" className="block text-lg font-medium text-gray-800 mb-1">大模型</label>   
                         <div className="relative">
-                            <select id="endpoint_id" onChange={handleChangeEndpointId} name="endpoint_id" defaultValue={endpointId} className="w-full bg-transparent placeholder:text-slate-400 text-slate-700 text-sm border border-slate-200 rounded pl-3 pr-8 py-2 transition duration-300 ease focus:outline-none focus:border-slate-400 hover:border-slate-400 shadow-sm focus:shadow-md appearance-none cursor-pointer">
+                            <select id="endpoint_id" onChange={handleChangeEndpointId} name="endpoint_id" className="w-full bg-transparent placeholder:text-slate-400 text-slate-700 text-sm border border-slate-200 rounded pl-3 pr-8 py-2 transition duration-300 ease focus:outline-none focus:border-slate-400 hover:border-slate-400 shadow-sm focus:shadow-md appearance-none cursor-pointer" required>
                             {endpoints.map((endpoint) => {
                                 const found = quotas.find(function(q){return q.endpoint_id == endpoint.id})
                                 if (found) {
@@ -60,7 +60,7 @@ export default function EditForm({obj, endpoints, quotas}) {
                 </div>
 
                 <div className="flex justify-end">
-                    <Button variant="secondary" asChild><Link href={ href } target="_blank" >申请Api Key</Link></Button>
+                    <Button variant="secondary" asChild><Link href={ href } target="_blank" >去官网申请 Api Key</Link></Button>
                     <Button type="submit">{isPending ? "增加大模型中..." : "增加大模型"}</Button>
                 </div>
             </form>
