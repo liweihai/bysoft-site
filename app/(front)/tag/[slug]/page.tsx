@@ -29,7 +29,7 @@ export default async function TagPage(props: { params: Promise<{ slug: string }>
     const totalPrompts = await countModels("Article", conditions)
     const totalPages = Math.ceil(totalPrompts / POSTS_PER_PAGE)
 
-    const blogs = await findModels<Prompt>("Article", conditions, {limit: POSTS_PER_PAGE, offset: POSTS_PER_PAGE *(page - 1), order: 'create_time DESC'})
+    const blogs = await findModels<Prompt>("Article", conditions, {limit: POSTS_PER_PAGE, offset: POSTS_PER_PAGE *(page - 1), select: 'id, title, keywords, remark, create_time, state, category', order: 'create_time DESC'})
 
     const pagination = {
       currentPage: page,

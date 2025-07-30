@@ -83,7 +83,7 @@ export default function EditForm({obj}) {
                             <FormItem>
                                 <FormLabel>标题</FormLabel>
                                 <FormControl>
-                                <Input placeholder="请输入标题，空白则由 AI 根据内容自动生成" {...field} />
+                                <Input placeholder="请输入标题" {...field} />
                                 </FormControl>
                                 <FormMessage />
                             </FormItem>
@@ -105,7 +105,7 @@ export default function EditForm({obj}) {
                             <FormItem>
                                 <FormLabel>摘要</FormLabel>
                                 <FormControl>
-                                    <Textarea placeholder="请输入摘要" {...field} />
+                                    <Textarea placeholder="请输入摘要，空白则由 AI 根据内容自动生成" {...field} />
                                 </FormControl>
                                 <FormMessage />
                             </FormItem>
