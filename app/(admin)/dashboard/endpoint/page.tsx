@@ -70,7 +70,7 @@ export default async function EndpointPage(props: { searchParams?: Promise<{quer
                                 <TableCell>{ endpoint.tpd_threshold > 0 ? endpoint.tpd_threshold : '无限制' }</TableCell>
                                 <TableCell>{ endpoint.free_tokens}</TableCell>
                                 <TableCell className="text-right">
-                                    <Button asChild variant="secondary"><Link href={ cloneHref }>复制</Link></Button>
+                                    <Button asChild variant="secondary"><Link href={ cloneHref }>克隆</Link></Button>
                                     <Button asChild><Link href={ editHref }>修改</Link></Button>
                                 </TableCell>
                             </TableRow>
