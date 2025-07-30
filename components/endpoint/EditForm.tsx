@@ -29,7 +29,7 @@ export default function EditForm({obj}) {
                 </div>
 
                 <div className="mb-6">
-                    <label htmlFor="model" className="block text-lg font-medium text-gray-800 mb-1">大模型</label>
+                    <label htmlFor="model" className="block text-lg font-medium text-gray-800 mb-1">模型编码</label>
                     <input type="text" defaultValue={obj.model} id="model" name="model" className="w-full bg-transparent placeholder:text-slate-400 text-slate-700 text-sm border border-slate-200 rounded-md px-3 py-2 transition duration-300 ease focus:outline-none focus:border-slate-400 hover:border-slate-300 shadow-sm focus:shadow" required />
                 </div>
 

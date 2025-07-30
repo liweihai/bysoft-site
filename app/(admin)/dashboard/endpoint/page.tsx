@@ -47,7 +47,7 @@ export default async function EndpointPage(props: { searchParams?: Promise<{quer
                     <TableHeader>
                         <TableRow>
                             <TableHead>供应商</TableHead>
-                            <TableHead>大模型</TableHead>
+                            <TableHead>模型编码</TableHead>
                             <TableHead>RPM</TableHead>
                             <TableHead>RPD</TableHead>
                             <TableHead>TPM</TableHead>
@@ -58,7 +58,8 @@ export default async function EndpointPage(props: { searchParams?: Promise<{quer
                     </TableHeader>
                     <TableBody>
                     {endpoints.map((endpoint) => {
-                        const href = "/dashboard/endpoint/edit/" + endpoint.id                        
+                        const editHref = "/dashboard/endpoint/edit/" + endpoint.id   
+                        const cloneHref = "/dashboard/endpoint/clone/" + endpoint.id                     
                         return (
                             <TableRow key={endpoint.id}>
                                 <TableCell><Link target="_blank" href={endpoint.site_url} className="text-sm leading-5 text-blue-900">{ endpoint.provider }</Link></TableCell>
@@ -69,7 +70,8 @@ export default async function EndpointPage(props: { searchParams?: Promise<{quer
                                 <TableCell>{ endpoint.tpd_threshold > 0 ? endpoint.tpd_threshold : '无限制' }</TableCell>
                                 <TableCell>{ endpoint.free_tokens}</TableCell>
                                 <TableCell className="text-right">
-                                    <Button asChild><Link href={ href }>修改</Link></Button>
+                                    <Button asChild variant="secondary"><Link href={ cloneHref }>复制</Link></Button>
+                                    <Button asChild><Link href={ editHref }>修改</Link></Button>
                                 </TableCell>
                             </TableRow>
                         )

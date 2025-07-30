@@ -15,7 +15,7 @@ export default function EditForm({obj, algorithms}) {
                 <input type="hidden" name="customer_id" value={obj.customer_id} />
 
                 <div className="mb-6">
-                    <label htmlFor="name" className="block text-lg font-medium text-gray-800 mb-1">名称</label>
+                    <label htmlFor="name" className="block text-lg font-medium text-gray-800 mb-1">编码</label>
                     <input type="text" defaultValue={obj.name} id="name" name="name" className="w-full bg-transparent placeholder:text-slate-400 text-slate-700 text-sm border border-slate-200 rounded-md px-3 py-2 transition duration-300 ease focus:outline-none focus:border-slate-400 hover:border-slate-300 shadow-sm focus:shadow" required />
                 </div>
 
@@ -25,7 +25,7 @@ export default function EditForm({obj, algorithms}) {
                         <select id="algorithm" name="algorithm" defaultValue={obj.algorithm} className="w-full bg-transparent placeholder:text-slate-400 text-slate-700 text-sm border border-slate-200 rounded pl-3 pr-8 py-2 transition duration-300 ease focus:outline-none focus:border-slate-400 hover:border-slate-400 shadow-sm focus:shadow-md appearance-none cursor-pointer">
                         {algorithms.map((algorithm) => {
                             return (
-                            <option key={algorithm} value={algorithm}>{algorithm}</option>
+                            <option key={algorithm} value={algorithm.key}>{algorithm.value}</option>
                             )
                         })}
                         </select>

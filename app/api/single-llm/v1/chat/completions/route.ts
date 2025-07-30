@@ -109,17 +109,29 @@ export async function POST(request: NextRequest) {
                 responseJson.model = groupName
 
                 if (key) {
-                    try {
-                        const newQuota = await getModel<Quota>("Quota", quota.id)
-                        newQuota.rpm += 1
-                        newQuota.rpd += 1
-                        newQuota.tpm += responseJson.usage.total_tokens
-                        newQuota.tpd += responseJson.usage.total_tokens
-                        newQuota.requests_used += 1
-                        newQuota.tokens_used += responseJson.usage.total_tokens
-                        await updateModel<Quota>("Quota", newQuota.id, newQuota)
-                    } catch(err) {
-                        console.error(err)
+                    //一个 api_key 的额度是通常共享的
+                    var joins = {
+                        "Endpoint": {
+                            "conditions": {
+                                "provider": endpoint.provider
+                            },
+                            "attr": ['id', 'endpoint_id']
+                        }
+                    }
+                    const allQuotas = await findModels<Quota>("Quota", {api_key: quota.api_key}, {}, joins)
+                    for(var i = 0; i < allQuotas.length; i++) {
+                        try {
+                            const newQuota = allQuotas[i]
+                            newQuota.rpm += 1
+                            newQuota.rpd += 1
+                            newQuota.tpm += responseJson.usage.total_tokens
+                            newQuota.tpd += responseJson.usage.total_tokens
+                            newQuota.requests_used += 1
+                            newQuota.tokens_used += responseJson.usage.total_tokens
+                            await updateModel<Quota>("Quota", newQuota.id, newQuota)
+                        } catch(err) {
+                            console.error(err)
+                        }
                     }
                 }
 

@@ -47,7 +47,7 @@ export default async function EndpointPage() {
                     <TableHeader>
                         <TableRow>
                             <TableHead>供应商</TableHead>
-                            <TableHead>大模型</TableHead>
+                            <TableHead>模型编码</TableHead>
                             <TableHead>RPM</TableHead>
                             <TableHead>RPD</TableHead>
                             <TableHead>TPM</TableHead>
@@ -104,7 +104,7 @@ export default async function EndpointPage() {
                         </div>
                         <div className="bg-gray-50 px-4 py-5 sm:grid sm:grid-cols-3 sm:gap-4 sm:px-6">
                             <dt className="text-sm font-medium text-gray-500">
-                                模型名
+                                模型编码
                             </dt>
                             <dd className="mt-1 text-sm text-gray-900 sm:mt-0 sm:col-span-2">
                                 free-text-model

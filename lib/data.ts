@@ -31,8 +31,8 @@ export async function githubLogin(id: String, email: String, name: string, avata
     }
 }
 
-export async function findModels<T>(modelName: String, conditions = {}, filters = {}): Promise<T[]> {
-    const response = await callApi("/select/" + modelName, {conditions: conditions || {}, filters: filters || {}});
+export async function findModels<T>(modelName: String, conditions = {}, filters = {}, joins={}): Promise<T[]> {
+    const response = await callApi("/select/" + modelName, {conditions: conditions || {}, filters: filters || {}, joins: joins || {}});
 
     try {
         const blogs: T[] =  await response.json();
@@ -44,8 +44,8 @@ export async function findModels<T>(modelName: String, conditions = {}, filters 
     }
 }
 
-export async function countModels(modelName: String, conditions: {}): Promise<number> {
-    const response = await callApi("/count/" + modelName, {conditions: conditions || {}});
+export async function countModels(modelName: String, conditions: {}, joins={}): Promise<number> {
+    const response = await callApi("/count/" + modelName, {conditions: conditions || {}, joins: joins || {}});
 
     try {
         const total =  await response.text();

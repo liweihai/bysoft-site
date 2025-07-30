@@ -43,7 +43,7 @@ export default async function QuotaGroupViewPage(props: { params: Promise<{ slug
                         <TableRow>
                             <TableHead></TableHead>
                             <TableHead>供应商</TableHead>
-                            <TableHead>大模型</TableHead>
+                            <TableHead>模型编码</TableHead>
                             <TableHead>RPM</TableHead>
                             <TableHead>RPD</TableHead>
                             <TableHead>TPM</TableHead>

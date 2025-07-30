@@ -82,15 +82,23 @@ export async function generatePromptKeywords(prevState, formData) {
 export async function savePrompt(obj) : Promise<ServerResult> {
     try {
         if (!obj.remark) {
-            const prompt = await getModel<Prompt>("Article", "aJNCVsoZIbA5CISRyUNBx")
-            const remarkPrompt = prompt.content.replace("{{prompt}}", obj.content)
-            obj.remark = await chatWithQuota("free-text-model", remarkPrompt)
+            try {
+                const prompt = await getModel<Prompt>("Article", "aJNCVsoZIbA5CISRyUNBx")
+                const remarkPrompt = prompt.content.replace("{{prompt}}", obj.content)
+                obj.remark = await chatWithQuota("free-text-model", remarkPrompt)
+            } catch(err){
+                console.error(err)
+            }
         }
 
         if (!obj.keywords) {
-            const prompt = await getModel<Prompt>("Article", "DUyEs2-sbDDb6bupi7tsA")
-            const keywordsPrompt = prompt.content.replace("{{prompt}}", obj.content)
-            obj.keywords = await chatWithQuota("free-text-model", keywordsPrompt)
+            try {
+                const prompt = await getModel<Prompt>("Article", "DUyEs2-sbDDb6bupi7tsA")
+                const keywordsPrompt = prompt.content.replace("{{prompt}}", obj.content)
+                obj.keywords = await chatWithQuota("free-text-model", keywordsPrompt)
+            } catch(err){
+                console.error(err)
+            }
         }
 
         if (obj.id) {

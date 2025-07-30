@@ -24,7 +24,7 @@ export default async function ApiKeyPage() {
     const session = await auth()
 
     const conditions = {customer_id: session.user.id}
-    const apiKeys = await findModels<ApiKey>("ApiKey", conditions, {})
+    const apiKeys = await findModels<ApiKey>("ApiKey", conditions, {order: 'create_time DESC'})
 
     const mask = (cc, num = 4, mask = "*") =>
         `${cc}`.slice(-num).padStart(`${cc}`.length, mask);
