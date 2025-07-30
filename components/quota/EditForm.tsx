@@ -6,7 +6,7 @@ import { useState, useActionState } from 'react'
 import {saveQuota} from "@/lib/actions";
 import { Button } from "@/components/ui/button"
 
-export default function EditForm({obj, endpoints}) {
+export default function EditForm({obj, endpoints, quotas}) {
     const [message, formAction, isPending] = useActionState(saveQuota, undefined);
 
     const [endpointId, setEndpointId] = useState(obj.endpoint_id || endpoints[0].id)
@@ -35,9 +35,16 @@ export default function EditForm({obj, endpoints}) {
                         <div className="relative">
                             <select id="endpoint_id" onChange={handleChangeEndpointId} name="endpoint_id" defaultValue={endpointId} className="w-full bg-transparent placeholder:text-slate-400 text-slate-700 text-sm border border-slate-200 rounded pl-3 pr-8 py-2 transition duration-300 ease focus:outline-none focus:border-slate-400 hover:border-slate-400 shadow-sm focus:shadow-md appearance-none cursor-pointer">
                             {endpoints.map((endpoint) => {
-                                return (
-                                <option key={endpoint.id} value={endpoint.id}>{endpoint.provider}{endpoint.model}</option>
-                                )
+                                const found = quotas.find(function(q){return q.endpoint_id == endpoint.id})
+                                if (found) {
+                                    return (
+                                        <option disabled key={endpoint.id} value={endpoint.id}>[{endpoint.provider}]{endpoint.model}</option>
+                                    )
+                                } else {
+                                    return (
+                                        <option key={endpoint.id} value={endpoint.id}>[{endpoint.provider}]{endpoint.model}</option>
+                                    )
+                                }
                             })}
                             </select>
                             <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth="1.2" stroke="currentColor" className="h-5 w-5 ml-1 absolute top-2.5 right-2.5 text-slate-700">
