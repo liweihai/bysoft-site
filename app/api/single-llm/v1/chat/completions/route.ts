@@ -48,7 +48,7 @@ export async function POST(request: NextRequest) {
                 || (endpoint.rpd_threshold > 0 && quota.rpd >= endpoint.rpd_threshold)
                 || (endpoint.tpm_threshold > 0 && quota.tpm >= endpoint.tpm_threshold)
                 || (endpoint.tpd_threshold > 0 && quota.tpd >= endpoint.tpd_threshold)
-                || (endpoint.free_tokens > 0 && quota.tokens_used >= endpoint.free_tokens)
+                || (endpoint.free_tokens > 0 && quota.tokens_used >= endpoint.free_tokens * 1000000)
             ) {
                 continue;
             }

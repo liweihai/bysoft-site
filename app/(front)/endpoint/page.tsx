@@ -67,7 +67,7 @@ export default async function EndpointPage() {
                                 <TableCell>{ endpoint.rpd_threshold > 0 ? endpoint.rpd_threshold : '无限制' } </TableCell>
                                 <TableCell>{ endpoint.tpm_threshold > 0 ? endpoint.tpm_threshold : '无限制' } </TableCell>
                                 <TableCell>{ endpoint.tpd_threshold > 0 ? endpoint.tpd_threshold : '无限制' }</TableCell>
-                                <TableCell>{ endpoint.free_tokens}</TableCell>
+                                <TableCell>{ endpoint.free_tokens}M</TableCell>
                                 <TableCell className="text-right">
                                     <Button asChild><Link href={ endpoint.site_url }>申请</Link></Button>
                                 </TableCell>

@@ -76,7 +76,7 @@ export default async function EndpointPage(props: { searchParams?: Promise<{quer
                                 <TableCell>{ endpoint.rpd_threshold > 0 ? endpoint.rpd_threshold : '无限制' } </TableCell>
                                 <TableCell>{ endpoint.tpm_threshold > 0 ? endpoint.tpm_threshold : '无限制' } </TableCell>
                                 <TableCell>{ endpoint.tpd_threshold > 0 ? endpoint.tpd_threshold : '无限制' }</TableCell>
-                                <TableCell>{ endpoint.free_tokens}</TableCell>
+                                <TableCell>{ endpoint.free_tokens}M</TableCell>
                                 <TableCell className="text-right">
                                     <Button asChild variant="secondary"><Link href={ cloneHref }>克隆</Link></Button>
                                     

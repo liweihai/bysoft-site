@@ -82,7 +82,7 @@ export default async function QuotaGroupViewPage(props: { params: Promise<{ slug
                                 <TableCell>{quota.rpd} / { endpoint.rpd_threshold > 0 ? endpoint.rpd_threshold : '无限制' } </TableCell>
                                 <TableCell>{quota.tpm} / { endpoint.tpm_threshold > 0 ? endpoint.tpm_threshold : '无限制' } </TableCell>
                                 <TableCell>{quota.tpd} / { endpoint.tpd_threshold > 0 ? endpoint.tpd_threshold : '无限制' }</TableCell>
-                                <TableCell>{quota.tokens_used} / { endpoint.free_tokens}</TableCell>
+                                <TableCell>{quota.tokens_used} / { endpoint.free_tokens}M</TableCell>
                                 <TableCell><CopyButton text={quota.api_key} /></TableCell>
                                 <TableCell className="text-right">
                                     <DelForm obj={{model:"Quota", id:quota.id, redirect_url: '/dashboard/quotagroup/view/' + quotaGroup.id}} />

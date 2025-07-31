@@ -68,13 +68,12 @@ export default function EditForm({obj}) {
                 <div className="mb-6">
                     <div className="grid grid-cols-2 gap-4">
                         <div className="col-span-1">
-                            <label htmlFor="context_window" className="block text-lg font-medium text-gray-800 mb-1">上下文窗口（K）</label>
-                            <input type="number" defaultValue={obj.context_window || 0} id="context_window" name="context_window" className="w-full bg-transparent placeholder:text-slate-400 text-slate-700 text-sm border border-slate-200 rounded-md px-3 py-2 transition duration-300 ease focus:outline-none focus:border-slate-400 hover:border-slate-300 shadow-sm focus:shadow" required />
-
+                            <label htmlFor="free_tokens" className="block text-lg font-medium text-gray-800 mb-1">赠送令牌（M）</label>
+                            <input type="number" defaultValue={obj.free_tokens || 0} id="free_tokens" name="free_tokens" className="w-full bg-transparent placeholder:text-slate-400 text-slate-700 text-sm border border-slate-200 rounded-md px-3 py-2 transition duration-300 ease focus:outline-none focus:border-slate-400 hover:border-slate-300 shadow-sm focus:shadow" required />
                         </div>
                         <div className="col-span-1">
-                            <label htmlFor="free_tokens" className="block text-lg font-medium text-gray-800 mb-1">赠送令牌</label>
-                            <input type="number" defaultValue={obj.free_tokens || 0} id="free_tokens" name="free_tokens" className="w-full bg-transparent placeholder:text-slate-400 text-slate-700 text-sm border border-slate-200 rounded-md px-3 py-2 transition duration-300 ease focus:outline-none focus:border-slate-400 hover:border-slate-300 shadow-sm focus:shadow" required />
+                            <label htmlFor="context_window" className="block text-lg font-medium text-gray-800 mb-1">上下文窗口（K）</label>
+                            <input type="number" defaultValue={obj.context_window || 0} id="context_window" name="context_window" className="w-full bg-transparent placeholder:text-slate-400 text-slate-700 text-sm border border-slate-200 rounded-md px-3 py-2 transition duration-300 ease focus:outline-none focus:border-slate-400 hover:border-slate-300 shadow-sm focus:shadow" required />
                         </div>
                     </div>
                 </div>
