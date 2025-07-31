@@ -6,7 +6,7 @@ import { useState, useActionState } from 'react'
 import {saveQuota} from "@/lib/actions";
 import { Button } from "@/components/ui/button"
 
-export default function EditForm({obj, endpoints, quotas}) {
+export default function EditForm({obj, providers, endpoints, quotas}) {
     const [message, formAction, isPending] = useActionState(saveQuota, undefined);
 
     const [endpointId, setEndpointId] = useState(obj.endpoint_id || endpoints[0].id)
@@ -34,17 +34,25 @@ export default function EditForm({obj, endpoints, quotas}) {
                         <label htmlFor="endpoint_id" className="block text-lg font-medium text-gray-800 mb-1">大模型</label>   
                         <div className="relative">
                             <select id="endpoint_id" onChange={handleChangeEndpointId} name="endpoint_id" className="w-full bg-transparent placeholder:text-slate-400 text-slate-700 text-sm border border-slate-200 rounded pl-3 pr-8 py-2 transition duration-300 ease focus:outline-none focus:border-slate-400 hover:border-slate-400 shadow-sm focus:shadow-md appearance-none cursor-pointer" required>
-                            {endpoints.map((endpoint) => {
-                                const found = quotas.find(function(q){return q.endpoint_id == endpoint.id})
-                                if (found) {
-                                    return (
-                                        <option disabled key={endpoint.id} value={endpoint.id}>[{endpoint.provider}]{endpoint.model}</option>
-                                    )
-                                } else {
-                                    return (
-                                        <option key={endpoint.id} value={endpoint.id}>[{endpoint.provider}]{endpoint.model}</option>
-                                    )
-                                }
+                            {providers.map((provider) => {
+                                return (
+                                    <optgroup label={provider.provider} key={provider.provider}>
+                                    {endpoints.map((endpoint) => {
+                                        if (endpoint.provider == provider.provider) {
+                                            const found = quotas.find(function(q){return q.endpoint_id == endpoint.id})
+                                            if (found) {
+                                                return (
+                                                    <option disabled key={endpoint.id} value={endpoint.id}>{endpoint.model}</option>
+                                                )
+                                            } else {
+                                                return (
+                                                    <option key={endpoint.id} value={endpoint.id}>{endpoint.model}</option>
+                                                )
+                                            }
+                                        }
+                                    })}
+                                    </optgroup>
+                                )
                             })}
                             </select>
                             <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth="1.2" stroke="currentColor" className="h-5 w-5 ml-1 absolute top-2.5 right-2.5 text-slate-700">

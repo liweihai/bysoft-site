@@ -2,14 +2,17 @@ import {getModel, findModels} from "@/lib/data"
 import {Endpoint, Quota} from "@/lib/definitions"
 import EditForm from '@/components/endpoint/EditForm';
 import { Suspense } from 'react'
+import {auth} from '@/auth';
 
 async function ClonePage(props: { params: Promise<{ slug: string }> }) {
     const params = await props.params
     const slug = params.slug
-
+    
+    const session = await auth()
 
     const oldEndpoint = await getModel<Endpoint>("Endpoint", slug)
     const obj = {
+        customer_id: session.user.id,
         provider: oldEndpoint.provider, 
         site_url: oldEndpoint.site_url, 
         base_url: oldEndpoint.base_url,

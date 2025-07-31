@@ -28,6 +28,7 @@ export type Account = {
 };
 
 export type Endpoint = {
+    customer_id: string,
     id: string,
     provider: string,
     site_url: string,

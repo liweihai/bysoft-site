@@ -1,7 +1,7 @@
 import Link from 'next/link';
 
-import {countModels, findModels} from "@/lib/data"
-import {Endpoint} from "@/lib/definitions"
+import {countModels, findModels, getModel} from "@/lib/data"
+import {Endpoint, Customer} from "@/lib/definitions"
 import Search from "@/components/Search"
 import { Button } from "@/components/ui/button"
 import {
@@ -15,6 +15,7 @@ import {
   TableRow,
 } from "@/components/ui/table"
 import Pagination from '@/components/dashboard/Pagination';
+import {auth} from '@/auth';
 
 export default async function EndpointPage(props: { searchParams?: Promise<{query?: string; page?: string;}>}) {
     const params = await props.searchParams;
@@ -22,15 +23,22 @@ export default async function EndpointPage(props: { searchParams?: Promise<{quer
     const query = params?.query || '';
     const page = Number(params?.page) || 1;
 
+    const session = await auth()
+    const customer = await getModel<Customer>("Customer", session.user.id)
+
     const conditions = {}
     if (query) {
         conditions["title"] = {$regex: query}
     }
 
+    if (customer.role == 0) {
+        conditions["customer_id"] = ['', session.user.id, '1827e53ba48811e8ae8900163e1aebd1']
+    }
+    
     const total = await countModels("Endpoint", conditions)
 
     const offset = (page - 1) * 20;
-    const endpoints = await findModels<Endpoint>("Endpoint", conditions, {limit: 20, offset: (page - 1) * 20})
+    const endpoints = await findModels<Endpoint>("Endpoint", conditions, {limit: 20, offset: (page - 1) * 20, order: 'provider ASC, model ASC'})
 
     const totalPages = Math.ceil(total / 20)
 
@@ -71,7 +79,10 @@ export default async function EndpointPage(props: { searchParams?: Promise<{quer
                                 <TableCell>{ endpoint.free_tokens}</TableCell>
                                 <TableCell className="text-right">
                                     <Button asChild variant="secondary"><Link href={ cloneHref }>克隆</Link></Button>
+                                    
+                                    {(customer.id == endpoint.id || customer.role == 1) && (
                                     <Button asChild><Link href={ editHref }>修改</Link></Button>
+                                    )}
                                 </TableCell>
                             </TableRow>
                         )

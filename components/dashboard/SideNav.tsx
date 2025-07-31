@@ -24,23 +24,22 @@ export default function SideNav({role}) {
             href: '/dashboard'
         },
         {
+            icon: DocumentDuplicateIcon,
+            name: '提示词',
+            href: '/dashboard/prompt'
+        },
+        {
             icon: RectangleGroupIcon,
             name: '模型组',
             href: '/dashboard/quotagroup'
         },
         {
-            icon: DocumentDuplicateIcon,
-            name: '提示词',
-            href: '/dashboard/prompt'
-        }
-    ]
-    if (role == 1) {
-        links.push({
             icon: Battery50Icon,
             name: '大模型',
             href: '/dashboard/endpoint'
-        })
-
+        }
+    ]
+    if (role == 1) {
         links.push({
             icon: ChatBubbleBottomCenterTextIcon,
             name: '客户留言',

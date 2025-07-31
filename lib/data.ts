@@ -57,6 +57,17 @@ export async function countModels(modelName: String, conditions: {}, joins={}): 
     }
 }
 
+export async function groupModels<T>(modelName: String, attr: String, conditions = {}, joins={}): Promise<[]> {
+    const response = await callApi("/group/" + modelName, {attr: attr, conditions: conditions || {}, joins: joins || {}});
+
+    try {
+        return await response.json()
+    } catch (err) {
+        console.error(err)
+        return []
+    }
+}
+
 export async function getModel<T>(modelName: String, id:String): Promise<T> {
     if (id) {
         const response = await callApi("/select/" + modelName, {conditions: {id: id}, filters: {limit: 1, offset: 0}});
