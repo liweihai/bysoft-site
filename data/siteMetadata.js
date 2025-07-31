@@ -1,14 +1,13 @@
 /** @type {import("pliny/config").PlinyConfig } */
 const siteMetadata = {
-  title: 'AI提示词大全',
+  title: '大语言模型提示词大全',
   author: '上海丙赟信息科技有限责任公司',
-  headerTitle: 'AI提示词大全',
-  description: '探索AI提示词的发展和应用',
-  keywords: '提示词,AI,LLM',
+  headerTitle: '大语言模型提示词大全',
+  description: '探索大语言模型提示词的发展和应用',
+  keywords: '提示词,人工智能,大语言模型,智能体',
   language: 'zh-cn',
   theme: 'system', // system, dark or light
   siteUrl: 'https://www.bysoft.site',
-  siteRepo: 'https://github.com/timlrx/tailwind-nextjs-starter-blog',
   siteLogo: `${process.env.BASE_PATH || ''}/public/logo.png`,
   locale: 'zh-cn',
   analytics: {
