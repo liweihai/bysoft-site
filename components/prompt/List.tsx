@@ -8,6 +8,7 @@ import Link from '@/components/Link'
 import Tag from '@/components/Tag'
 import {Prompt} from '@/lib/definitions'
 import siteMetadata from '@/data/siteMetadata'
+import Search from "@/components/Search"
 
 interface PaginationProps {
   totalPages: number
@@ -78,6 +79,12 @@ export default function List({
             <h1 className="text-3xl lg:text-4xl text-center mb-6 tracking-wider">
               {title}
             </h1>
+            <div className="align-middle rounded-tl-lg rounded-tr-lg inline-block w-full py-4 overflow-hidden bg-white">
+                <div className="flex justify-between">
+                    <Search placeholder="搜索提示词..." />
+                    <div> </div>
+                </div>
+            </div>
           </div>
           <ul className="divide-y divide-gray-200 dark:divide-gray-700">
             {!posts.length && '没有找到。'}

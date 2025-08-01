@@ -23,7 +23,7 @@ export default function Search({ placeholder }: { placeholder: string }) {
     }, 300);
 
     return (
-        <form className="inline-flex border rounded w-7/12 px-2 lg:px-6 h-10 bg-transparent">
+        <div className="inline-flex border rounded w-7/12 px-2 lg:px-6 h-10 bg-transparent">
             <div className="flex flex-wrap items-stretch w-full h-full mb-6 relative">
                 <div className="flex">
                     <Button variant="ghost" size="icon" className="size-10">
@@ -34,11 +34,12 @@ export default function Search({ placeholder }: { placeholder: string }) {
                     type="text" 
                     placeholder={placeholder} 
                     onChange={(e) => {
+                        e.preventDefault();
                         handleSearch(e.target.value);
                     }}
                     defaultValue={searchParams.get('query')?.toString()}
                 />
             </div>
-        </form>
+        </div>
 );
 }
