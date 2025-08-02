@@ -24,15 +24,15 @@ export async function POST(request: NextRequest) {
 
     let quotaGroups = []
     if (key) {
+        //使用模型组Api Key访问
         quotaGroups = await findModels<QuotaGroup>("QuotaGroup", {customer_id: key.customer_id, name: groupName}, {limit: 1})
-    }
-
-    if (quotaGroups.length == 0) {
+    } else {
+        //使用自带各个模型的Api Key访问
         quotaGroups = await findModels<QuotaGroup>("QuotaGroup", {customer_id: '1827e53ba48811e8ae8900163e1aebd1', name: groupName}, {limit: 1})
     }
 
     if (quotaGroups.length == 0) {
-        return new Response("模型不存在", {status: 500});
+        return new Response(groupName + "模型不存在", {status: 500});
     }
 
     const quotas = await findModels<Quota>("Quota", {quota_group_id: quotaGroups[0].id}, {order: "priority ASC"})

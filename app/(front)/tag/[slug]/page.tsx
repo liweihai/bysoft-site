@@ -54,7 +54,7 @@ export default async function TagPage(props: { params: Promise<{ slug: string }>
       <List
         posts={blogs}
         pagination={pagination}
-        title={tag}
+        title={tag + '提示词'}
       />
     )
 }

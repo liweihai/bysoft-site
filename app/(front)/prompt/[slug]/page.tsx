@@ -9,6 +9,7 @@ import { remark } from 'remark';
 import html from 'remark-html';
 import CopyButton from '@/components/CopyButton'
 import { Button } from "@/components/ui/button"
+import Tag from '@/components/Tag'
 
 export async function generateMetadata(props: { params: Promise<{ slug: string }> }): Promise<Metadata | undefined> {
     const params = await props.params
@@ -43,10 +44,12 @@ export default async function Page(props: { params: Promise<{ slug: string }> })
             contentHtml = contentHtml.replaceAll(matches[i], "<var>" + match + "</var>")
         }
     }
+
+    const keywords = prompt.keywords ? prompt.keywords.split(",") : []
     
     return (
         <section className="mx-auto max-w-4xl px-4 sm:px-6 xl:max-w-5xl xl:px-0">
-            <article>
+            <article className="divide-y divide-gray-200 xl:col-span-3 xl:row-span-2 xl:pb-0 dark:divide-gray-700 pb-6">
                 <div>
                     <header>
                         <div className="space-y-1 pb-10 text-center">
@@ -76,6 +79,19 @@ export default async function Page(props: { params: Promise<{ slug: string }> })
                     </div>
                 </div>
             </article>
+            <div className="divide-gray-200 text-sm leading-5 font-medium xl:col-start-1 xl:row-start-2 xl:divide-y dark:divide-gray-700">
+                <div className="py-4 xl:py-8">
+                    <h2 className="text-xs tracking-wide text-gray-500 uppercase dark:text-gray-400">标签</h2>
+                    <div className="flex flex-wrap">
+                    {keywords.map((keyword) => {
+                        const url = "/tag/" + keyword.trim()
+                        return (
+                            <Tag key={keyword} text={keyword} />
+                        )
+                    })}
+                    </div>
+                </div>
+            </div>
             <div className="align-middle rounded-tl-lg rounded-tr-lg inline-block w-full py-4 overflow-hidden bg-white px-12">
                 <div className="flex justify-between">
                     <div>  </div>

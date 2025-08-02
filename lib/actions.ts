@@ -39,43 +39,41 @@ export async function editPromptState(prevState, formData) {
     }
 }
 
-export async function generatePromptRemark(prevState, formData) {
-    const obj = Object.fromEntries(formData.entries()) as Prompt;
-
-    obj.state = 0
+export async function generatePromptRemark(obj): Promise<ServerResult> {
+    const newObj = await getModel<Prompt>("Article", obj.id)
+    newObj.state = 0
 
     const prompt = await getModel<Prompt>("Article", "aJNCVsoZIbA5CISRyUNBx")
-    const remarkPrompt = prompt.content.replace("{{prompt}}", obj.content)
-    obj.remark = await chatWithQuota("free-text-model", remarkPrompt)
+    const remarkPrompt = prompt.content.replace("{{prompt}}", newObj.content)
+    newObj.remark = await chatWithQuota("free-text-model", remarkPrompt)
 
     try {
-        await updateModel<Prompt>("Article", obj.id, obj)
+        const result = await updateModel<Prompt>("Article", newObj.id, newObj)
 
-        redirect('/dashboard/prompt')
-
-        return 1
+        return {code: 0, message: '', data: result}
     } catch(error) {
-        throw error;
+        console.error("generatePromptKeywords ", {obj, error})
+
+        return {code: 500, message: error.message, data: {}}
     }
 }
 
-export async function generatePromptKeywords(prevState, formData) {
-    const obj = Object.fromEntries(formData.entries()) as Prompt;
-
-    obj.state = 0
+export async function generatePromptKeywords(obj): Promise<ServerResult> {
+    const newObj = await getModel<Prompt>("Article", obj.id)
+    newObj.state = 0
 
     const prompt = await getModel<Prompt>("Article", "DUyEs2-sbDDb6bupi7tsA")
-    const keywordsPrompt = prompt.content.replace("{{prompt}}", obj.content)
-    obj.keywords = await chatWithQuota("free-text-model", keywordsPrompt)
+    const keywordsPrompt = prompt.content.replace("{{prompt}}", newObj.content)
+    newObj.keywords = await chatWithQuota("free-text-model", keywordsPrompt)
 
     try {
-        await updateModel<Prompt>("Article", obj.id, obj)
+        const result = await updateModel<Prompt>("Article", newObj.id, newObj)
 
-        redirect('/dashboard/prompt')
-
-        return 1
+        return {code: 0, message: '', data: result}
     } catch(error) {
-        throw error;
+        console.error("generatePromptKeywords ", {obj, error})
+
+        return {code: 500, message: error.message, data: {}}
     }
 }
 

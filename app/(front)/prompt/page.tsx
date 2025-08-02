@@ -5,7 +5,6 @@ import List from '@/components/prompt/List'
 import {findModels, countModels} from "@/lib/data"
 import {Prompt} from "@/lib/definitions"
 
-
 const POSTS_PER_PAGE = 10
 
 export async function generateMetadata(props: { searchParams: Promise<{ query: string }> }): Promise<Metadata | undefined> {
