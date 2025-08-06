@@ -14,7 +14,7 @@ import {
 } from "@/components/ui/table"
 import {formatDate} from '@/utils/datetime'
 import DelForm from '@/components/DelForm';
-import Pagination from '@/components/dashboard/Pagination';
+import Pagination from '@/components/Pagination';
 
 export default async function Page(props: { params: Promise<{ page: number }> }) {
   const params = await props.params
@@ -63,7 +63,7 @@ export default async function Page(props: { params: Promise<{ page: number }> })
                     </TableBody>
                 </Table>
 
-                <Pagination model="config" limit={10} offset={offset} total={total} length={configs.length} />
+                <Pagination url='/dashboard/config?page='  limit={10} offset={offset} total={total} length={configs.length} />
             </div>
       </div>
   )

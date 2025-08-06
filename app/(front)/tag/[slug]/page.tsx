@@ -52,8 +52,9 @@ export default async function TagPage(props: { params: Promise<{ slug: string }>
 
     return (
       <List
-        posts={blogs}
-        pagination={pagination}
+        prompts={blogs}
+        offset={(page - 1) * POSTS_PER_PAGE}
+        total={totalPrompts}
         title={tag + '提示词'}
       />
     )

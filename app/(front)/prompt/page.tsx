@@ -46,9 +46,10 @@ export default async function Page(props: { searchParams: Promise<{ query?: stri
 
     return (
         <List
-          posts={blogs}
-          pagination={pagination}
+          prompts={blogs}
           title="所有提示词"
+          offset={(page - 1) * POSTS_PER_PAGE}
+          total={totalPrompts}
         />
     )
 }

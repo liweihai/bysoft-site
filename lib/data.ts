@@ -166,24 +166,34 @@ export async function chatWithPrompt(chat: Chat, keyVals: {}): Promise<Chat> {
     }
 
     try {
-        let content = ""
-
         if (chat.messages.length == 0) {
+            let sysContent = ""
+
             const prompt = await getModel<Prompt>("Article", chat.prompt_id)
-            content = prompt.content
+            sysContent = prompt.content
             Object.keys(keyVals).forEach(function(k) {
-                content = content.replaceAll("{{" + k + "}}", keyVals[k])
+                sysContent = sysContent.replaceAll("{{" + k + "}}", keyVals[k])
             })
+
+            newChat.messages.push({
+                role: 'system',
+                content: sysContent
+            })
+
+            let htmlContent = await remark().use(html).process(sysContent)
+            newChat.htmls.push(htmlContent.toString())
         }
 
-        content += keyVals['content']
+        let usrContent = keyVals['content']
+        if (usrContent) {
+            newChat.messages.push({
+                role: 'user',
+                content: usrContent
+            })
 
-        newChat.messages.push({
-            role: 'user',
-            content: content
-        })
-        let htmlContent = await remark().use(html).process(content)
-        newChat.htmls.push(htmlContent.toString())
+            let htmlContent = await remark().use(html).process(usrContent)
+            newChat.htmls.push(htmlContent.toString())
+        }
 
         const response = await chatWith(chat.base_url, chat.model, chat.api_key, newChat.messages)
 
@@ -204,7 +214,7 @@ export async function chatWithPrompt(chat: Chat, keyVals: {}): Promise<Chat> {
         const message = obj["choices"][0].message
         newChat.messages.push(message)
 
-        htmlContent = await remark().use(html).process(message.content)
+        let htmlContent = await remark().use(html).process(message.content)
         newChat.htmls.push(htmlContent.toString())
         return newChat
     } catch(error) {

@@ -8,7 +8,7 @@ import {auth} from '@/auth';
 import EditStateForm from '@/components/prompt/EditStateForm';
 import GenerateRemarkForm from '@/components/prompt/GenerateRemarkForm';
 import GenerateKeywordsForm from '@/components/prompt/GenerateKeywordsForm';
-import Pagination from '@/components/dashboard/Pagination';
+import Pagination from '@/components/Pagination';
 import { Button } from "@/components/ui/button"
 import {
   Table,
@@ -103,7 +103,7 @@ export default async function PromptPage(props: { searchParams?: Promise<{query?
                     </TableBody>
                 </Table>
 
-                <Pagination model="prompt" limit={10} offset={offset} total={total} length={prompts.length} />
+                <Pagination url='/dashboard/prompt?page=' limit={10} offset={offset} total={total} length={prompts.length} />
             </div>
         </div>
     )

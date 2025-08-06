@@ -11,10 +11,9 @@ import {
   PaginationPrevious,
 } from "@/components/ui/pagination"
 
-export default function PaginationComponent({model, offset, limit, length, total}) {
+export default function PaginationComponent({url, offset, limit, length, total}) {
     const totalPages = Math.ceil(total / limit)
     const page       = Math.floor(offset / limit) + 1
-    const url        = '/dashboard/' + model + '?page='
 
     return ( 
         <div className="sm:flex-1 sm:flex sm:items-center sm:justify-between mt-4 work-sans">

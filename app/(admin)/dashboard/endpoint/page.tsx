@@ -14,7 +14,7 @@ import {
   TableHeader,
   TableRow,
 } from "@/components/ui/table"
-import Pagination from '@/components/dashboard/Pagination';
+import Pagination from '@/components/Pagination';
 import {auth} from '@/auth';
 
 export default async function EndpointPage(props: { searchParams?: Promise<{query?: string; page?: string;}>}) {
@@ -89,7 +89,7 @@ export default async function EndpointPage(props: { searchParams?: Promise<{quer
                     })}
                     </TableBody>
                 </Table>
-                <Pagination model="endpoint" limit={10} offset={offset} total={total} length={endpoints.length} />
+                <Pagination url='/dashboard/endpoint?page=' limit={10} offset={offset} total={total} length={endpoints.length} />
             </div>
         </div>
     )
