@@ -174,9 +174,9 @@ export async function chatWithPrompt(chat: Chat, keyVals: {}): Promise<Chat> {
             Object.keys(keyVals).forEach(function(k) {
                 content = content.replaceAll("{{" + k + "}}", keyVals[k])
             })
-        } else {
-            content = keyVals['content']
         }
+
+        content += keyVals['content']
 
         newChat.messages.push({
             role: 'user',

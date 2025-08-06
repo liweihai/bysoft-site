@@ -74,24 +74,26 @@ export default async function Page(props: { params: Promise<{ slug: string }> })
                         </div>
 
                         <footer>
-                            <div className="flex flex-col text-sm font-medium sm:flex-row sm:justify-between sm:text-base"></div>
+                            <div className="flex flex-col text-sm font-medium sm:flex-row sm:justify-between sm:text-base">
+                                <div className="divide-gray-200 text-sm leading-5 font-medium xl:col-start-1 xl:row-start-2 xl:divide-y dark:divide-gray-700">
+                                    <div className="py-4 xl:py-8">
+                                        <h2 className="text-xs tracking-wide text-gray-500 uppercase dark:text-gray-400">标签</h2>
+                                        <div className="flex flex-wrap">
+                                        {keywords.map((keyword) => {
+                                            const url = "/tag/" + keyword.trim()
+                                            return (
+                                                <Tag key={keyword} text={keyword} />
+                                            )
+                                        })}
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
                         </footer>
                     </div>
                 </div>
             </article>
-            <div className="divide-gray-200 text-sm leading-5 font-medium xl:col-start-1 xl:row-start-2 xl:divide-y dark:divide-gray-700">
-                <div className="py-4 xl:py-8">
-                    <h2 className="text-xs tracking-wide text-gray-500 uppercase dark:text-gray-400">标签</h2>
-                    <div className="flex flex-wrap">
-                    {keywords.map((keyword) => {
-                        const url = "/tag/" + keyword.trim()
-                        return (
-                            <Tag key={keyword} text={keyword} />
-                        )
-                    })}
-                    </div>
-                </div>
-            </div>
+
             <div className="align-middle rounded-tl-lg rounded-tr-lg inline-block w-full py-4 overflow-hidden bg-white px-12">
                 <div className="flex justify-between">
                     <div>  </div>

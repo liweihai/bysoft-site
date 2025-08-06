@@ -127,21 +127,19 @@ export default function ChatForm({obj, chatInit}) {
                             </div>
                         )
                     })}
-                    {(newChat || chat).messages.length > 0 && (
-                        <div
-                            className="rounded-lg rounded-b-none border border-slate-300 bg-slate-50 px-2 py-2 dark:border-slate-700 dark:bg-slate-800"
-                            >
-                            <label htmlFor="content" className="sr-only">提示词</label>
-                            <textarea
-                                id="content"
-                                name="content"
-                                rows={2}
-                                className="w-full border-0 bg-slate-50 px-0 text-base text-slate-900 focus:outline-none dark:bg-slate-800 dark:text-slate-200 dark:placeholder-slate-400"
-                                placeholder="提示词"
-                                required
-                            ></textarea>
-                        </div>
-                    )}
+                    <div
+                        className="rounded-lg rounded-b-none border border-slate-300 bg-slate-50 px-2 py-2 dark:border-slate-700 dark:bg-slate-800"
+                        >
+                        <label htmlFor="content" className="sr-only">提示词</label>
+                        <textarea
+                            id="content"
+                            name="content"
+                            rows={2}
+                            className="w-full border-0 bg-slate-50 px-0 text-base text-slate-900 focus:outline-none dark:bg-slate-800 dark:text-slate-200 dark:placeholder-slate-400"
+                            placeholder="提示词"
+                            required
+                        ></textarea>
+                    </div>
 
                     <div className="ml-2 flex items-center py-2">
                         <div>
