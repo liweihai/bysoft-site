@@ -1,9 +1,8 @@
-import { PowerIcon } from '@heroicons/react/24/outline';
 import Image from 'next/image';
-import Link from 'next/link';
-import { Disclosure, DisclosureButton, DisclosurePanel, Menu, MenuButton, MenuItem, MenuItems } from '@headlessui/react'
+import { Menu, MenuButton, MenuItem, MenuItems } from '@headlessui/react'
 
-import { Suspense } from 'react'
+import { Suspense } from 'react';
+import LoadingPage from '@/app/loading'
 
 import { signOut, auth } from '@/auth';
 import SideNav from '@/components/dashboard/SideNav';
@@ -19,9 +18,7 @@ export default async function Layout({ children }: { children: React.ReactNode }
         <div>
             <div className="flex h-screen flex-col md:flex-row md:overflow-hidden">
                 <div className="sidebar fixed top-0 left-0 z-9999 flex h-screen w-[290px] flex-col overflow-y-auto border-r border-gray-200 bg-white px-5 transition-all duration-300 lg:static lg:translate-x-0 dark:border-gray-800 dark:bg-black -translate-x-full">
-                    <Suspense>
-                        <SideNav role={customer.role} />
-                    </Suspense>
+                    <SideNav role={customer.role} />
                 </div>
                 <div className="relative flex flex-1 flex-col overflow-x-hidden overflow-y-auto">
                     <header className="sticky top-0 z-99999 flex w-full border-gray-200 bg-white lg:border-b dark:border-gray-800 dark:bg-gray-900">
@@ -61,7 +58,9 @@ export default async function Layout({ children }: { children: React.ReactNode }
                         </div>
                     </header>
                     <div className="mx-auto w-(--breakpoint-2xl) p-4 md:p-6">
-                    {children}
+                        <Suspense fallback={<LoadingPage></LoadingPage>}>
+                        {children}
+                        </Suspense>
                     </div>
                 </div>
             </div>

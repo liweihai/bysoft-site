@@ -10,7 +10,7 @@ import {
   Cog6ToothIcon,
   Battery50Icon,
   RectangleGroupIcon,
-  KeyIcon,
+  UserIcon,
   ChatBubbleBottomCenterTextIcon
 } from '@heroicons/react/24/outline';
 
@@ -40,6 +40,11 @@ export default function SideNav({role}) {
         }
     ]
     if (role == 1) {
+        links.push({
+            icon: UserIcon,
+            name: '用户',
+            href: '/dashboard/customer'
+        })
         links.push({
             icon: ChatBubbleBottomCenterTextIcon,
             name: '客户留言',

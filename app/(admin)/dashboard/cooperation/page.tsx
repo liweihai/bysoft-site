@@ -1,8 +1,7 @@
 import Link from 'next/link';
 
-import {countModels, findModels} from "@/lib/data"
+import {findModels} from "@/lib/data"
 import {Cooperation} from "@/lib/definitions"
-import { auth } from '@/auth';
 import DelForm from '@/components/DelForm';
 import {formatDate} from '@/utils/datetime'
 import {
@@ -41,7 +40,7 @@ export default async function CooperationPage() {
                                 <TableCell>{cooperation.description}</TableCell>
                                 <TableCell>{formatDate(cooperation.create_time)}</TableCell>
                                 <TableCell className="text-right">
-                                    <DelForm obj={{model:"Cooperation", id:cooperation.id, redirect_url:"/dashboard"}} />
+                                    <DelForm obj={{model:"Cooperation", id:cooperation.id, redirect_url:"/dashboard/cooperation"}} />
                                 </TableCell>
                             </TableRow>
                         )

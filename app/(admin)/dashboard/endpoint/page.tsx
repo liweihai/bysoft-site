@@ -40,8 +40,6 @@ export default async function EndpointPage(props: { searchParams?: Promise<{quer
     const offset = (page - 1) * 20;
     const endpoints = await findModels<Endpoint>("Endpoint", conditions, {limit: 20, offset: (page - 1) * 20, order: 'provider ASC, model ASC'})
 
-    const totalPages = Math.ceil(total / 20)
-
     return (
         <div className="rounded-2xl bg-white px-5 pb-5 pt-5 dark:bg-white/[0.03] sm:px-6 sm:pt-6">
             <div className="align-middle rounded-tl-lg rounded-tr-lg inline-block w-full py-4 overflow-hidden bg-white px-12">

@@ -39,7 +39,7 @@ export default function PaginationComponent({url, offset, limit, length, total})
                             )}
                             {function() {
                                 let pages = []
-                                for (let i = 1; i <= totalPages; i++){
+                                for (let i = 1; i <= totalPages && i <= 10; i++){
                                     const href = url + i;
                                     if (i == page) {
                                         pages.push(<PaginationItem><PaginationLink isActive href={href}>{i}</PaginationLink></PaginationItem>)

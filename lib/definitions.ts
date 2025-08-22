@@ -83,6 +83,8 @@ export type Customer = {
     avatar: string,
     mobile:string,
     role: number,
+    create_time: string,
+    update_time: string,
     state: number
 }
 

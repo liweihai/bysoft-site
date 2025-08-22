@@ -90,13 +90,13 @@ export default async function PromptPage(props: { searchParams?: Promise<{query?
                                 </TableCell>
                                 <TableCell className="text-right">
                                     <div>
-                                        <Button><Link href={ href }>修改</Link></Button>
+                                        <Button asChild><Link href={ href }>修改</Link></Button>
                                     </div>
                                     <div>
                                         <DelForm obj={{model:"Article", id:prompt.id}} />
                                     </div>
                                     <div>
-                                        <Button className="ml-2" asChild><Link href={chatHref}>试用</Link></Button>
+                                        <Button asChild variant="secondary"><Link href={chatHref}>试用</Link></Button>
                                     </div>
                                 </TableCell>
                             </TableRow>
