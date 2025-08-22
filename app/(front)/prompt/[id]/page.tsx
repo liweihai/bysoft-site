@@ -11,10 +11,10 @@ import CopyButton from '@/components/CopyButton'
 import { Button } from "@/components/ui/button"
 import Tag from '@/components/Tag'
 
-export async function generateMetadata(props: { params: Promise<{ slug: string }> }): Promise<Metadata | undefined> {
+export async function generateMetadata(props: { params: Promise<{ id: string }> }): Promise<Metadata | undefined> {
     const params = await props.params
-    const slug = params.slug
-    const prompt = await getModel<Prompt>("Article", slug)
+    const id = params.id
+    const prompt = await getModel<Prompt>("Article", id)
 
     return {
         title: prompt.title,
@@ -22,13 +22,11 @@ export async function generateMetadata(props: { params: Promise<{ slug: string }
     }
 }
 
-export default async function Page(props: { params: Promise<{ slug: string }> }) {
+export default async function Page(props: { params: Promise<{ id: string }> }) {
     const params = await props.params
-    const slug = params.slug
+    const id = params.id
 
-    const prompt = await getModel<Prompt>("Article", slug)
-
-    const chatHref = "/prompt/" + slug + "/chat"
+    const prompt = await getModel<Prompt>("Article", id)
 
     let contentHtml = prompt.content;
     if (prompt.content_type == 1) {
@@ -99,7 +97,6 @@ export default async function Page(props: { params: Promise<{ slug: string }> })
                     <div>  </div>
                     <div>
                         <CopyButton text={prompt.content} />
-                        <Button className="ml-2" asChild><Link href={chatHref}>试用</Link></Button>
                     </div>
                 </div>
             </div>

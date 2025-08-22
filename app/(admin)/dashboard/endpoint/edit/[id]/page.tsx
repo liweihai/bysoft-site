@@ -4,13 +4,13 @@ import EditForm from '@/components/endpoint/EditForm';
 import { Suspense } from 'react'
 import {auth} from '@/auth';
 
-async function EditPage(props: { params: Promise<{ slug: string }> }) {
+async function EditPage(props: { params: Promise<{ id: string }> }) {
     const params = await props.params
-    const slug = params.slug
+    const id = params.id
     
     const session = await auth()
 
-    const endpoint = await getModel<Endpoint>("Endpoint", slug)
+    const endpoint = await getModel<Endpoint>("Endpoint", id)
     endpoint.customer_id = endpoint.customer_id || session.user.id
 
     return (

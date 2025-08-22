@@ -3,9 +3,9 @@ import {getModel, updateModel} from "@/lib/data"
 import EditForm from '@/components/config/EditForm';
 import { Suspense } from 'react'
 
-async function EditPage(props: { params: Promise<{ slug: string }> }) {
+async function EditPage(props: { params: Promise<{ id: string }> }) {
     const params = await props.params
-    const id = params.slug
+    const id = params.id
 
     const config = await getModel<Config>("Config", id)
 

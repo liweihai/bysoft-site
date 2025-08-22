@@ -24,8 +24,6 @@ export default async function Page(props: { params: Promise<{ page: number }> })
   const offset = (page - 1) * 20;
   const configs = await findModels<Config>("Config", {}, {limit: 20, offset: offset})
 
-  const totalPages = Math.ceil(total / 20)
-
   return (
       <div className="-my-2 py-2 overflow-x-auto sm:-mx-6 sm:px-6 lg:-mx-8 pr-10 lg:px-8">
           <div className="align-middle rounded-tl-lg rounded-tr-lg inline-block w-full py-4 overflow-hidden bg-white px-12">
@@ -46,8 +44,7 @@ export default async function Page(props: { params: Promise<{ page: number }> })
                     </TableHeader>
                     <TableBody>
                     {configs.map((config) => {
-                        const { id, name, value, create_time } = config
-                        const href = "/dashboard/config/edit/" + id                  
+                        const href = "/dashboard/config/edit/" + config.id                  
                         return (
                             <TableRow key={config.id}>
                                 <TableCell>{ config.name }</TableCell>
@@ -63,7 +60,7 @@ export default async function Page(props: { params: Promise<{ page: number }> })
                     </TableBody>
                 </Table>
 
-                <Pagination url='/dashboard/config?page='  limit={10} offset={offset} total={total} length={configs.length} />
+                <Pagination url='/dashboard/config?page=' limit={10} offset={offset} total={total} length={configs.length} />
             </div>
       </div>
   )

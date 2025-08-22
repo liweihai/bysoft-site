@@ -4,11 +4,11 @@ import EditForm from '@/components/prompt/EditForm';
 import { Suspense } from 'react'
 import {auth} from '@/auth';
 
-async function EditPage(props: { params: Promise<{ slug: string }> }) {
+async function EditPage(props: { params: Promise<{ id: string }> }) {
     const params = await props.params
-    const slug = params.slug
+    const id = params.id
 
-    const prompt = await getModel<Prompt>("Article", slug)
+    const prompt = await getModel<Prompt>("Article", id)
 
     const session = await auth()
 

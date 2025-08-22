@@ -4,13 +4,13 @@ import EditForm from '@/components/endpoint/EditForm';
 import { Suspense } from 'react'
 import {auth} from '@/auth';
 
-async function ClonePage(props: { params: Promise<{ slug: string }> }) {
+async function ClonePage(props: { params: Promise<{ id: string }> }) {
     const params = await props.params
-    const slug = params.slug
+    const id = params.id
     
     const session = await auth()
 
-    const oldEndpoint = await getModel<Endpoint>("Endpoint", slug)
+    const oldEndpoint = await getModel<Endpoint>("Endpoint", id)
     const obj = {
         customer_id: session.user.id,
         provider: oldEndpoint.provider, 

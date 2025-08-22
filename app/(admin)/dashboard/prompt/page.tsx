@@ -44,8 +44,6 @@ export default async function PromptPage(props: { searchParams?: Promise<{query?
     const offset = (page - 1) * 10;
     const prompts = await findModels<Prompt>("Article", conditions, {select: 'id, title, keywords, remark, create_time, state, category', order: 'state ASC, create_time DESC', limit: 10, offset: (page - 1) * 10})
 
-    const totalPages = Math.ceil(total / 10)
-
     return (
         <div className="rounded-2xl bg-white px-5 pb-5 pt-5 dark:bg-white/[0.03] sm:px-6 sm:pt-6">
             <div className="align-middle rounded-tl-lg rounded-tr-lg inline-block w-full py-4 overflow-hidden bg-white px-12">
@@ -67,6 +65,7 @@ export default async function PromptPage(props: { searchParams?: Promise<{query?
                     </TableHeader>
                     <TableBody>
                     {prompts.map((prompt) => {
+                        const chatHref = "/dashboard/prompt/chat/" + prompt.id
                         const href = "/dashboard/prompt/edit/" + prompt.id                        
                         return (
                             <TableRow key={ prompt.id }>
@@ -95,6 +94,9 @@ export default async function PromptPage(props: { searchParams?: Promise<{query?
                                     </div>
                                     <div>
                                         <DelForm obj={{model:"Article", id:prompt.id}} />
+                                    </div>
+                                    <div>
+                                        <Button className="ml-2" asChild><Link href={chatHref}>试用</Link></Button>
                                     </div>
                                 </TableCell>
                             </TableRow>
