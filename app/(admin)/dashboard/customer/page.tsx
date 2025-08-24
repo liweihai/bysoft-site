@@ -62,7 +62,7 @@ export default async function CudstomerPage(props: { searchParams?: Promise<{que
                     })}
                     </TableBody>
                 </Table>
-                <Pagination url='/dashboard/customer?page=' limit={10} offset={offset} total={total} length={customers.length} />
+                <Pagination url='/dashboard/customer?page=' limit={20} offset={offset} total={total} length={customers.length} />
             </div>
         </div>
     )
