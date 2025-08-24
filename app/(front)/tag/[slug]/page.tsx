@@ -13,9 +13,16 @@ export async function generateMetadata(props: { params: Promise<{ slug: string }
     const searchParams = await props.searchParams
     const query = searchParams?.query || '';
 
-    return {
-        title: query + "-" + tag + "提示词",
-        description: "内容中有关键词" + query + "的全部" + tag + "提示词",
+    if (query) {
+        return {
+            title: query + tag,
+            description: "内容中有关键词" + query + "的全部" + tag + "提示词",
+        }
+    } else {
+        return {
+            title: tag,
+            description: tag + "提示词",
+        }
     }
 }
 
@@ -47,7 +54,6 @@ export default async function TagPage(props: { params: Promise<{ slug: string }>
         prompts={prompts}
         offset={(page - 1) * POSTS_PER_PAGE}
         total={totalPrompts}
-        title={tag + '提示词'}
       />
     )
 }

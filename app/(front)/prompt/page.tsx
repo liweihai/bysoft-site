@@ -12,12 +12,12 @@ export async function generateMetadata(props: { searchParams: Promise<{ query: s
 
     if (query) {
         return {
-            title: query + "-全部提示词",
+            title: query,
             description: "内容中有关键词" + query + "的全部提示词",
         }
     } else {
         return {
-            title: "全部提示词",
+            title: "全部",
             description: "全部提示词",
         }
     }
@@ -47,7 +47,6 @@ export default async function Page(props: { searchParams: Promise<{ query?: stri
     return (
         <List
           prompts={prompts}
-          title="所有提示词"
           offset={(page - 1) * POSTS_PER_PAGE}
           total={totalPrompts}
         />

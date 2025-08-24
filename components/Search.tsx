@@ -23,7 +23,7 @@ export default function Search({ placeholder }: { placeholder: string }) {
     }, 300);
 
     return (
-        <div className="inline-flex border rounded w-7/12 px-2 lg:px-6 h-10 bg-transparent">
+        <div className="inline-flex border rounded w-full px-2 lg:px-6 h-10 bg-transparent">
             <div className="flex flex-wrap items-stretch w-full h-full mb-6 relative">
                 <div className="flex">
                     <Button variant="ghost" size="icon" className="size-10">

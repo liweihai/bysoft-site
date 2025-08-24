@@ -7,16 +7,13 @@ import siteMetadata from '@/data/siteMetadata'
 import Search from "@/components/Search"
 import Pagination from '@/components/Pagination';
 
-export default function List({ prompts, title, offset, total }) {
+export default function List({ prompts, offset, total }) {
     return (
         <>
             <div className="divide-y divide-gray-200 dark:divide-gray-700">
                 <div className="space-y-2 pt-6 pb-8 md:space-y-5">
-                    <h1 className="text-3xl lg:text-4xl text-center mb-6 tracking-wider">
-                      {title}
-                    </h1>
-                    <div className="align-middle rounded-tl-lg rounded-tr-lg inline-block w-full py-4 overflow-hidden bg-white">
-                          <div className="flex justify-between">
+                    <div className="align-middle rounded-tl-lg rounded-tr-lg inline-block w-full overflow-hidden bg-white">
+                          <div className="flex justify-between w-full">
                               <Search placeholder="搜索提示词..." />
                               <div> </div>
                           </div>
